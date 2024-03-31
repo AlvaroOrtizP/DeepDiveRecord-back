@@ -1,16 +1,37 @@
-package com.record.DeepDiveRecord.dto;
+package com.record.DeepDiveRecord.entity;
 
-public class EstadoCielo {
+import jakarta.persistence.*;
+
+import java.util.List;
+@Entity
+@Table(name = "weatherdata")
+public class WeatherDataEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String date;
+    @Column(name = "water_temperature")
+    private String waterTemperature;
     private String f1;
     private String descripcion1;
+
     private String f2;
     private String descripcion2;
 
-    public EstadoCielo(String f1, String descripcion1, String f2, String descripcion2) {
-        this.f1 = f1;
-        this.descripcion1 = descripcion1;
-        this.f2 = f2;
-        this.descripcion2 = descripcion2;
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getWaterTemperature() {
+        return waterTemperature;
+    }
+
+    public void setWaterTemperature(String waterTemperature) {
+        this.waterTemperature = waterTemperature;
     }
 
     public String getF1() {
