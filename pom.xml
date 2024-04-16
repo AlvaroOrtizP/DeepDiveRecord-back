@@ -47,6 +47,13 @@
 			<version>6.4.4.Final</version>
 			<type>pom</type>
 		</dependency>
+		<!-- Contructores, getters y setters -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.32</version>
+			<scope>provided</scope>
+		</dependency>
 
 	</dependencies>
 

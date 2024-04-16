@@ -1,6 +1,6 @@
 package com.record.DeepDiveRecord.dto.request;
 
-public class WebWeatherScraperRequest {
+public class  WebWeatherScraperRequest {
     private String idWindwuru;
     private String idAemet;
     private String lugar;

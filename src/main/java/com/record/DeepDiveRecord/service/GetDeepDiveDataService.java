@@ -1,10 +1,10 @@
 package com.record.DeepDiveRecord.service;
 
-import com.record.DeepDiveRecord.dto.request.WebWeatherScraperRequest;
-import com.record.DeepDiveRecord.dto.responses.WebWeatherScraperResponse;
+import com.record.DeepDiveRecord.core.forecast.domain.savedata.InForecast;
+import com.record.DeepDiveRecord.core.forecast.domain.savedata.OutForecast;
+import com.record.DeepDiveRecord.core.forecast.usecase.savedata.GetDeepDiveDataUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,11 +16,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class WebWeatherScraperServive {
+public class GetDeepDiveDataService implements GetDeepDiveDataUseCase {
     @Autowired
     private ResourceLoader resourceLoader;
-
-    public WebWeatherScraperResponse runPythonScript(WebWeatherScraperRequest webWeatherScraperDto) {
+    @Override
+    public OutForecast runPythonScript(InForecast deepDiveLogger) {
         try {
             //OBTENER LA RUTA DE EJECUCION DEL PROYECTO SPRING
             String projectSpringPath = getAbsolutePath();
@@ -35,9 +35,9 @@ public class WebWeatherScraperServive {
             ExecutorService executor = Executors.newFixedThreadPool(3);
             CompletionService<String> completionService = new ExecutorCompletionService<>(executor);
 
-            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/WindWuLogger.py", webWeatherScraperMainPath, webWeatherScraperDto.getIdWindwuru(), webWeatherScraperMainPath)));
-            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/TemperaturaLogger.py", webWeatherScraperMainPath, webWeatherScraperDto.getIdAemet(), webWeatherScraperMainPath)));
-            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/ObtenerDireccionViento.py", webWeatherScraperMainPath, webWeatherScraperDto.getLugar(), webWeatherScraperMainPath)));
+            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/WindWuLogger.py", webWeatherScraperMainPath, deepDiveLogger.getIdWindwuru(), webWeatherScraperMainPath)));
+            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/TemperaturaLogger.py", webWeatherScraperMainPath, deepDiveLogger.getIdAemet(), webWeatherScraperMainPath)));
+            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/ObtenerDireccionViento.py", webWeatherScraperMainPath, deepDiveLogger.getLugar(), webWeatherScraperMainPath)));
 
             // Esperar a que todos los procesos terminen
             StringBuilder output = new StringBuilder();
@@ -46,7 +46,7 @@ public class WebWeatherScraperServive {
                 output.append(future.get()).append("\n");
             }
             // Ahora agregar la tarea para ejecutar GuardarDatos.py
-            completionService.submit(() -> String.valueOf(callPython("GuardarDatos.py", webWeatherScraperMainPath, webWeatherScraperDto.getIdWindwuru(),  webWeatherScraperMainPath)));
+            completionService.submit(() -> String.valueOf(callPython("GuardarDatos.py", webWeatherScraperMainPath, deepDiveLogger.getIdWindwuru(),  webWeatherScraperMainPath)));
 
             // Esperar a que la tarea de GuardarDatos.py termine
             Future<String> guardarDatosFuture = completionService.take();
@@ -54,11 +54,11 @@ public class WebWeatherScraperServive {
             return response(guardarDatosFuture.get());
 
         } catch (IOException | InterruptedException | ExecutionException e) {
-            WebWeatherScraperResponse webWeatherScraperResponse = new WebWeatherScraperResponse();
+            OutForecast deepDiveResponse = new OutForecast();
             List<String> errors = new ArrayList<>();
             errors.add("Error al ejecutar el script de Python: " + e.getMessage());
-            webWeatherScraperResponse.setErros(errors);
-            return webWeatherScraperResponse;
+            deepDiveResponse.setErros(errors);
+            return deepDiveResponse;
         }
     }
 
@@ -103,7 +103,7 @@ public class WebWeatherScraperServive {
         // Redireccionar la salida estándar y el error
         pb.redirectErrorStream(true);
 
-        // ProcessBuilder pb = new ProcessBuilder("python", "Main.py", webWeatherScraperDto.getIdWindwuru(), webWeatherScraperDto.getIdAemet());
+        // ProcessBuilder pb = new ProcessBuilder("python", "Main.py", deepDiveLogger.getIdWindwuru(), deepDiveLogger.getIdAemet());
         // Iniciar el proceso
         Process process = pb.start();
 
@@ -120,16 +120,16 @@ public class WebWeatherScraperServive {
         return output.toString();
     }
 
-    private WebWeatherScraperResponse response(String guardarDatosFuture){
+    private OutForecast response(String guardarDatosFuture){
         if(guardarDatosFuture.equals("OK")) {
-            return new WebWeatherScraperResponse(null);
+            return new OutForecast(null);
         }
 
         String patron = "NOK:";
         Pattern pattern = Pattern.compile(patron);
         Matcher matcher = pattern.matcher(guardarDatosFuture);
 
-        WebWeatherScraperResponse webWeatherScraperResponse = new WebWeatherScraperResponse();
+        OutForecast deepDiveResponse = new OutForecast();
         List<String> erros = new ArrayList<>();
         // Iterar sobre las coincidencias y separar el texto en Strings
         int inicio = 0;
@@ -139,8 +139,8 @@ public class WebWeatherScraperServive {
             erros.add(resultado.trim());
             inicio = matcher.start();
         }
-        webWeatherScraperResponse.setErros(erros);
+        deepDiveResponse.setErros(erros);
 
-        return webWeatherScraperResponse;
+        return deepDiveResponse;
     }
 }
