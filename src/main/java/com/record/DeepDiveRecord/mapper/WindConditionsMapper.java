@@ -1,15 +1,16 @@
 package com.record.DeepDiveRecord.mapper;
 
+import com.record.DeepDiveRecord.core.windconditions.domain.getdatabydays.OutDailyStatistics;
 import com.record.DeepDiveRecord.entity.WindConditionsEntity;
 import com.record.DeepDiveRecord.entity.WindConditionsId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class WindConditionsMapper {
     private final static DateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
@@ -83,5 +84,32 @@ public class WindConditionsMapper {
             e.printStackTrace();
         }
         return calendario;
+    }
+
+    public static OutDailyStatistics mapToOutDailyStatistics(WindConditionsEntity entity) {
+        OutDailyStatistics outDailyStatistics = new OutDailyStatistics();
+        outDailyStatistics.setYear(entity.getId().getYear());
+        outDailyStatistics.setMonth(entity.getId().getMonth());
+        outDailyStatistics.setDay(entity.getId().getDay());
+        outDailyStatistics.setSite(entity.getId().getSite());
+        outDailyStatistics.setTimeOfDay(entity.getId().getTime());
+        outDailyStatistics.setWind(entity.getWind());
+        outDailyStatistics.setWindDirection(entity.getWindDirection());
+        outDailyStatistics.setGustsOfWind(entity.getGustsOfWind());
+        outDailyStatistics.setWaveHeight(String.valueOf(entity.getWaveHeight()));
+        outDailyStatistics.setWavePeriod(entity.getWavePeriod());
+        outDailyStatistics.setEarthTemperature(entity.getEarthTemperature());
+        outDailyStatistics.setWaterTtermperature(String.valueOf(entity.getWaterTemperature()));
+        outDailyStatistics.setF1(entity.getCodeCondition());
+        outDailyStatistics.setDescripcion1(String.valueOf(entity.getConditionDescription()));
+        // Puedes mapear otros campos aquí
+        return outDailyStatistics;
+    }
+
+    public static Page<OutDailyStatistics> mapToOutDailyStatisticsPage(Page<WindConditionsEntity> page) {
+        List<OutDailyStatistics> outDailyStatisticsList = page.getContent().stream()
+                .map(WindConditionsMapper::mapToOutDailyStatistics)
+                .collect(Collectors.toList());
+        return new PageImpl<>(outDailyStatisticsList, page.getPageable(), page.getTotalElements());
     }
 }

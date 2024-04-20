@@ -1,8 +1,8 @@
-package com.record.DeepDiveRecord.service;
+package com.record.DeepDiveRecord.service.windconditions.usecase;
 
-import com.record.DeepDiveRecord.core.forecast.domain.savedata.InForecast;
-import com.record.DeepDiveRecord.core.forecast.domain.savedata.OutForecast;
-import com.record.DeepDiveRecord.core.forecast.usecase.savedata.GetDeepDiveDataUseCase;
+import com.record.DeepDiveRecord.core.windconditions.domain.savedata.InForecast;
+import com.record.DeepDiveRecord.core.windconditions.domain.savedata.OutForecast;
+import com.record.DeepDiveRecord.core.windconditions.usecase.savedata.GetWindConditionsUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class GetDeepDiveDataService implements GetDeepDiveDataUseCase {
+public class SaveDeepDiveDataService implements GetWindConditionsUseCase {
     @Autowired
     private ResourceLoader resourceLoader;
     @Override
@@ -35,9 +35,9 @@ public class GetDeepDiveDataService implements GetDeepDiveDataUseCase {
             ExecutorService executor = Executors.newFixedThreadPool(3);
             CompletionService<String> completionService = new ExecutorCompletionService<>(executor);
 
-            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/WindWuLogger.py", webWeatherScraperMainPath, deepDiveLogger.getIdWindwuru(), webWeatherScraperMainPath)));
-            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/TemperaturaLogger.py", webWeatherScraperMainPath, deepDiveLogger.getIdAemet(), webWeatherScraperMainPath)));
-            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/ObtenerDireccionViento.py", webWeatherScraperMainPath, deepDiveLogger.getLugar(), webWeatherScraperMainPath)));
+            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/WindWuLogger.py", webWeatherScraperMainPath, deepDiveLogger.getIdWindwuru(), webWeatherScraperMainPath, null)));
+            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/TemperaturaLogger.py", webWeatherScraperMainPath, deepDiveLogger.getIdAemet(), webWeatherScraperMainPath, deepDiveLogger.getIdWindwuru())));
+            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/ObtenerDireccionViento.py", webWeatherScraperMainPath, deepDiveLogger.getLugar(), webWeatherScraperMainPath, null)));
 
             // Esperar a que todos los procesos terminen
             StringBuilder output = new StringBuilder();
@@ -46,7 +46,7 @@ public class GetDeepDiveDataService implements GetDeepDiveDataUseCase {
                 output.append(future.get()).append("\n");
             }
             // Ahora agregar la tarea para ejecutar GuardarDatos.py
-            completionService.submit(() -> String.valueOf(callPython("GuardarDatos.py", webWeatherScraperMainPath, deepDiveLogger.getIdWindwuru(),  webWeatherScraperMainPath)));
+            completionService.submit(() -> String.valueOf(callPython("GuardarDatos.py", webWeatherScraperMainPath, deepDiveLogger.getIdWindwuru(),  webWeatherScraperMainPath, null)));
 
             // Esperar a que la tarea de GuardarDatos.py termine
             Future<String> guardarDatosFuture = completionService.take();
@@ -96,9 +96,16 @@ public class GetDeepDiveDataService implements GetDeepDiveDataUseCase {
         return projectSpringPath.replace("DeepDiveRecord", "WebWeatherScraper");
     }
 
-    private String  callPython(String namePythonProgram, String pythonPath, String firstParameter, String secondParameter) throws IOException, InterruptedException {
+    private String  callPython(String namePythonProgram, String pythonPath, String firstParameter, String secondParameter, String threethParameter) throws IOException, InterruptedException {
         // Construir el comando para ejecutar el script de Python con los parámetros
-        ProcessBuilder pb = new ProcessBuilder("python", pythonPath + namePythonProgram, firstParameter, secondParameter);
+        ProcessBuilder pb = null;
+        if(threethParameter!=null){
+             pb = new ProcessBuilder("python", pythonPath + namePythonProgram, firstParameter, secondParameter, threethParameter);
+
+        }else{
+             pb = new ProcessBuilder("python", pythonPath + namePythonProgram, firstParameter, secondParameter);
+
+        }
 
         // Redireccionar la salida estándar y el error
         pb.redirectErrorStream(true);

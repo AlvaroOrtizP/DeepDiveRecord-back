@@ -1,7 +1,17 @@
 package com.record.DeepDiveRecord.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.math.BigDecimal;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "windconditions")
 public class WindConditionsEntity {
@@ -9,9 +19,15 @@ public class WindConditionsEntity {
     private WindConditionsId id;
     //Velocidad del viento
     private int wind;
+    @Column(name = "wind_direction")
+    private BigDecimal windDirection;
     //Rafagas de viento
     @Column(name = "gusts_of_wind")
     private double gustsOfWind;
+    //Altura de la ola
+    @Column(name = "wave_height")
+    private int waveHeight;
+
     //Periodo de olas
     @Column(name = "wave_period")
     private int wavePeriod;
@@ -19,54 +35,16 @@ public class WindConditionsEntity {
     @Column(name = "earth_temperature")
     private int earthTemperature;
 
-    public WindConditionsId getId() {
-        return id;
-    }
+    @Column(name = "water_temperature")
+    private int waterTemperature;
 
-    public void setId(WindConditionsId id) {
-        this.id = id;
-    }
+    @Column(name = "code_condition")
+    private int codeCondition;
 
-    public int getWind() {
-        return wind;
-    }
+    @Column(name = "condition_description")
+    private int conditionDescription;
 
-    public void setWind(int wind) {
-        this.wind = wind;
-    }
 
-    public double getGustsOfWind() {
-        return gustsOfWind;
-    }
 
-    public void setGustsOfWind(double gustsOfWind) {
-        this.gustsOfWind = gustsOfWind;
-    }
 
-    public int getWavePeriod() {
-        return wavePeriod;
-    }
-
-    public void setWavePeriod(int wavePeriod) {
-        this.wavePeriod = wavePeriod;
-    }
-
-    public int getEarthTemperature() {
-        return earthTemperature;
-    }
-
-    public void setEarthTemperature(int earthTemperature) {
-        this.earthTemperature = earthTemperature;
-    }
-
-    @Override
-    public String toString() {
-        return "WindConditionsEntity{" +
-                "id=" + id +
-                ", wind=" + wind +
-                ", gustsOfWind=" + gustsOfWind +
-                ", wavePeriod=" + wavePeriod +
-                ", earthTemperature=" + earthTemperature +
-                '}';
-    }
 }

@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.core.forecast.domain.savedata;
+package com.record.DeepDiveRecord.core.windconditions.domain.savedata;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

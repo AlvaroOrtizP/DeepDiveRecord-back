@@ -1,7 +1,7 @@
 package com.record.DeepDiveRecord.mapper.impl;
 
 import com.record.DeepDiveRecord.api.domain.InDeepDiveLogger;
-import com.record.DeepDiveRecord.core.forecast.domain.savedata.InForecast;
+import com.record.DeepDiveRecord.core.windconditions.domain.savedata.InForecast;
 import com.record.DeepDiveRecord.mapper.DeepDiveLoggerMapper;
 
 public class DeepDiveLoggerMapperImpl implements DeepDiveLoggerMapper {

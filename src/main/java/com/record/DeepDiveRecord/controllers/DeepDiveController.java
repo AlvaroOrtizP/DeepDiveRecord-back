@@ -1,10 +1,10 @@
 package com.record.DeepDiveRecord.controllers;
 
 import com.record.DeepDiveRecord.api.domain.InDeepDiveLogger;
-import com.record.DeepDiveRecord.core.forecast.domain.savedata.OutForecast;
+import com.record.DeepDiveRecord.core.windconditions.domain.savedata.OutForecast;
 import com.record.DeepDiveRecord.mapper.DeepDiveLoggerMapper;
 import com.record.DeepDiveRecord.mapper.impl.DeepDiveLoggerMapperImpl;
-import com.record.DeepDiveRecord.service.GetDeepDiveDataService;
+import com.record.DeepDiveRecord.service.windconditions.usecase.SaveDeepDiveDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DeepDiveController {
 
     @Autowired
-    GetDeepDiveDataService webWeatherScraperServive;
+    SaveDeepDiveDataService webWeatherScraperServive;
 
     DeepDiveLoggerMapper deepDiveLoggerMapper;
 

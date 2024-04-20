@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.core.forecast.domain.getdatabydays;
+package com.record.DeepDiveRecord.core.windconditions.domain.getdatabydays;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

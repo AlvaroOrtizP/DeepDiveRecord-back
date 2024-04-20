@@ -1,6 +1,5 @@
 package com.record.DeepDiveRecord;
 
-import com.record.DeepDiveRecord.conf.DataInitializer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
