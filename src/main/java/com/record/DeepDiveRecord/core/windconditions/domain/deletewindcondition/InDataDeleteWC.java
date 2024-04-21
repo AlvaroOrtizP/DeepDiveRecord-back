@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.core.windconditions.domain.deletewindconditionsbydays;
+package com.record.DeepDiveRecord.core.windconditions.domain.deletewindcondition;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,14 +9,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class InDataZoneRangeDeleteWC {
+public class InDataDeleteWC {
     private String site;
 
     private String fromYear;
     private String fromMonth;
     private String fromDay;
-
-    private String toYear;
-    private String toMonth;
-    private String toDay;
+    private String fromTime;
 }

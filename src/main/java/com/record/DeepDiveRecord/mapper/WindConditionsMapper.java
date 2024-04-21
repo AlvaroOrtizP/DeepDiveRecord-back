@@ -1,5 +1,7 @@
 package com.record.DeepDiveRecord.mapper;
 
+import com.record.DeepDiveRecord.core.windconditions.domain.deletewindcondition.InDataDeleteWC;
+import com.record.DeepDiveRecord.core.windconditions.domain.deletewindcondition.OutDeteleWindConditions;
 import com.record.DeepDiveRecord.core.windconditions.domain.getdatabydays.OutDailyStatistics;
 import com.record.DeepDiveRecord.entity.WindConditionsEntity;
 import com.record.DeepDiveRecord.entity.WindConditionsId;
@@ -111,5 +113,31 @@ public class WindConditionsMapper {
                 .map(WindConditionsMapper::mapToOutDailyStatistics)
                 .collect(Collectors.toList());
         return new PageImpl<>(outDailyStatisticsList, page.getPageable(), page.getTotalElements());
+    }
+
+    public static WindConditionsId mapToWindConditionsIdFromInDataDeleteWC(InDataDeleteWC in) {
+        WindConditionsId out = new WindConditionsId();
+
+        out.setYear(in.getFromYear());
+        out.setMonth(in.getFromMonth());
+        out.setDay(in.getFromDay());
+        out.setSite(in.getSite());
+        out.setTime(in.getFromTime());
+
+        return out;
+    }
+    public static OutDeteleWindConditions mapToOutDeteleWindConditionsFromInDataDeleteWC(InDataDeleteWC in, boolean comprobante, String error) {
+        OutDeteleWindConditions out = new OutDeteleWindConditions();
+
+        out.setYear(in.getFromYear());
+        out.setMonth(in.getFromMonth());
+        out.setDay(in.getFromDay());
+        out.setSite(in.getSite());
+        out.setTime(in.getFromTime());
+        out.setDelete(comprobante);
+        out.setErrorMessage(error);
+
+
+        return out;
     }
 }

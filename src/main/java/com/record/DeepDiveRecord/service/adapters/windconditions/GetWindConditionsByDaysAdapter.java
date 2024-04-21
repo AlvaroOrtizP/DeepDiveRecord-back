@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GetWindConditionsByDaysAdapter implements GetWindConditionsByDaysUseCase {
-    WindConditionsMapper windConditionsMapper;
     @Autowired
     WindConditionsCustomRepository windConditionsCustomRepository;
 

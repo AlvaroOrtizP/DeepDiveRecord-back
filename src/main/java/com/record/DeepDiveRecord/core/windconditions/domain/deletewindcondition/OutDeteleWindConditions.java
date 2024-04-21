@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.core.windconditions.domain.deletewindconditionsbydays;
+package com.record.DeepDiveRecord.core.windconditions.domain.deletewindcondition;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +13,9 @@ public class OutDeteleWindConditions {
     private String year;
     private String month;
     private String day;
-
+    private String time;
     private boolean delete;
+    private String errorMessage;
 
 
 }
