@@ -1,9 +1,11 @@
 package com.record.DeepDiveRecord.mapper.impl;
 
 import com.record.DeepDiveRecord.api.domain.InDeepDiveLogger;
-import com.record.DeepDiveRecord.core.windconditions.domain.savedata.InForecast;
+import com.record.DeepDiveRecord.core.model.windconditions.InForecast;
 import com.record.DeepDiveRecord.mapper.DeepDiveLoggerMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DeepDiveLoggerMapperImpl implements DeepDiveLoggerMapper {
 
     @Override

@@ -17,5 +17,6 @@ public class TideTableId implements Serializable {
     private String day;
     private String month;
     private String year;
+    private String site;
 
 }

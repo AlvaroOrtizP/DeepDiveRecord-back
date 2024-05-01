@@ -27,7 +27,6 @@ public class WindConditionsEntity {
     //Altura de la ola
     @Column(name = "wave_height")
     private int waveHeight;
-
     //Periodo de olas
     @Column(name = "wave_period")
     private int wavePeriod;

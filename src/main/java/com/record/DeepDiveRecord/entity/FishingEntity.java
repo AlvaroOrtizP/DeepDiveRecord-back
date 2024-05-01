@@ -19,6 +19,7 @@ public class FishingEntity {
     private String name;
     private String apuntes;
     private boolean pescado;
+    private double weight;
 
     @ManyToOne
     @JoinColumn(name = "dive_day_id")
