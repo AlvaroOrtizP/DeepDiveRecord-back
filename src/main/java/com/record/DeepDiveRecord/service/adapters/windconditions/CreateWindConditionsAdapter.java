@@ -3,6 +3,8 @@ package com.record.DeepDiveRecord.service.adapters.windconditions;
 import com.record.DeepDiveRecord.core.model.windconditions.InForecast;
 import com.record.DeepDiveRecord.core.model.windconditions.OutForecast;
 import com.record.DeepDiveRecord.core.ports.windconditions.CreateWindConditionsPort;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 @Component
 public class CreateWindConditionsAdapter implements CreateWindConditionsPort {
+    private static final Logger logger = LoggerFactory.getLogger(CreateWindConditionsAdapter.class);
+
     @Autowired
     private ResourceLoader resourceLoader;
     @Override
@@ -39,6 +43,8 @@ public class CreateWindConditionsAdapter implements CreateWindConditionsPort {
             completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/WindWuLogger.py", webWeatherScraperMainPath, deepDiveLogger.getIdWindwuru(), webWeatherScraperMainPath, null)));
             completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/TemperaturaLogger.py", webWeatherScraperMainPath, deepDiveLogger.getIdAemet(), webWeatherScraperMainPath, deepDiveLogger.getIdWindwuru())));
             completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/ObtenerDireccionViento.py", webWeatherScraperMainPath, deepDiveLogger.getLugar(), webWeatherScraperMainPath, null)));
+            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/ObtenerFasesLunares.py", webWeatherScraperMainPath, deepDiveLogger.getLugar(), webWeatherScraperMainPath, null)));
+
 
             // Esperar a que todos los procesos terminen
             StringBuilder output = new StringBuilder();
@@ -51,7 +57,6 @@ public class CreateWindConditionsAdapter implements CreateWindConditionsPort {
 
             // Esperar a que la tarea de GuardarDatos.py termine
             Future<String> guardarDatosFuture = completionService.take();
-
             return response(guardarDatosFuture.get());
 
         } catch (IOException | InterruptedException | ExecutionException e) {
@@ -144,7 +149,7 @@ public class CreateWindConditionsAdapter implements CreateWindConditionsPort {
         int inicio = 0;
         while (matcher.find()) {
             String resultado = guardarDatosFuture.substring(inicio, matcher.start());
-
+            logger.error("ERROR EN LA CARGA DE DATOS (SCRIPT) "+ resultado.trim());
             erros.add(resultado.trim());
             inicio = matcher.start();
         }

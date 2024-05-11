@@ -36,7 +36,7 @@ public class WindConditionsService implements WindConditionsUseCase {
 
     @Override
     public OutForecast createWindCondition(InForecast deepDiveLogger) {
+        //TODO en caso de error implementar envio de correo electronico con mensaje de error
         return createWindConditionsPort.runPythonScript(deepDiveLogger);
-
     }
 }
