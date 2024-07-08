@@ -5,10 +5,6 @@ import com.record.DeepDiveRecord.core.ports.windconditions.CreateWindConditionsP
 import com.record.DeepDiveRecord.core.ports.windconditions.DeleteWindConditionsPort;
 import com.record.DeepDiveRecord.core.ports.windconditions.GetWindConditionsByDaysPort;
 import com.record.DeepDiveRecord.core.usecase.windconditions.WindConditionsUseCase;
-import com.record.DeepDiveRecord.service.adapters.windconditions.CreateWindConditionsAdapter;
-import com.record.DeepDiveRecord.service.adapters.windconditions.DeleteWindConditionsByDaysAdapter;
-import com.record.DeepDiveRecord.service.adapters.windconditions.GetWindConditionsByDaysAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +32,9 @@ public class WindConditionsService implements WindConditionsUseCase {
 
     @Override
     public OutForecast createWindCondition(InForecast deepDiveLogger) {
-        //TODO en caso de error implementar envio de correo electronico con mensaje de error
-        return createWindConditionsPort.runPythonScript(deepDiveLogger);
+
+        //Se desactiva
+        //return createWindConditionsPort.runPythonScript(deepDiveLogger);
+        return new OutForecast();
     }
 }

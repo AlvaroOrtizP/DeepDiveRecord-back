@@ -12,11 +12,11 @@ import lombok.Setter;
 public class InDataZoneRangeWC {
     private String site;
 
-    private String fromYear;
-    private String fromMonth;
-    private String fromDay;
+    private Integer fromYear;
+    private Integer fromMonth;
+    private Integer fromDay;
 
-    private String toYear;
-    private String toMonth;
-    private String toDay;
+    private Integer toYear;
+    private Integer toMonth;
+    private Integer toDay;
 }

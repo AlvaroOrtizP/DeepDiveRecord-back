@@ -25,7 +25,7 @@ public class GetWindConditionsByDaysAdapter implements GetWindConditionsByDaysPo
     @Override
     public Page<OutDailyStatistics> getDeepDiveDataByDays(InDataZoneRangeWC in, int page, int size) {
         Page<WindConditionsEntity> windConditionsEntityPage = windConditionsCustomRepository.customWindConditionsSearch(in.getFromYear(), in.getFromMonth(), in.getFromDay(), in.getToYear(),
-                in.getToMonth(), in.getFromDay(), in.getSite(), PageRequest.of(page, size));
+                in.getToMonth(), in.getToDay(), in.getSite(), PageRequest.of(page, size));
 
         return mapper.mapToOutDailyStatisticsPage(windConditionsEntityPage);
     }

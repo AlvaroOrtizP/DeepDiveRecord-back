@@ -1,9 +1,10 @@
 package com.record.DeepDiveRecord.mapper.impl;
 
+import com.record.DeepDiveRecord.api.domain.windconditions.InDeepDiveLogger;
+import com.record.DeepDiveRecord.api.domain.windconditions.InGetDataWeek;
+import com.record.DeepDiveRecord.api.domain.windconditions.OutGetData;
 import com.record.DeepDiveRecord.core.model.common.Checker;
-import com.record.DeepDiveRecord.core.model.windconditions.InDataDeleteWC;
-import com.record.DeepDiveRecord.core.model.windconditions.OutDailyStatistics;
-import com.record.DeepDiveRecord.core.model.windconditions.OutDeteleWindConditions;
+import com.record.DeepDiveRecord.core.model.windconditions.*;
 import com.record.DeepDiveRecord.entity.WindConditionsEntity;
 import com.record.DeepDiveRecord.entity.WindConditionsId;
 import com.record.DeepDiveRecord.mapper.WindConditionsMapper;
@@ -16,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+
 @Component
 public class WindConditionsMapperImpl implements WindConditionsMapper {
     private final static DateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
@@ -44,10 +46,10 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
         int dayOfYear = calendario.get(Calendar.DAY_OF_MONTH);
 
         WindConditionsId entityId = new WindConditionsId();
-        entityId.setYear(String.valueOf(year));
-        entityId.setMonth(String.valueOf(month+1));
-        entityId.setDay(String.valueOf(dayOfYear));
-        entityId.setTime(parteDespues);
+        entityId.setYear(year);
+        entityId.setMonth(month + 1);
+        entityId.setDay(dayOfYear);
+        entityId.setTime(Integer.valueOf(parteDespues));
         windConditionsEntity.setId(entityId);
 
 
@@ -66,7 +68,7 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
         outDailyStatistics.setMonth(entity.getId().getMonth());
         outDailyStatistics.setDay(entity.getId().getDay());
         outDailyStatistics.setSite(entity.getId().getSite());
-        outDailyStatistics.setTimeOfDay(entity.getId().getTime());
+        outDailyStatistics.setTimeOfDay(entity.getId().getTime().toString());
         outDailyStatistics.setWind(entity.getWind());
         outDailyStatistics.setWindDirection(entity.getWindDirection());
         outDailyStatistics.setGustsOfWind(entity.getGustsOfWind());
@@ -85,6 +87,14 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
         List<OutDailyStatistics> outDailyStatisticsList = page.getContent().stream()
                 .map(this::mapToOutDailyStatistics)
                 .collect(Collectors.toList());
+        if (page != null) {
+            // Realizar operaciones con page
+            page.getContent();
+        } else {
+            // Manejar el caso cuando page es null
+            // Puedes lanzar una excepción, loggear un error, o manejarlo de otra manera según tu lógica de negocio
+        }
+
         return new PageImpl<>(outDailyStatisticsList, page.getPageable(), page.getTotalElements());
     }
 
@@ -96,7 +106,7 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
         out.setMonth(in.getFromMonth());
         out.setDay(in.getFromDay());
         out.setSite(in.getSite());
-        out.setTime(in.getFromTime());
+        out.setTime(Integer.valueOf(in.getFromTime()));
 
         return out;
     }
@@ -115,6 +125,31 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
         return out;
     }
 
+    @Override
+    public InDataZoneRangeWC mapToInDataZoneRangeWCFromInGetDataWeek(InGetDataWeek inGetDataWeek) {
+        if (inGetDataWeek == null) {
+            return null;
+        }
+
+
+        InDataZoneRangeWC inDataZoneRangeWC = new InDataZoneRangeWC();
+        inDataZoneRangeWC.setSite(inGetDataWeek.getSite());
+        inDataZoneRangeWC.setFromYear(inGetDataWeek.getFromYear());
+
+
+        inDataZoneRangeWC.setFromMonth(inGetDataWeek.getFromMonth());
+
+        inDataZoneRangeWC.setFromDay(inGetDataWeek.getFromDay());
+
+        inDataZoneRangeWC.setToMonth(inGetDataWeek.getToMonth());
+
+        inDataZoneRangeWC.setToDay(inGetDataWeek.getToDay());
+
+        inDataZoneRangeWC.setToYear(inGetDataWeek.getToYear());
+
+        return inDataZoneRangeWC;
+    }
+
     private Calendar getDate(int diaJson, int dayFichero, String yearFile, String monthFile, String dayFile) throws ParseException {
         Calendar calendario = new GregorianCalendar();
         Date fecha = formateador.parse(dayFile + "/" + monthFile + "/" + yearFile);
@@ -125,4 +160,59 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
         }
         return calendario;
     }
+
+    @Override
+    public InForecast fromDomainToCore(InDeepDiveLogger deepDiveLogger) {
+        InForecast res = new InForecast();
+        res.setLugar(deepDiveLogger.getLugar());
+        res.setIdWindwuru(deepDiveLogger.getIdWindwuru());
+        res.setIdAemet(deepDiveLogger.getIdAemet());
+        return res;
+    }
+
+    @Override
+    public List<OutGetData> mapOutDailyStatisticsListToOutGetDataList(List<OutDailyStatistics> outDailyStatisticsList) {
+        return mapToOutGetDataList(outDailyStatisticsList);
+    }
+
+    public OutGetData mapToOutGetData(OutDailyStatistics outDailyStatistics) {
+        if (outDailyStatistics == null) {
+            return null;
+        }
+
+        OutGetData outGetData = new OutGetData();
+        outGetData.setMonth(outDailyStatistics.getMonth());
+        outGetData.setDay(outDailyStatistics.getDay());
+        outGetData.setYear(outDailyStatistics.getYear());
+        outGetData.setSite(outDailyStatistics.getSite());
+        outGetData.setTimeOfDay(outDailyStatistics.getTimeOfDay());
+        outGetData.setWind(outDailyStatistics.getWind());
+        outGetData.setWindDirection(outDailyStatistics.getWindDirection());
+        outGetData.setGustsOfWind(outDailyStatistics.getGustsOfWind());
+        outGetData.setWaveHeight(outDailyStatistics.getWaveHeight());
+        outGetData.setWavePeriod(outDailyStatistics.getWavePeriod());
+        outGetData.setEarthTemperature(outDailyStatistics.getEarthTemperature());
+        outGetData.setWaterTtermperature(outDailyStatistics.getWaterTtermperature());
+        outGetData.setF1(outDailyStatistics.getF1());
+        outGetData.setDescripcion1(outDailyStatistics.getDescripcion1());
+        outGetData.setF2(outDailyStatistics.getF2());
+        outGetData.setDescripcion2(outDailyStatistics.getDescripcion2());
+        outGetData.setBeginning(outDailyStatistics.getBeginning());
+        outGetData.setEnd(outDailyStatistics.getEnd());
+        outGetData.setNotas(outDailyStatistics.getNotas());
+
+        return outGetData;
+    }
+
+    public List<OutGetData> mapToOutGetDataList(List<OutDailyStatistics> outDailyStatisticsList) {
+        if (outDailyStatisticsList == null) {
+            return null;
+        }
+
+        return outDailyStatisticsList.stream()
+                .map(this::mapToOutGetData)
+                .collect(Collectors.toList());
+    }
+
+
 }

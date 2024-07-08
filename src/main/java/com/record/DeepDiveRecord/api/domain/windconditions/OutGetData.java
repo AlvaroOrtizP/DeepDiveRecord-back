@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.core.model.windconditions;
+package com.record.DeepDiveRecord.api.domain.windconditions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +11,10 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OutDailyStatistics {
-    Integer year;
+public class OutGetData {
     Integer month;
     Integer day;
+    Integer year;
     String site;
     String timeOfDay;
     Integer wind;
@@ -31,9 +31,4 @@ public class OutDailyStatistics {
     String beginning;
     String end;
     String notas;
-    Integer diveDayId;
-
-    public boolean isGoodDay() {
-        return diveDayId != null;
-    }
 }

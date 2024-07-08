@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.api.domain;
+package com.record.DeepDiveRecord.api.domain.windconditions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

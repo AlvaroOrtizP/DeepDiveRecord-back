@@ -11,9 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OutDeteleWindConditions {
     private String site;
-    private String year;
-    private String month;
-    private String day;
+    private Integer year;
+    private Integer month;
+    private Integer day;
     private String time;
     private Checker checker;
 

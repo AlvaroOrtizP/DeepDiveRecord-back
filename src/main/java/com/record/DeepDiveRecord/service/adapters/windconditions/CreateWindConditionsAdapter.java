@@ -17,12 +17,14 @@ import java.util.List;
 import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 @Component
 public class CreateWindConditionsAdapter implements CreateWindConditionsPort {
     private static final Logger logger = LoggerFactory.getLogger(CreateWindConditionsAdapter.class);
 
     @Autowired
     private ResourceLoader resourceLoader;
+
     @Override
     public OutForecast runPythonScript(InForecast deepDiveLogger) {
 
@@ -40,20 +42,8 @@ public class CreateWindConditionsAdapter implements CreateWindConditionsPort {
             ExecutorService executor = Executors.newFixedThreadPool(3);
             CompletionService<String> completionService = new ExecutorCompletionService<>(executor);
 
-            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/WindWuLogger.py", webWeatherScraperMainPath, deepDiveLogger.getIdWindwuru(), webWeatherScraperMainPath, null)));
-            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/TemperaturaLogger.py", webWeatherScraperMainPath, deepDiveLogger.getIdAemet(), webWeatherScraperMainPath, deepDiveLogger.getIdWindwuru())));
-            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/ObtenerDireccionViento.py", webWeatherScraperMainPath, deepDiveLogger.getLugar(), webWeatherScraperMainPath, null)));
-            completionService.submit(() -> String.valueOf(callPython("ObtenerDatos/ObtenerFasesLunares.py", webWeatherScraperMainPath, deepDiveLogger.getLugar(), webWeatherScraperMainPath, null)));
-
-
-            // Esperar a que todos los procesos terminen
-            StringBuilder output = new StringBuilder();
-            for (int i = 0; i < 3; i++) {
-                Future<String> future = completionService.take();
-                output.append(future.get()).append("\n");
-            }
             // Ahora agregar la tarea para ejecutar GuardarDatos.py
-            completionService.submit(() -> String.valueOf(callPython("GuardarDatos.py", webWeatherScraperMainPath, deepDiveLogger.getIdWindwuru(),  webWeatherScraperMainPath, null)));
+            completionService.submit(() -> String.valueOf(callPython("Main.py", webWeatherScraperMainPath, webWeatherScraperMainPath)));
 
             // Esperar a que la tarea de GuardarDatos.py termine
             Future<String> guardarDatosFuture = completionService.take();
@@ -103,16 +93,12 @@ public class CreateWindConditionsAdapter implements CreateWindConditionsPort {
         return projectSpringPath.replace("DeepDiveRecord", "WebWeatherScraper");
     }
 
-    private String  callPython(String namePythonProgram, String pythonPath, String firstParameter, String secondParameter, String threethParameter) throws IOException, InterruptedException {
+    private String callPython(String namePythonProgram, String pythonPath, String secondParameter) throws IOException, InterruptedException {
         // Construir el comando para ejecutar el script de Python con los parámetros
         ProcessBuilder pb = null;
-        if(threethParameter!=null){
-            pb = new ProcessBuilder("python", pythonPath + namePythonProgram, firstParameter, secondParameter, threethParameter);
 
-        }else{
-            pb = new ProcessBuilder("python", pythonPath + namePythonProgram, firstParameter, secondParameter);
+        pb = new ProcessBuilder("python", pythonPath + namePythonProgram, secondParameter);
 
-        }
 
         // Redireccionar la salida estándar y el error
         pb.redirectErrorStream(true);
@@ -134,8 +120,8 @@ public class CreateWindConditionsAdapter implements CreateWindConditionsPort {
         return output.toString();
     }
 
-    private OutForecast response(String guardarDatosFuture){
-        if(guardarDatosFuture.equals("OK")) {
+    private OutForecast response(String guardarDatosFuture) {
+        if (guardarDatosFuture.equals("OK")) {
             return new OutForecast(null);
         }
 
@@ -149,7 +135,7 @@ public class CreateWindConditionsAdapter implements CreateWindConditionsPort {
         int inicio = 0;
         while (matcher.find()) {
             String resultado = guardarDatosFuture.substring(inicio, matcher.start());
-            logger.error("ERROR EN LA CARGA DE DATOS (SCRIPT) "+ resultado.trim());
+            logger.error("ERROR EN LA CARGA DE DATOS (SCRIPT) " + resultado.trim());
             erros.add(resultado.trim());
             inicio = matcher.start();
         }

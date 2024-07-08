@@ -13,12 +13,12 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "windconditions")
+@Table(name = "wind_conditions")
 public class WindConditionsEntity {
     @EmbeddedId
     private WindConditionsId id;
     //Velocidad del viento
-    private int wind;
+    private Integer wind;
     @Column(name = "wind_direction")
     private BigDecimal windDirection;
     //Rafagas de viento
@@ -26,22 +26,22 @@ public class WindConditionsEntity {
     private double gustsOfWind;
     //Altura de la ola
     @Column(name = "wave_height")
-    private int waveHeight;
+    private double waveHeight;
     //Periodo de olas
     @Column(name = "wave_period")
-    private int wavePeriod;
+    private Integer wavePeriod;
     //Temperatura en tierra
     @Column(name = "earth_temperature")
-    private int earthTemperature;
+    private Integer earthTemperature;
 
     @Column(name = "water_temperature")
-    private int waterTemperature;
+    private Integer waterTemperature;
 
-    @Column(name = "code_condition")
-    private int codeCondition;
+    @Column(name = "condition_code")
+    private Integer codeCondition;
 
     @Column(name = "condition_description")
-    private int conditionDescription;
+    private String conditionDescription;
 
 
 

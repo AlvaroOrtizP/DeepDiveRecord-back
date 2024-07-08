@@ -1,14 +1,10 @@
 package com.record.DeepDiveRecord.core.model.common;
 
 public enum LunarPhase {
-    NEW_MOON(1),
-    WAXING_CRESCENT(2),
-    FIRST_QUARTER(3),
-    WAXING_GIBBOUS(4),
-    FULL_MOON(5),
-    WANING_GIBBOUS(6),
-    LAST_QUARTER(7),
-    WANING_CRESCENT(8);
+    WANING_MOON(1),
+    NEW_MOON(2),
+    CRESCENT_MOON(3),
+    FULL_MOON(4);
     private Integer value;
 
     private LunarPhase(Integer value) {

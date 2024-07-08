@@ -12,8 +12,8 @@ import lombok.Setter;
 public class InDataDeleteWC {
     private String site;
 
-    private String fromYear;
-    private String fromMonth;
-    private String fromDay;
+    private Integer fromYear;
+    private Integer fromMonth;
+    private Integer fromDay;
     private String fromTime;
 }
