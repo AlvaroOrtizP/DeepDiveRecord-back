@@ -1,15 +1,13 @@
 package com.record.DeepDiveRecord.core.model.diveday;
 
 import com.record.DeepDiveRecord.core.model.common.DiveDay;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class InUpdatedDiveDay {
     private DiveDay diveDayNew;
 }

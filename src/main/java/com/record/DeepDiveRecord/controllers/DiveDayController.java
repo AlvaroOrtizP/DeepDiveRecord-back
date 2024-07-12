@@ -1,39 +1,46 @@
 package com.record.DeepDiveRecord.controllers;
 
+import com.record.DeepDiveRecord.api.domain.diveday.InCreateDailyDiving;
+import com.record.DeepDiveRecord.api.domain.diveday.OutCreateDiveDay;
 import com.record.DeepDiveRecord.core.model.diveday.InCreateDiveDay;
-import com.record.DeepDiveRecord.core.model.diveday.OutCreateDiveDay;
 import com.record.DeepDiveRecord.core.usecase.diveday.DiveDayUseCase;
-import com.record.DeepDiveRecord.dto.request.DailyDivingRequest;
-import com.record.DeepDiveRecord.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.mapper.DiveDayMapper;
-import com.record.DeepDiveRecord.service.DiveDayService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+@RequestMapping("/dailyDiving")//http://localhost:8080/dailyDiving
 @RestController
 public class DiveDayController {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(DiveDayController.class);
     DiveDayUseCase diveDayUseCase;
     DiveDayMapper diveDayMapper;
-    public DiveDayController(DiveDayMapper diveDayMapper, DiveDayUseCase diveDayUseCase){
+
+    public DiveDayController(DiveDayMapper diveDayMapper, DiveDayUseCase diveDayUseCase) {
         this.diveDayMapper = diveDayMapper;
         this.diveDayUseCase = diveDayUseCase;
     }
-    @PutMapping("/dailyDiving")
-    public ResponseEntity<?> createDailyDiving (@RequestBody DailyDivingRequest dailyDivingRequest){
 
-        InCreateDiveDay inCreateDiveDay =  diveDayMapper.fromRequestToCore(dailyDivingRequest);
+    @PostMapping()
+    public ResponseEntity<OutCreateDiveDay> createDailyDiving(@RequestBody InCreateDailyDiving inCreateDailyDiving) {
+        LOGGER.info("Comienza createDailyDiving");
+        InCreateDiveDay inCreateDiveDay = diveDayMapper.fromRequestToCore(inCreateDailyDiving);
 
-        OutCreateDiveDay outCreateDiveDay = diveDayUseCase.createDiveDayPort(inCreateDiveDay);
+        com.record.DeepDiveRecord.core.model.diveday.OutCreateDiveDay outCreateDiveDayModel = diveDayUseCase.createDiveDayPort(inCreateDiveDay);
+       // OutCreateDiveDay outCreateDiveDay = diveDayMapper.mapFromOutCreateModelToOutCreateApi(outCreateDiveDayModel);
 
-       /* if(diveDay.getDiveDayId()==null && diveDay.getDiveDayId().equals("")){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo actualizar el registro");
-        }*/
-        return new ResponseEntity<>("OK", HttpStatus.CREATED);
-    } 
+        //if (outCreateDiveDay.getDiveDayId() == null || outCreateDiveDay.getDiveDayId() == 0) {
+            LOGGER.info("Finaliza createDailyDiving sin poder crear el registro");
+           // LOGGER.info("Error: "+outCreateDiveDay.getMessage());
+            //return ResponseEntity.status(HttpStatus.NOT_FOUND).body(outCreateDiveDay);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new OutCreateDiveDay());
+       // }
+        //LOGGER.info("Finaliza createDailyDiving");
+       // return new ResponseEntity<>(outCreateDiveDay, HttpStatus.CREATED);
+    }
 }

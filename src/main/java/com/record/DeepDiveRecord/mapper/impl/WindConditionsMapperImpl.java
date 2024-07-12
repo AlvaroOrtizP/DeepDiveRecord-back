@@ -1,10 +1,13 @@
 package com.record.DeepDiveRecord.mapper.impl;
 
-import com.record.DeepDiveRecord.api.domain.windconditions.InDeepDiveLogger;
+
 import com.record.DeepDiveRecord.api.domain.windconditions.InGetDataWeek;
 import com.record.DeepDiveRecord.api.domain.windconditions.OutGetData;
 import com.record.DeepDiveRecord.core.model.common.Checker;
-import com.record.DeepDiveRecord.core.model.windconditions.*;
+import com.record.DeepDiveRecord.core.model.windconditions.InDataDeleteWC;
+import com.record.DeepDiveRecord.core.model.windconditions.InDataZoneRangeWC;
+import com.record.DeepDiveRecord.core.model.windconditions.OutDailyStatistics;
+import com.record.DeepDiveRecord.core.model.windconditions.OutDeteleWindConditions;
 import com.record.DeepDiveRecord.entity.WindConditionsEntity;
 import com.record.DeepDiveRecord.entity.WindConditionsId;
 import com.record.DeepDiveRecord.mapper.WindConditionsMapper;
@@ -161,14 +164,6 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
         return calendario;
     }
 
-    @Override
-    public InForecast fromDomainToCore(InDeepDiveLogger deepDiveLogger) {
-        InForecast res = new InForecast();
-        res.setLugar(deepDiveLogger.getLugar());
-        res.setIdWindwuru(deepDiveLogger.getIdWindwuru());
-        res.setIdAemet(deepDiveLogger.getIdAemet());
-        return res;
-    }
 
     @Override
     public List<OutGetData> mapOutDailyStatisticsListToOutGetDataList(List<OutDailyStatistics> outDailyStatisticsList) {

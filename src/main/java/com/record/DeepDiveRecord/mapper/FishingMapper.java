@@ -10,4 +10,5 @@ import java.util.List;
 public interface FishingMapper {
 
     FishingEntity fromCoreToEntity(Fishing input);
+    Fishing fromEntityToCore(FishingEntity input);
 }

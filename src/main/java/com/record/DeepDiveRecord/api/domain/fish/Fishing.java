@@ -1,8 +1,6 @@
-package com.record.DeepDiveRecord.core.model.common;
+package com.record.DeepDiveRecord.api.domain.fish;
 
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Setter

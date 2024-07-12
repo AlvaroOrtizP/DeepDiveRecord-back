@@ -1,14 +1,12 @@
 package com.record.DeepDiveRecord.core.model.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class TideRegister {
     //https://www.puertosantander.es/es/tabla-de-mareas
     private String day;

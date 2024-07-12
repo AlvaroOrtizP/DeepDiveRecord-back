@@ -2,10 +2,7 @@ package com.record.DeepDiveRecord.core.model.fishing;
 
 import com.record.DeepDiveRecord.core.model.common.Checker;
 import com.record.DeepDiveRecord.core.model.common.Fishing;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,6 +10,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class OutCreateFishDay {
     private Fishing fishing;
     private Checker checker;

@@ -1,8 +1,5 @@
 package com.record.DeepDiveRecord.dto.request;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,6 +8,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class DailyDivingRequest {
     private String day;
     private String beginning;

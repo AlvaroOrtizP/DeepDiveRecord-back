@@ -1,5 +1,6 @@
-package com.record.DeepDiveRecord.core.model.common;
+package com.record.DeepDiveRecord.api.domain.diveday;
 
+import com.record.DeepDiveRecord.core.model.common.Fishing;
 import lombok.*;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class DiveDay {
+public class OutCreateDiveDay {
     private Integer diveDayId;
     private String day;
     private String beginning;
@@ -19,4 +20,7 @@ public class DiveDay {
     private String year;
     private String month;
     private List<Fishing> fishingList;
+
+    private boolean checker;
+    private String message;
 }

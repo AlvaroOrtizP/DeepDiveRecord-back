@@ -2,10 +2,7 @@ package com.record.DeepDiveRecord.api.domain.windconditions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -14,6 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Valid
+@ToString
 public class Pagination implements Serializable {
     private static final long serialVersionUID = 1L;
 

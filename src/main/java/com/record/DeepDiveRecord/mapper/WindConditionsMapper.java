@@ -1,6 +1,6 @@
 package com.record.DeepDiveRecord.mapper;
 
-import com.record.DeepDiveRecord.api.domain.windconditions.InDeepDiveLogger;
+
 import com.record.DeepDiveRecord.api.domain.windconditions.InGetDataWeek;
 import com.record.DeepDiveRecord.api.domain.windconditions.OutGetData;
 import com.record.DeepDiveRecord.core.model.windconditions.*;
@@ -26,7 +26,7 @@ public interface WindConditionsMapper {
 
     InDataZoneRangeWC mapToInDataZoneRangeWCFromInGetDataWeek (InGetDataWeek inGetDataWeek);
 
-    InForecast fromDomainToCore(InDeepDiveLogger deepDiveLogger);
+    //InForecast fromDomainToCore(InDeepDiveLogger deepDiveLogger);
 
 
     List<OutGetData> mapOutDailyStatisticsListToOutGetDataList (List<OutDailyStatistics> outDailyStatisticsList);

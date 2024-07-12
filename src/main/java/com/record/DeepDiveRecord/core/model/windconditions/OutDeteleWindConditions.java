@@ -1,14 +1,13 @@
 package com.record.DeepDiveRecord.core.model.windconditions;
 
 import com.record.DeepDiveRecord.core.model.common.Checker;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class OutDeteleWindConditions {
     private String site;
     private Integer year;

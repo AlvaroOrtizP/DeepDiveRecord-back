@@ -1,5 +1,8 @@
 package com.record.DeepDiveRecord.core.model.common;
 
+import lombok.ToString;
+
+@ToString
 public enum LunarPhase {
     WANING_MOON(1),
     NEW_MOON(2),

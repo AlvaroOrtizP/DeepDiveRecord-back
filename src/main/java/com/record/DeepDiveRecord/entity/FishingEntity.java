@@ -1,28 +1,27 @@
 package com.record.DeepDiveRecord.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name = "fishing")
 public class FishingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private String apuntes;
-    private boolean pescado;
+    private String notes;
+    private boolean caught;
     private double weight;
-
     @ManyToOne
-    @JoinColumn(name = "dive_day_id")
-    private DiveDayEntity diveDay;
+    @JoinColumn(name = "fish_id", referencedColumnName = "id")
+    private FishEntity fish;
 
-    }
+
+}

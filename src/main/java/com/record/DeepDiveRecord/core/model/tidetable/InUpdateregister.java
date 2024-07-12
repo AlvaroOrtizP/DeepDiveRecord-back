@@ -1,15 +1,13 @@
 package com.record.DeepDiveRecord.core.model.tidetable;
 
 import com.record.DeepDiveRecord.core.model.common.TideRegister;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class InUpdateregister {
     private TideRegister tideRegisterOld;
     private TideRegister tideRegisterNew;
