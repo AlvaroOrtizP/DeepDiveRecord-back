@@ -35,6 +35,6 @@ public class DiveDayEntity {
     private String notes;
 
     @OneToMany(mappedBy = "diveDay", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DiveDayAndFishing> diveDayAndFishingList;
+    private List<DiveDayAndFishingEntity> diveDayAndFishingList;
 
 }

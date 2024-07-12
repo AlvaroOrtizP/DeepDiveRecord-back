@@ -32,15 +32,15 @@ public class DiveDayController {
         InCreateDiveDay inCreateDiveDay = diveDayMapper.fromRequestToCore(inCreateDailyDiving);
 
         com.record.DeepDiveRecord.core.model.diveday.OutCreateDiveDay outCreateDiveDayModel = diveDayUseCase.createDiveDayPort(inCreateDiveDay);
-       // OutCreateDiveDay outCreateDiveDay = diveDayMapper.mapFromOutCreateModelToOutCreateApi(outCreateDiveDayModel);
+        OutCreateDiveDay outCreateDiveDay = diveDayMapper.mapFromOutCreateModelToOutCreateApi(outCreateDiveDayModel);
 
-        //if (outCreateDiveDay.getDiveDayId() == null || outCreateDiveDay.getDiveDayId() == 0) {
+        if (outCreateDiveDay.getDiveDayId() == null || outCreateDiveDay.getDiveDayId() == 0) {
             LOGGER.info("Finaliza createDailyDiving sin poder crear el registro");
-           // LOGGER.info("Error: "+outCreateDiveDay.getMessage());
-            //return ResponseEntity.status(HttpStatus.NOT_FOUND).body(outCreateDiveDay);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new OutCreateDiveDay());
-       // }
-        //LOGGER.info("Finaliza createDailyDiving");
-       // return new ResponseEntity<>(outCreateDiveDay, HttpStatus.CREATED);
+            LOGGER.info("Error: {}", outCreateDiveDay.getMessage());
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new OutCreateDiveDay());
+        }
+        LOGGER.info("Finaliza createDailyDiving");
+        return new ResponseEntity<>(outCreateDiveDay, HttpStatus.CREATED);
     }
 }

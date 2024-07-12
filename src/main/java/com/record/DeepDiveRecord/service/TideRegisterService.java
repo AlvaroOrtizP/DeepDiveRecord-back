@@ -23,11 +23,21 @@ public class TideRegisterService implements TideRegisterUseCase {
 
     @Override
     public OutDeleteTideRegister deleteTideRegisterPort(InDeleteTideRegister input) {
+        // 0 Añadir filtros
+
+        // 1 Añadir parametros estaticos
+
+        // 2 llamada al port
         return deleteTideRegisterPort.deleteTideRegister(input);
     }
 
     @Override
     public OutCreateTideRegister createTideRegisterMonthPort(InCreateTideRegister input) {
+        // 0 Añadir filtros
+
+        // 1 Añadir parametros estaticos
+
+        // 2 llamada al port
         return createTideRegisterPort.createTideRegisterMonth(input);
     }
 }

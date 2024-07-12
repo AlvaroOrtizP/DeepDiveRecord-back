@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -13,7 +11,7 @@ import java.util.List;
 @Entity
 @ToString
 @Table(name = "dive_day_and_fishing")
-public class DiveDayAndFishing {
+public class DiveDayAndFishingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

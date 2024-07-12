@@ -16,9 +16,6 @@ public class FishingMapperImpl implements FishingMapper {
 
         FishingEntity res = new FishingEntity();
         res.setCaught(input.isCaught());
-        FishEntity fish = new FishEntity();
-        fish.setId(input.getFishId());
-        res.setFish(fish);
         res.setWeight(input.getWeight());
         res.setNotes(input.getNotes());
 

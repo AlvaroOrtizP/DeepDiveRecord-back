@@ -23,8 +23,6 @@ public class DiveDayMapperImpl implements DiveDayMapper {
     @Override
     public DiveDayEntity fromCreateCoreToEntity(InCreateDiveDay input) {
         DiveDayEntity diveDayEntity = new DiveDayEntity();
-
-
         diveDayEntity.setDiveDayId(input.getDiveDay().getDiveDayId());
         diveDayEntity.setDay(input.getDiveDay().getDay());
         diveDayEntity.setMonth(input.getDiveDay().getMonth());
@@ -32,22 +30,7 @@ public class DiveDayMapperImpl implements DiveDayMapper {
         diveDayEntity.setSite(input.getDiveDay().getSite());
         diveDayEntity.setBeginning(input.getDiveDay().getBeginning());
         diveDayEntity.setEnd(input.getDiveDay().getEnd());
-
         diveDayEntity.setNotes(input.getDiveDay().getNotes());
-
-        /*List<FishingEntity> fishingEntityList = new ArrayList<>();
-        for (Fishing item : input.getDiveDay().getFishingList()) {
-            FishingEntity fishingEntity = new FishingEntity();
-            fishingEntity.setNotes(item.getNotes());
-            fishingEntity.setCaught(item.isCaught());
-            fishingEntity.setWeight(item.getWeight());
-            FishEntity fishEntity = new FishEntity();
-            fishEntity.setId(1);
-            fishingEntity.setFish(fishEntity);
-            fishingEntityList.add(fishingEntity);
-        }
-
-        diveDayEntity.setFishingEntityList(fishingEntityList);*/
         return diveDayEntity;
     }
 
@@ -84,7 +67,7 @@ public class DiveDayMapperImpl implements DiveDayMapper {
     public OutCreateDiveDay fromCoreToOutModelCore(InCreateDiveDay input) {
         OutCreateDiveDay res = new OutCreateDiveDay();
         DiveDay diveDay = new DiveDay();
-
+        diveDay.setDiveDayId(input.getDiveDay().getDiveDayId());
         diveDay.setDay(input.getDiveDay().getDay());
         diveDay.setBeginning(input.getDiveDay().getBeginning());
         diveDay.setEnd(input.getDiveDay().getEnd());

@@ -25,16 +25,22 @@ public class FishingService implements FishingUseCase {
 
     @Override
     public OutUpdatedFishingDay updateFishingDayPort(InUpdateFishingDay input) {
+        // 0 Añadir filtros
+
+        // 1 Añadir parametros estaticos
+
+        // 2 llamada al port
         return updateFishingDayPort.updateFishingDay(input);
     }
 
     @Override
     public OutDeleteFishingDay deleteFishingDayPort(InDeleteFishingDay input) {
+        // 0 Añadir filtros
+
+        // 1 Añadir parametros estaticos
+
+        // 2 llamada al port
         return deleteFishingDayPort.deleteFishingDay(input);
     }
 
-    @Override
-    public OutCreateFishDay createFishingDayPort(Fishing input) {
-        return createFishingDayPort.createFishingDay(input);
-    }
 }
