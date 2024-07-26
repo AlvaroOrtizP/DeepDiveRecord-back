@@ -33,6 +33,11 @@ public class DiveDayEntity {
     private String end;
     @Column(name = "notes")
     private String notes;
+    @Column(name = "assessment")
+    private String assessment;
+    @ManyToOne
+    @JoinColumn(name = "id_geographic", nullable = false)
+    private GeographicalLocationEntity geographicalLocation;
 
     @OneToMany(mappedBy = "diveDay", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DiveDayAndFishingEntity> diveDayAndFishingList;
