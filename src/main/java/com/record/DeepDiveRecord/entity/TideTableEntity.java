@@ -18,6 +18,10 @@ public class TideTableEntity {
     private TideTableId id;
     @Column(name = "moon_phase")
     private Integer moonPhase;
+    @Column(name = "coefficient0H")
+    private Integer coefficient0H;
+    @Column(name = "coefficient12H")
+    private Integer coefficient12H;
 
     @Column(name = "morning_high_tide_time")
     private String morningHighTideTime;

@@ -1,40 +1,28 @@
 package com.record.DeepDiveRecord.service;
 
-import com.record.DeepDiveRecord.core.model.windconditions.*;
-import com.record.DeepDiveRecord.core.ports.windconditions.CreateWindConditionsPort;
-import com.record.DeepDiveRecord.core.ports.windconditions.DeleteWindConditionsPort;
-import com.record.DeepDiveRecord.core.ports.windconditions.GetWindConditionsByDaysPort;
-import com.record.DeepDiveRecord.core.usecase.windconditions.WindConditionsUseCase;
+import com.record.DeepDiveRecord.api.domain.windconditions.InGetDataWeek;
+import com.record.DeepDiveRecord.controller.WindConditionsController;
+import com.record.DeepDiveRecord.entity.WindConditionsEntity;
+import com.record.DeepDiveRecord.repository.windconditions.WindConditionsCustomRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WindConditionsService implements WindConditionsUseCase {
-
-    DeleteWindConditionsPort deleteWindConditionsPort;
-    GetWindConditionsByDaysPort getWindConditionsByDaysPort;
-    CreateWindConditionsPort createWindConditionsPort;
-
-    public WindConditionsService( DeleteWindConditionsPort deleteWindConditionsPort, GetWindConditionsByDaysPort getWindConditionsByDaysPort,  CreateWindConditionsPort createWindConditionsPort){
-        this.deleteWindConditionsPort = deleteWindConditionsPort;
-        this.getWindConditionsByDaysPort = getWindConditionsByDaysPort;
-        this.createWindConditionsPort = createWindConditionsPort;
-    }
-    @Override
-    public Page<OutDailyStatistics> getDeepDiveDataByDaysPort(InDataZoneRangeWC in, int page, int size) {
-        return getWindConditionsByDaysPort.getDeepDiveDataByDays(in, page, size);
+public class WindConditionsService {
+    WindConditionsCustomRepository windConditionsCustomRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(WindConditionsService.class);
+    public WindConditionsService(WindConditionsCustomRepository windConditionsCustomRepository) {
+        this.windConditionsCustomRepository = windConditionsCustomRepository;
     }
 
-    @Override
-    public OutDeteleWindConditions deleteWindConditionPort(InDataDeleteWC in) {
-        return deleteWindConditionsPort.deleteWindCondition(in);
+    public Page<WindConditionsEntity> getDeepDiveDataByDays(InGetDataWeek in, int page, int size) {
+        Page<WindConditionsEntity> windConditionsEntityPage = windConditionsCustomRepository.customWindConditionsSearch(in.getFromYear(), in.getFromMonth(), in.getFromDay(), in.getToYear(),
+                in.getToMonth(), in.getToDay(), in.getSite(), PageRequest.of(page, size));
+        LOGGER.info("El total de resultados es: "+windConditionsEntityPage.getContent().size());
+        return windConditionsEntityPage;
     }
 
-    @Override
-    public OutForecast createWindCondition(InForecast deepDiveLogger) {
-
-        //Se desactiva
-        //return createWindConditionsPort.runPythonScript(deepDiveLogger);
-        return new OutForecast();
-    }
 }
