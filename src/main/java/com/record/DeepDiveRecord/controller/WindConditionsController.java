@@ -33,7 +33,7 @@ public class WindConditionsController {
 
         LOGGER.info("Comienza el getDataWeek");
 
-        Page<WindConditionsEntity> outGetDataListsEntity = windConditionsService.getDeepDiveDataByDays(inGetDataWeek, inGetDataWeek.getPage(), inGetDataWeek.getSize());
+        Page<WindConditionsEntity> outGetDataListsEntity = windConditionsService.getDeepDiveDataByDays(inGetDataWeek);
 
 
 

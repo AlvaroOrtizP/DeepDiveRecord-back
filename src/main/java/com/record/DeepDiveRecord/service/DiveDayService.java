@@ -5,16 +5,22 @@ import com.record.DeepDiveRecord.api.domain.diveday.getdivedaybyid.DiveDayRespon
 import com.record.DeepDiveRecord.api.domain.diveday.getdivedaybyid.TideTableResponse;
 import com.record.DeepDiveRecord.api.domain.diveday.getdivedaybyid.WindConditionResponse;
 import com.record.DeepDiveRecord.api.domain.geograficlocation.GeographicalLocationResponse;
+import com.record.DeepDiveRecord.api.domain.windconditions.InGetDataWeek;
 import com.record.DeepDiveRecord.controller.DiveDayController;
 import com.record.DeepDiveRecord.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.entity.GeographicalLocationEntity;
 import com.record.DeepDiveRecord.entity.TideTableEntity;
-import com.record.DeepDiveRecord.entity.TideTableId;
+import com.record.DeepDiveRecord.entity.WindConditionsEntity;
+import com.record.DeepDiveRecord.mapper.DiveDayMapper;
+import com.record.DeepDiveRecord.mapper.GeograficLocationMapper;
+import com.record.DeepDiveRecord.mapper.TideTableMapper;
+import com.record.DeepDiveRecord.mapper.WindConditionsMapper;
 import com.record.DeepDiveRecord.repository.DiveDayRepository;
 import com.record.DeepDiveRecord.repository.GeographicalLocationRepository;
 import com.record.DeepDiveRecord.repository.TideTableRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,14 +33,28 @@ public class DiveDayService {
     DiveDayRepository diveDayRepository;
     GeographicalLocationRepository geographicalLocationRepository;
     TideTableRepository tideTableRepository;
-
+    WindConditionsService windConditionsService;
+    TideTableMapper tideTableMapper;
+    GeograficLocationMapper geograficLocationMapper;
+    DiveDayMapper diveDayMapper;
+    WindConditionsMapper windConditionsMapper;
     public DiveDayService(
             DiveDayRepository diveDayRepository,
             GeographicalLocationRepository geographicalLocationRepository,
-            TideTableRepository tideTableRepository) {
+            TideTableRepository tideTableRepository,
+            WindConditionsService windConditionsService,
+            TideTableMapper tideTableMapper,
+            GeograficLocationMapper geograficLocationMapper,
+            DiveDayMapper diveDayMapper,
+            WindConditionsMapper windConditionsMapper) {
         this.diveDayRepository = diveDayRepository;
         this.geographicalLocationRepository = geographicalLocationRepository;
         this.tideTableRepository = tideTableRepository;
+        this.windConditionsService = windConditionsService;
+        this.tideTableMapper = tideTableMapper;
+        this.geograficLocationMapper = geograficLocationMapper;
+        this.diveDayMapper = diveDayMapper;
+        this.windConditionsMapper = windConditionsMapper;
     }
 
     public Integer createDiveDay(InCreateDailyDiving inCreateDailyDiving) {
@@ -55,95 +75,37 @@ public class DiveDayService {
 
     public DiveDayResponse findDiveDayById(Integer id) {
         LOGGER.info("Metodo findDiveDayById incio");
-        DiveDayResponse res = new DiveDayResponse();
+
         Optional<DiveDayEntity> optionalDiveDayEntity = diveDayRepository.findById(id);
         if (optionalDiveDayEntity.isEmpty()) {
             return null;
         }
+
+
         DiveDayEntity diveDayEntity = optionalDiveDayEntity.get();
-        LOGGER.info("Obtiene el diveDayEntity {}" + diveDayEntity.getDiveDayId());
+        LOGGER.info("Obtiene el diveDayEntity {}", diveDayEntity.getDiveDayId());
+        DiveDayResponse res = diveDayMapper.responseFromEntity(diveDayEntity);
+        res.setGeographicalLocationResponse(geograficLocationMapper.responseFromDiveDayEntity(diveDayEntity));
+        Optional<TideTableEntity> optionalTideTable = tideTableRepository.findById(tideTableMapper.entityIdFromDiveDayEntity(diveDayEntity));
 
 
-
-        res.setDiveDayId(diveDayEntity.getDiveDayId());
-        res.setDay(Integer.valueOf(diveDayEntity.getDay()));
-        res.setMonth(Integer.valueOf(diveDayEntity.getMonth()));
-        res.setYear(Integer.valueOf(diveDayEntity.getYear()));
-        res.setBeginning(diveDayEntity.getBeginning());
-        res.setEnd(diveDayEntity.getEnd());
-        res.setSite(diveDayEntity.getSite());
-        res.setValoracion(diveDayEntity.getAssessment());
-        res.setNotes(diveDayEntity.getNotes());
-        GeographicalLocationResponse geograficLocationResponse = new GeographicalLocationResponse();
-        geograficLocationResponse.setIdWindwuru(diveDayEntity.getGeographicalLocation().getIdWindwuru());
-        geograficLocationResponse.setName(diveDayEntity.getGeographicalLocation().getName());
-        geograficLocationResponse.setId(diveDayEntity.getGeographicalLocation().getId());
-        geograficLocationResponse.setSite(diveDayEntity.getGeographicalLocation().getSite());
-        res.setGeographicalLocationResponse(geograficLocationResponse);
-
-
-
-        TideTableResponse tideTableResponse = new TideTableResponse();
-        TideTableId tideTableId = new TideTableId();
-        tideTableId.setDay(diveDayEntity.getDay());
-        tideTableId.setYear(diveDayEntity.getYear());
-        tideTableId.setMonth(diveDayEntity.getMonth());
-        tideTableId.setSite(diveDayEntity.getSite());
-        Optional<TideTableEntity> optionalTideTable = tideTableRepository.findById(tideTableId);
-        LOGGER.info("Se busca tideTable con identificador {}", tideTableId.toString());
-
-        if (optionalDiveDayEntity.isEmpty()) {
+        if (optionalTideTable.isEmpty()) {
             LOGGER.info("No se encuentra: ");
-            res.setTideTableResponse(tideTableResponse);
-        }else{
-            TideTableEntity tideTableEntity = optionalTideTable.get();
-            LOGGER.info("Se encuentra: " + tideTableEntity.toString());
-            tideTableResponse.setDay(Integer.valueOf(tideTableEntity.getId().getDay()));
-            tideTableResponse.setMonth(Integer.valueOf(tideTableEntity.getId().getMonth()));
-            tideTableResponse.setYear(Integer.valueOf(tideTableEntity.getId().getYear()));
-            tideTableResponse.setSite(Integer.valueOf(tideTableEntity.getId().getSite()));
-            tideTableResponse.setMoonPhase(tideTableEntity.getMoonPhase());
-            tideTableResponse.setCoefficient0H(tideTableEntity.getCoefficient0H());
-            tideTableResponse.setCoefficient12H(tideTableEntity.getCoefficient12H());
-            tideTableResponse.setMorningHighTideTime(tideTableEntity.getMorningHighTideTime());
-            tideTableResponse.setMorningHighTideHeight(String.valueOf(tideTableEntity.getMorningHighTideHeight()));
-            tideTableResponse.setAfternoonHighTideTime(tideTableEntity.getAfternoonHighTideTime());
-            tideTableResponse.setAfternoonHighTideHeight(String.valueOf(tideTableEntity.getAfternoonHighTideHeight()));
-            tideTableResponse.setMorningLowTideTime(tideTableEntity.getMorningLowTideTime());
-            tideTableResponse.setMorningLowTideHeight(String.valueOf(tideTableEntity.getMorningLowTideHeight()));
-            tideTableResponse.setAfternoonLowTideTime(tideTableEntity.getAfternoonLowTideTime());
-            tideTableResponse.setAfternoonLowTideHeight(String.valueOf(tideTableEntity.getAfternoonLowTideHeight()));
+            res.setTideTableResponse(new TideTableResponse());
+        } else {
+            res.setTideTableResponse(tideTableMapper.responseFromEntity(optionalTideTable.get()));
         }
 
-
-        //TODO hacer bien el windCondtion
+        Page<WindConditionsEntity> windConditionsEntityPage = windConditionsService.getDeepDiveDataByDays(windConditionsMapper.fromDiveDayEntity(diveDayEntity));
         List<WindConditionResponse> windConditionList = new ArrayList<>();
-        WindConditionResponse windConditionResponse = new WindConditionResponse();
-        windConditionResponse.setYear(2024);
-        windConditionResponse.setMonth(7);
-        windConditionResponse.setDay(25);
-        windConditionResponse.setTimeOfDay(21);
-        windConditionResponse.setSite("487006");
-        windConditionResponse.setWind(12);
-        windConditionResponse.setWindDirection(12);
-        windConditionResponse.setWindDirectionNM("N");
-        windConditionResponse.setGustsOfWind(12);
-        windConditionResponse.setWaveHeight("12");
-        windConditionResponse.setWavePeriod(12);
-        windConditionResponse.setWaveDirection("12");
-        windConditionResponse.setWaveDirectionNM("NM");
-        windConditionResponse.setEarthTemperature(12);
-        windConditionResponse.setWaterTermperature("22");
-        windConditionResponse.setConditionCode(12);
-        windConditionResponse.setConditionDescription("algo");
-
-        windConditionList.add(windConditionResponse);
+        for(WindConditionsEntity item: windConditionsEntityPage.getContent()){
+            windConditionList.add(windConditionsMapper.responseFromEntity(item));
+        }
         res.setWindConditionsList(windConditionList);
 
         res.setFishingList(new ArrayList<>());
 
 
-        res.setTideTableResponse(tideTableResponse);
 
 
         return res;
