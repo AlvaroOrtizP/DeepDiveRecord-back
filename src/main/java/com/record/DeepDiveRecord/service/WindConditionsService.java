@@ -1,7 +1,6 @@
 package com.record.DeepDiveRecord.service;
 
 import com.record.DeepDiveRecord.api.domain.windconditions.InGetDataWeek;
-import com.record.DeepDiveRecord.controller.WindConditionsController;
 import com.record.DeepDiveRecord.entity.WindConditionsEntity;
 import com.record.DeepDiveRecord.repository.windconditions.WindConditionsCustomRepository;
 import org.slf4j.Logger;

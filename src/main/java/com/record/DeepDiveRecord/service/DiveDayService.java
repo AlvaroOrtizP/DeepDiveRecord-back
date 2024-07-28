@@ -63,7 +63,9 @@ public class DiveDayService {
                 .orElseThrow(() -> new RuntimeException("GeographicalLocation not found"));
         //TODO filtro para comparar que el id de windwuru es correcto
 
-        DiveDayEntity diveDayEntity = getDiveDayEntity(inCreateDailyDiving, location);
+        DiveDayEntity diveDayEntity =  diveDayMapper.entityFromResponse(inCreateDailyDiving);
+        diveDayEntity.setSite(location.getIdWindwuru());
+        diveDayEntity.setGeographicalLocation(location);
 
 
         // Guardar el DiveDay en la base de datos
@@ -105,24 +107,8 @@ public class DiveDayService {
 
         res.setFishingList(new ArrayList<>());
 
-
-
-
         return res;
     }
 
-    private static DiveDayEntity getDiveDayEntity(InCreateDailyDiving inCreateDailyDiving, GeographicalLocationEntity location) {
-        DiveDayEntity diveDayEntity = new DiveDayEntity();
-        diveDayEntity.setDay(inCreateDailyDiving.getDay());
-        diveDayEntity.setMonth(inCreateDailyDiving.getMonth());
-        diveDayEntity.setYear(inCreateDailyDiving.getYear());
-        diveDayEntity.setBeginning(inCreateDailyDiving.getBeginning());
-        diveDayEntity.setEnd(inCreateDailyDiving.getEnd());
-        diveDayEntity.setSite(location.getIdWindwuru());//idWindwuru
-        //Name es el filtro para comprobar que existe en geografia
-        diveDayEntity.setNotes(inCreateDailyDiving.getNotes());
-        diveDayEntity.setAssessment(inCreateDailyDiving.getValoracion());
-        diveDayEntity.setGeographicalLocation(location);
-        return diveDayEntity;
-    }
+
 }
