@@ -61,8 +61,8 @@ public class DiveDayEntity {
 
     @Column(name = "presence_plastic")
     private Integer presencePlastic;
-
     @OneToMany(mappedBy = "diveDay", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DiveDayAndFishingEntity> diveDayAndFishingList;
+    private List<FishingEntity> fishingEntities;
+
 
 }

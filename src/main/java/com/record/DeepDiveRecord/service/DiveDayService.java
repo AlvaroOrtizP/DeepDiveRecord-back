@@ -1,21 +1,17 @@
 package com.record.DeepDiveRecord.service;
 
 import com.record.DeepDiveRecord.api.domain.diveday.creatediveday.InCreateDailyDiving;
-import com.record.DeepDiveRecord.api.domain.diveday.getdivedaybyid.DiveDayResponse;
-import com.record.DeepDiveRecord.api.domain.diveday.getdivedaybyid.TideTableResponse;
-import com.record.DeepDiveRecord.api.domain.diveday.getdivedaybyid.WindConditionResponse;
+import com.record.DeepDiveRecord.api.domain.diveday.getdivedaybyid.*;
 import com.record.DeepDiveRecord.api.domain.geograficlocation.GeographicalLocationResponse;
 import com.record.DeepDiveRecord.api.domain.windconditions.InGetDataWeek;
 import com.record.DeepDiveRecord.controller.DiveDayController;
-import com.record.DeepDiveRecord.entity.DiveDayEntity;
-import com.record.DeepDiveRecord.entity.GeographicalLocationEntity;
-import com.record.DeepDiveRecord.entity.TideTableEntity;
-import com.record.DeepDiveRecord.entity.WindConditionsEntity;
+import com.record.DeepDiveRecord.entity.*;
 import com.record.DeepDiveRecord.mapper.DiveDayMapper;
 import com.record.DeepDiveRecord.mapper.GeograficLocationMapper;
 import com.record.DeepDiveRecord.mapper.TideTableMapper;
 import com.record.DeepDiveRecord.mapper.WindConditionsMapper;
 import com.record.DeepDiveRecord.repository.DiveDayRepository;
+import com.record.DeepDiveRecord.repository.FishingRepository;
 import com.record.DeepDiveRecord.repository.GeographicalLocationRepository;
 import com.record.DeepDiveRecord.repository.TideTableRepository;
 import org.slf4j.Logger;
@@ -38,6 +34,7 @@ public class DiveDayService {
     GeograficLocationMapper geograficLocationMapper;
     DiveDayMapper diveDayMapper;
     WindConditionsMapper windConditionsMapper;
+
     public DiveDayService(
             DiveDayRepository diveDayRepository,
             GeographicalLocationRepository geographicalLocationRepository,
@@ -63,7 +60,7 @@ public class DiveDayService {
                 .orElseThrow(() -> new RuntimeException("GeographicalLocation not found"));
         //TODO filtro para comparar que el id de windwuru es correcto
 
-        DiveDayEntity diveDayEntity =  diveDayMapper.entityFromResponse(inCreateDailyDiving);
+        DiveDayEntity diveDayEntity = diveDayMapper.entityFromResponse(inCreateDailyDiving);
         diveDayEntity.setSite(location.getIdWindwuru());
         diveDayEntity.setGeographicalLocation(location);
 
@@ -100,12 +97,31 @@ public class DiveDayService {
 
         Page<WindConditionsEntity> windConditionsEntityPage = windConditionsService.getDeepDiveDataByDays(windConditionsMapper.fromDiveDayEntity(diveDayEntity));
         List<WindConditionResponse> windConditionList = new ArrayList<>();
-        for(WindConditionsEntity item: windConditionsEntityPage.getContent()){
+        for (WindConditionsEntity item : windConditionsEntityPage.getContent()) {
             windConditionList.add(windConditionsMapper.responseFromEntity(item));
         }
         res.setWindConditionsList(windConditionList);
 
-        res.setFishingList(new ArrayList<>());
+
+        List<FishingResponse> fishingList = new ArrayList<>();
+
+        for (FishingEntity item : diveDayEntity.getFishingEntities()) {
+
+            FishingResponse fishingResponse = new FishingResponse();
+            fishingResponse.setId(item.getId());
+            fishingResponse.setCaught(item.isCaught());
+            fishingResponse.setWeight(item.getWeight());
+            fishingResponse.setNotes(item.getNotes());
+            fishingResponse.setLatG(item.getLatG());
+            fishingResponse.setLongG(item.getLongG());
+            fishingResponse.setName(item.getGeographicalLocation().getName());
+            fishingResponse.setSite(item.getGeographicalLocation().getSite());
+            fishingResponse.setNameFish(item.getFish().getName());
+            LOGGER.info("fishingResponse " + fishingResponse);
+            fishingList.add(fishingResponse);
+        }
+
+        res.setFishingList(fishingList);
 
         return res;
     }
