@@ -18,28 +18,51 @@ public class DiveDayEntity {
     @Column(name = "dive_day_id")
     private Integer diveDayId;
 
-    @Column(name = "year")
-    private String year;
-    @Column(name = "month")
-    private String month;
     @Column(name = "day")
     private String day;
+
+    @Column(name = "beginning")
+    private String beginning;
+
+    @Column(name = "end")
+    private String end;
+
     //Hora de la estimacion
     @Column(name = "site")
     private String site;
-    @Column(name = "beginning")
-    private String beginning;
-    @Column(name = "end")
-    private String end;
+
     @Column(name = "notes")
     private String notes;
+
+    @Column(name = "year")
+    private String year;
+
+    @Column(name = "month")
+    private String month;
+
     @Column(name = "assessment")
-    private String assessment;
+    private Integer assessment;
+
     @ManyToOne
     @JoinColumn(name = "id_geographic", nullable = false)
     private GeographicalLocationEntity geographicalLocation;
 
+    @Column(name = "presence_of_jellyfish")
+    private Integer jellyfish;
+
+    @Column(name = "water_visibility")
+    private Integer visibility;
+
+    @Column(name = "sea_Background")
+    private Integer seaBackground;
+
+    @Column(name = "fish_grass")
+    private Integer fishGrass;
+
+    @Column(name = "presence_plastic")
+    private Integer presencePlastic;
     @OneToMany(mappedBy = "diveDay", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DiveDayAndFishingEntity> diveDayAndFishingList;
+    private List<FishingEntity> fishingEntities;
+
 
 }

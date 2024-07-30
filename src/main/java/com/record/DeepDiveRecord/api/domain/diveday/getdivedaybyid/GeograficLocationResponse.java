@@ -7,14 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class FishingResponse {
+public class GeograficLocationResponse {
     private Integer id;
-    private String notes;
-    private boolean caught;
-    private double weight;
-    private double latG;
-    private double longG;
     private String name;
     private String site;
-    private String nameFish;
 }

@@ -10,26 +10,26 @@ import lombok.*;
 @ToString
 public class InGetDataWeek {
 
-    @JsonProperty("page")
+    //@JsonProperty("page")
     private Integer page;
 
-    @JsonProperty("size")
+    //@JsonProperty("size")
     private Integer size;
 
-    @JsonProperty("site")
+    //@JsonProperty("site")
     private String site;
 
-    @JsonProperty("fromYear")
+    //@JsonProperty("fromYear")
     private Integer fromYear;
-    @JsonProperty("fromMonth")
+    //@JsonProperty("fromMonth")
     private Integer fromMonth;
-    @JsonProperty("fromDay")
+    //@JsonProperty("fromDay")
     private Integer fromDay;
 
-    @JsonProperty("toYear")
+    //@JsonProperty("toYear")
     private Integer toYear;
-    @JsonProperty("toMonth")
+    //@JsonProperty("toMonth")
     private Integer toMonth;
-    @JsonProperty("toDay")
+    //@JsonProperty("toDay")
     private Integer toDay;
 }

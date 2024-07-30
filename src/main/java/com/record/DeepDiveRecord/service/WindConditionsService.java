@@ -1,7 +1,6 @@
 package com.record.DeepDiveRecord.service;
 
 import com.record.DeepDiveRecord.api.domain.windconditions.InGetDataWeek;
-import com.record.DeepDiveRecord.controller.WindConditionsController;
 import com.record.DeepDiveRecord.entity.WindConditionsEntity;
 import com.record.DeepDiveRecord.repository.windconditions.WindConditionsCustomRepository;
 import org.slf4j.Logger;
@@ -18,9 +17,9 @@ public class WindConditionsService {
         this.windConditionsCustomRepository = windConditionsCustomRepository;
     }
 
-    public Page<WindConditionsEntity> getDeepDiveDataByDays(InGetDataWeek in, int page, int size) {
+    public Page<WindConditionsEntity> getDeepDiveDataByDays(InGetDataWeek in) {
         Page<WindConditionsEntity> windConditionsEntityPage = windConditionsCustomRepository.customWindConditionsSearch(in.getFromYear(), in.getFromMonth(), in.getFromDay(), in.getToYear(),
-                in.getToMonth(), in.getToDay(), in.getSite(), PageRequest.of(page, size));
+                in.getToMonth(), in.getToDay(), in.getSite(), PageRequest.of(in.getPage(), in.getSize()));
         LOGGER.info("El total de resultados es: "+windConditionsEntityPage.getContent().size());
         return windConditionsEntityPage;
     }

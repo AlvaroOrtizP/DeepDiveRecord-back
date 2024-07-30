@@ -45,7 +45,7 @@ public class DiveDayController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
         } catch (Exception e) {
-            LOGGER.error("Finaliza el metodo de crear nuevo diveday con error {}", e.getMessage());
+            LOGGER.error("Finaliza el metodo de getDiveDayById con error {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
