@@ -2,6 +2,8 @@ package com.record.DeepDiveRecord.api.domain.fishing.createfishing;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -13,7 +15,7 @@ public class InCreateFishing {
     private String name;
     private String site;
     private String notes;
-    private double weight;
+    private BigDecimal weight;
     private double latG;
     private double longG;
     private Integer idDiveDay;

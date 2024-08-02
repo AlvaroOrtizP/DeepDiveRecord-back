@@ -3,6 +3,8 @@ package com.record.DeepDiveRecord.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,7 +18,7 @@ public class FishingEntity {
     private Integer id;
     private String notes;
     private boolean caught;
-    private double weight;
+    private BigDecimal weight;
     @ManyToOne
     @JoinColumn(name = "fish_id", referencedColumnName = "id")
     private FishEntity fish;
