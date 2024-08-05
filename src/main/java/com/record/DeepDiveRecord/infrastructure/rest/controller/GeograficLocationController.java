@@ -1,7 +1,7 @@
 package com.record.DeepDiveRecord.infrastructure.rest.controller;
 
 import com.record.DeepDiveRecord.application.usecase.GeographicalLocationUseCase;
-import com.record.DeepDiveRecord.domain.model.dto.response.GeographicalLocationResponse;
+import com.record.DeepDiveRecord.domain.model.dto.response.geographicallocation.GeographicalLocationResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

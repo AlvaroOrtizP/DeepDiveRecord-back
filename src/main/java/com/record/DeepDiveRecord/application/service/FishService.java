@@ -3,10 +3,10 @@ package com.record.DeepDiveRecord.application.service;
 import com.record.DeepDiveRecord.application.usecase.FishUseCase;
 import com.record.DeepDiveRecord.domain.model.dto.Fish;
 import com.record.DeepDiveRecord.domain.model.dto.request.fish.create.FishCreateRequest;
-import com.record.DeepDiveRecord.domain.port.GeographicalLocationRepositoryPort;
+import com.record.DeepDiveRecord.domain.port.GeographicalLocationPort;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.FishMapper;
-import com.record.DeepDiveRecord.domain.port.FishRepositoryPort;
+import com.record.DeepDiveRecord.domain.port.FishPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +17,10 @@ public class FishService implements FishUseCase {
     private FishMapper fishMapper;
 
     @Autowired
-    private FishRepositoryPort fishRepositoryPort;
+    private FishPort fishRepositoryPort;
 
     @Autowired
-    private GeographicalLocationRepositoryPort geographicalLocationRepositoryPort;
+    private GeographicalLocationPort geographicalLocationRepositoryPort;
 
     @Override
     public Integer createFish(FishCreateRequest input) {

@@ -1,8 +1,8 @@
 package com.record.DeepDiveRecord.application.service;
 
 import com.record.DeepDiveRecord.application.usecase.GeographicalLocationUseCase;
-import com.record.DeepDiveRecord.domain.model.dto.response.GeographicalLocationResponse;
-import com.record.DeepDiveRecord.domain.port.GeographicalLocationRepositoryPort;
+import com.record.DeepDiveRecord.domain.model.dto.response.geographicallocation.GeographicalLocationResponse;
+import com.record.DeepDiveRecord.domain.port.GeographicalLocationPort;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.GeograficLocationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class GeographicalLocationService implements GeographicalLocationUseCase {
     @Autowired
-    private GeographicalLocationRepositoryPort geographicalLocationRepositoryPort;
+    private GeographicalLocationPort geographicalLocationRepositoryPort;
     @Autowired
     private GeograficLocationMapper geograficLocationMapper;
     @Override
