@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GeographicalLocationRepository extends JpaRepository<GeographicalLocationEntity, Integer> {
-    GeographicalLocationEntity findByNameAndSite(String name, String site);
+
 
 }

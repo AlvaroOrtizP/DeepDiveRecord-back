@@ -16,7 +16,13 @@ public class GeographicalLocationRepositoryImpl implements GeographicalLocationP
 
     @Override
     public GeographicalLocationEntity findByNameAndSite(String name, String site) {
-        return geographicalLocationRepository.findByNameAndSite(name, site);
+        List<GeographicalLocationEntity> list =  geographicalLocationRepository.findAll();
+        for(GeographicalLocationEntity item : list){
+            if(item.getName().equals(name) && item.getSite().equals(site)){
+               return item;
+            }
+        }
+        return null;
     }
 
     @Override

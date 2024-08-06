@@ -5,5 +5,5 @@ import com.record.DeepDiveRecord.infrastructure.adapter.entity.WindConditionsEnt
 import org.springframework.data.domain.Page;
 
 public interface WindConditionsPort {
-    Page<WindConditionsEntity> getDeepDiveDataByDays(InGetDataWeek in);
+    Page<WindConditionsEntity> getDeepDiveDataByDays(InGetDataWeek in);//TODO tiene que venir la entidad
 }

@@ -8,6 +8,8 @@ import com.record.DeepDiveRecord.infrastructure.adapter.repository.FishRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class FishRepositoryImpl implements FishPort {
 
@@ -18,9 +20,7 @@ public class FishRepositoryImpl implements FishPort {
     private FishMapper fishMapper;
 
     @Override
-    public Integer save(Fish fish) {
-        FishEntity fishEntity = fishMapper.entityFromModel(fish);
-        FishEntity savedEntity = fishRepository.save(fishEntity);
-        return savedEntity.getId();
+    public List<FishEntity> getAllFishList() {
+        return fishRepository.findAll();
     }
 }
