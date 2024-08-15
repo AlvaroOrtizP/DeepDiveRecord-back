@@ -20,6 +20,7 @@ public class FishingRepositoryImpl implements FishingPort {
     public Integer save(FishingEntity input) {
         LOGGER.info("Se procede a guardar {} ", input);
         FishingEntity res = fishingRepository.save(input);
+
         return res.getId();
     }
 }

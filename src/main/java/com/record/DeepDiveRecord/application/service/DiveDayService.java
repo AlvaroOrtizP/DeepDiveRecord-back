@@ -98,11 +98,7 @@ public class DiveDayService implements DiveDayUseCase {
 
     // Método privado para buscar el DiveDayEntity por su ID
     private DiveDayEntity findDiveDayEntityById(Integer id) {
-        return diveDayPort.findById(id)
-                .orElseThrow(() -> {
-                    LOGGER.error("DiveDayEntity no encontrado con el ID: {}", id);
-                    return new EntityNotFoundException("DiveDayEntity not found with id " + id);
-                });
+        return diveDayPort.findById(id);
     }
 
     // Método privado para construir el DiveDayResponse inicial
