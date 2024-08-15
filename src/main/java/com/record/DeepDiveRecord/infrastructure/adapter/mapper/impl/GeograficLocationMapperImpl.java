@@ -1,6 +1,8 @@
 package com.record.DeepDiveRecord.infrastructure.adapter.mapper.impl;
 
-import com.record.DeepDiveRecord.domain.model.dto.response.geographicallocation.GeographicalLocationResponse;
+import com.record.DeepDiveRecord.domain.model.dto.port.geographical_location.FindGeographicalLocation;
+import com.record.DeepDiveRecord.domain.model.dto.request.fishing.InCreateFishing;
+import com.record.DeepDiveRecord.domain.model.dto.response.geographical_location.GeographicalLocationResponse;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.GeograficLocationMapper;
@@ -19,13 +21,21 @@ public class GeograficLocationMapperImpl implements GeograficLocationMapper {
     }
 
     @Override
-    public com.record.DeepDiveRecord.domain.model.dto.response.diveday.GeographicalLocationResponse responseFromDiveDayEntity(DiveDayEntity input) {
-        com.record.DeepDiveRecord.domain.model.dto.response.diveday.GeographicalLocationResponse geograficLocationResponse = new com.record.DeepDiveRecord.domain.model.dto.response.diveday.GeographicalLocationResponse();
+    public com.record.DeepDiveRecord.domain.model.dto.response.dive_day.GeographicalLocationResponse responseFromDiveDayEntity(DiveDayEntity input) {
+        com.record.DeepDiveRecord.domain.model.dto.response.dive_day.GeographicalLocationResponse geograficLocationResponse = new com.record.DeepDiveRecord.domain.model.dto.response.dive_day.GeographicalLocationResponse();
         geograficLocationResponse.setIdWindwuru(input.getGeographicalLocation().getIdWindwuru());
         geograficLocationResponse.setName(input.getGeographicalLocation().getName());
         geograficLocationResponse.setId(input.getGeographicalLocation().getId());
         geograficLocationResponse.setSite(input.getGeographicalLocation().getSite());
         return geograficLocationResponse;
+    }
+
+    @Override
+    public FindGeographicalLocation fromRequestToDtoFind(InCreateFishing input) {
+        FindGeographicalLocation res = new FindGeographicalLocation();
+        res.setName(input.getName());
+        res.setSite(input.getSite());
+        return res;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.domain.model.dto.response.windconditions;
+package com.record.DeepDiveRecord.domain.model.dto.response.wind_conditions;
 
 import lombok.*;
 

@@ -1,6 +1,7 @@
 package com.record.DeepDiveRecord.infrastructure.adapter.mapper.impl;
 
-import com.record.DeepDiveRecord.domain.model.dto.response.diveday.TideTableResponse;
+import com.record.DeepDiveRecord.domain.model.dto.port.tide_table.FindTideTable;
+import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.TideTableResponse;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.TideTableEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.TideTableId;
@@ -10,13 +11,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class TideTableMapperImpl implements TideTableMapper {
     @Override
-    public TideTableId entityIdFromDiveDayEntity(DiveDayEntity input) {
-        TideTableId tideTableId = new TideTableId();
-        tideTableId.setDay(input.getDay());
-        tideTableId.setYear(input.getYear());
-        tideTableId.setMonth(input.getMonth());
-        tideTableId.setSite(input.getSite());
-        return tideTableId;
+    public FindTideTable dtoPortFromDiveDayEntity(DiveDayEntity input) {
+        FindTideTable findTideTable = new FindTideTable();
+        findTideTable.setDay(input.getDay());
+        findTideTable.setYear(input.getYear());
+        findTideTable.setMonth(input.getMonth());
+        findTideTable.setSite(input.getSite());
+        return findTideTable;
     }
 
     @Override
@@ -38,5 +39,15 @@ public class TideTableMapperImpl implements TideTableMapper {
         tideTableResponse.setAfternoonLowTideTime(input.getAfternoonLowTideTime());
         tideTableResponse.setAfternoonLowTideHeight(String.valueOf(input.getAfternoonLowTideHeight()));
         return tideTableResponse;
+    }
+
+    @Override
+    public TideTableId entityIdFromDtoPort(FindTideTable input) {
+        TideTableId tideTableId = new TideTableId();
+        tideTableId.setDay(input.getDay());
+        tideTableId.setYear(input.getYear());
+        tideTableId.setMonth(input.getMonth());
+        tideTableId.setSite(input.getSite());
+        return tideTableId;
     }
 }

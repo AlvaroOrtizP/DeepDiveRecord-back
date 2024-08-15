@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.infrastructure.adapter.repository;
+package com.record.DeepDiveRecord.infrastructure.adapter.repository.fish;
 
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.infrastructure.adapter.repository;
+package com.record.DeepDiveRecord.infrastructure.adapter.repository.geographical_location;
 
 
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;

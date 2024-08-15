@@ -1,8 +1,8 @@
 package com.record.DeepDiveRecord.infrastructure.rest.controller;
 
 import com.record.DeepDiveRecord.application.usecase.WindConditionsUseCase;
-import com.record.DeepDiveRecord.domain.model.dto.request.windconditions.InGetDataWeek;
-import com.record.DeepDiveRecord.domain.model.dto.response.windconditions.OutGetDataList;
+import com.record.DeepDiveRecord.domain.model.dto.request.wind_conditions.InGetDataWeek;
+import com.record.DeepDiveRecord.domain.model.dto.response.wind_conditions.OutGetDataList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

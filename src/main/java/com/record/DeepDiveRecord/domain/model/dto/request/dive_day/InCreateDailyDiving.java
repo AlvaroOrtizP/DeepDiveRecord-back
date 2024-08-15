@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.domain.model.dto.request.diveday;
+package com.record.DeepDiveRecord.domain.model.dto.request.dive_day;
 import lombok.*;
 
 @Getter

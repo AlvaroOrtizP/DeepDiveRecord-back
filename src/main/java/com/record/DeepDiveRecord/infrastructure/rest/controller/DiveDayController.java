@@ -1,8 +1,8 @@
 package com.record.DeepDiveRecord.infrastructure.rest.controller;
 
 import com.record.DeepDiveRecord.application.usecase.DiveDayUseCase;
-import com.record.DeepDiveRecord.domain.model.dto.request.diveday.InCreateDailyDiving;
-import com.record.DeepDiveRecord.domain.model.dto.response.diveday.DiveDayResponse;
+import com.record.DeepDiveRecord.domain.model.dto.request.dive_day.InCreateDailyDiving;
+import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

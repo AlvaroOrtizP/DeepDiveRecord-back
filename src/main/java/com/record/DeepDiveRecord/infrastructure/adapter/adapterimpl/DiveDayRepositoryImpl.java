@@ -2,7 +2,7 @@ package com.record.DeepDiveRecord.infrastructure.adapter.adapterimpl;
 
 import com.record.DeepDiveRecord.domain.port.DiveDayPort;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
-import com.record.DeepDiveRecord.infrastructure.adapter.repository.diveday.DiveDayRepository;
+import com.record.DeepDiveRecord.infrastructure.adapter.repository.dive_day.DiveDayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

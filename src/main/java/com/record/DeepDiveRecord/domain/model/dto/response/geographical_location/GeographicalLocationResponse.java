@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.domain.model.dto.response.geographicallocation;
+package com.record.DeepDiveRecord.domain.model.dto.response.geographical_location;
 
 import lombok.*;
 

@@ -1,6 +1,5 @@
-package com.record.DeepDiveRecord.domain.model.dto.request.windconditions;
+package com.record.DeepDiveRecord.domain.model.dto.request.wind_conditions;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Getter

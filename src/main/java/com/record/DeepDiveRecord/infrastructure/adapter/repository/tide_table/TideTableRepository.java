@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.infrastructure.adapter.repository.tidetable;
+package com.record.DeepDiveRecord.infrastructure.adapter.repository.tide_table;
 
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.TideTableEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.TideTableId;

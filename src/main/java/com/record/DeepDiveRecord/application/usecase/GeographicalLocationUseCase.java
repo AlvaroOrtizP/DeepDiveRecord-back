@@ -1,6 +1,6 @@
 package com.record.DeepDiveRecord.application.usecase;
 
-import com.record.DeepDiveRecord.domain.model.dto.response.geographicallocation.GeographicalLocationResponse;
+import com.record.DeepDiveRecord.domain.model.dto.response.geographical_location.GeographicalLocationResponse;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
 package com.record.DeepDiveRecord.infrastructure.adapter.adapterimpl;
 
-import com.record.DeepDiveRecord.domain.model.dto.request.windconditions.InGetDataWeek;
+import com.record.DeepDiveRecord.domain.model.dto.port.wind_condition.FindDeepDiveDataByDays;
 import com.record.DeepDiveRecord.domain.port.WindConditionsPort;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.WindConditionsEntity;
-import com.record.DeepDiveRecord.infrastructure.adapter.repository.windconditions.WindConditionsCustomRepository;
+import com.record.DeepDiveRecord.infrastructure.adapter.repository.wind_conditions.WindConditionsCustomRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class WindConditionsRepositoryImpl implements WindConditionsPort {
     private static final Logger LOGGER = LoggerFactory.getLogger(WindConditionsRepositoryImpl.class);
 
     @Override
-    public Page<WindConditionsEntity> getDeepDiveDataByDays(InGetDataWeek in) {
+    public Page<WindConditionsEntity> getDeepDiveDataByDays(FindDeepDiveDataByDays in) {
         Page<WindConditionsEntity> windConditionsEntityPage = windConditionsCustomRepository.customWindConditionsSearch(in.getFromYear(), in.getFromMonth(), in.getFromDay(), in.getToYear(),
                 in.getToMonth(), in.getToDay(), in.getSite(), PageRequest.of(in.getPage(), in.getSize()));
         LOGGER.info("El total de resultados es: "+windConditionsEntityPage.getContent().size());

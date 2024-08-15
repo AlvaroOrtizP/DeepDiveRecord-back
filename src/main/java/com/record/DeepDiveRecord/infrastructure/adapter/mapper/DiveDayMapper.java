@@ -1,7 +1,7 @@
 package com.record.DeepDiveRecord.infrastructure.adapter.mapper;
 
-import com.record.DeepDiveRecord.domain.model.dto.request.diveday.InCreateDailyDiving;
-import com.record.DeepDiveRecord.domain.model.dto.response.diveday.DiveDayResponse;
+import com.record.DeepDiveRecord.domain.model.dto.request.dive_day.InCreateDailyDiving;
+import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayResponse;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import org.springframework.stereotype.Component;
 

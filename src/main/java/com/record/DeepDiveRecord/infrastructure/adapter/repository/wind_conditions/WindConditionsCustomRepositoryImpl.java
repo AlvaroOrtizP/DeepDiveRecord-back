@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.infrastructure.adapter.repository.windconditions;
+package com.record.DeepDiveRecord.infrastructure.adapter.repository.wind_conditions;
 
 import java.util.ArrayList;
 import java.util.List;

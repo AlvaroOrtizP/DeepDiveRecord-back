@@ -1,14 +1,14 @@
 package com.record.DeepDiveRecord.domain.port;
 
+import com.record.DeepDiveRecord.domain.model.dto.port.geographical_location.FindGeographicalLocation;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface GeographicalLocationPort {
-    GeographicalLocationEntity findByNameAndSite(String name, String site);
+    GeographicalLocationEntity findByNameAndSite(FindGeographicalLocation findGeographicalLocation);
 
     List<GeographicalLocationEntity> getAllGeGeographicalLocation();
 
-    Optional<GeographicalLocationEntity> findById(Integer idGeograficLocation);
+    GeographicalLocationEntity findById(Integer idGeograficLocation);
 }

@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.infrastructure.adapter.repository.diveday;
+package com.record.DeepDiveRecord.infrastructure.adapter.repository.dive_day;
 
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
