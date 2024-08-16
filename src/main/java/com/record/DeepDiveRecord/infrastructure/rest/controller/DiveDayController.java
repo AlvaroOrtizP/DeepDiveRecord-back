@@ -38,7 +38,10 @@ public class DiveDayController {
         LOGGER.info("Comienza el metodo getDiveDayById con los datos {}", id);
         DiveDayResponse res = diveDayUseCase.findDiveDayById(id);
         LOGGER.info("Se devuelve {}", res);
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        if(res!=null){
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 
 
     }

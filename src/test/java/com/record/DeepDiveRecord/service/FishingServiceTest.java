@@ -7,6 +7,7 @@ import com.record.DeepDiveRecord.domain.port.GeographicalLocationPort;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishingEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.FishingMapper;
+import com.record.DeepDiveRecord.infrastructure.adapter.mapper.GeograficLocationMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +32,8 @@ class FishingServiceTest {
 
     @Mock
     private FishingMapper fishingMapper;
+    @Mock
+    private GeograficLocationMapper geograficLocationMapper;
 
     @InjectMocks
     private FishingService fishingService;
