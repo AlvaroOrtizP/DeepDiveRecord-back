@@ -2,15 +2,13 @@ package com.record.DeepDiveRecord.infrastructure.rest.controller;
 
 import com.record.DeepDiveRecord.application.usecase.FishingUseCase;
 import com.record.DeepDiveRecord.domain.model.dto.request.fishing.InCreateFishing;
+import com.record.DeepDiveRecord.domain.model.dto.response.fishing.FishingDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/fishing")//http://localhost:8080/fishing
 @RestController
@@ -31,5 +29,17 @@ public class FishingController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<FishingDetails> getFishingById(@PathVariable Integer id) {
+        try {
 
+            FishingDetails res = fishingUseCase.getFishingById(id);
+            LOGGER.info("Finaliza el metodo de obtener el fishing con id {}", id);
+
+            return ResponseEntity.status(HttpStatus.OK).body(res);
+        } catch (Exception e) {
+            LOGGER.error("Finaliza el metodo de obtener el fishing da error {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }

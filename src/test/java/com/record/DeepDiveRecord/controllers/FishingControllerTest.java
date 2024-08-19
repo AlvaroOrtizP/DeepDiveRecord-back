@@ -2,6 +2,7 @@ package com.record.DeepDiveRecord.controllers;
 
 import com.record.DeepDiveRecord.application.usecase.FishingUseCase;
 import com.record.DeepDiveRecord.domain.model.dto.request.fishing.InCreateFishing;
+import com.record.DeepDiveRecord.domain.model.dto.response.fishing.FishingDetails;
 import com.record.DeepDiveRecord.infrastructure.rest.controller.FishingController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -66,6 +66,37 @@ class FishingControllerTest {
         assertAll("Verificaciones de respuesta",
                 () -> assertEquals(null, res.getBody(), "Debe devolver un cuerpo nulo"),
                 () -> assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode(), "Debe devolver el estado 404 indicando que ocurrió un error")
+        );
+    }
+
+    @Test
+    void testGetFishingById_Success() {
+        FishingDetails datails = new FishingDetails();
+        datails.setId(1);
+        // Simula la respuesta exitosa del caso de uso
+        when(fishingUseCase.getFishingById(any(Integer.class))).thenReturn(datails);
+
+
+        // Ejecuta el método del controlador
+        ResponseEntity<FishingDetails> res = fishingController.getFishingById(1);
+
+        // Verifica los resultados
+        assertAll("Verificaciones de respuesta",
+                () -> assertEquals(1, res.getBody().getId(), "Debe devolver el identificador del fishing obtenido"),
+                () -> assertEquals(HttpStatus.OK, res.getStatusCode(), "Debe devolver el estado 200 indicando que fue encontrado")
+        );
+    }
+    @Test
+    void testGetFishingById_Failed() {
+        when(fishingUseCase.getFishingById(any(Integer.class))).thenThrow(new RuntimeException("Error en la obtencion"));
+
+        // Ejecuta el método del controlador
+        ResponseEntity<FishingDetails> res = fishingController.getFishingById(1);
+
+        // Verifica los resultados
+        assertAll("Verificaciones de respuesta",
+                () -> assertNull(res.getBody(), "Debe devolver null en el body"),
+                () -> assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode(), "Debe devolver el estado 404 indicando que no fue encontrado")
         );
     }
 }

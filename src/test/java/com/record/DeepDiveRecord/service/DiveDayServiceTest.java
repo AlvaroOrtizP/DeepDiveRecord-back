@@ -12,16 +12,13 @@ import com.record.DeepDiveRecord.infrastructure.adapter.entity.*;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -115,7 +112,7 @@ class DiveDayServiceTest {
         fishingList.add(fishing);
         diveDayEntity.setFishingEntities(fishingList);
         when(diveDayPort.findById(anyInt())).thenReturn(diveDayEntity);
-        when(diveDayMapper.responseFromEntity(any(DiveDayEntity.class))).thenReturn(new DiveDayResponse());
+        when(diveDayMapper.responseFromEntity(any(DiveDayEntity.class))).thenReturn(new DiveDayDetailsResponse());
         when(geograficLocationMapper.responseFromDiveDayEntity(any(DiveDayEntity.class))).thenReturn(new GeographicalLocationResponse());
 
         when(tideTablePort.findById(any())).thenReturn(Optional.of(tideTableEntity));
@@ -128,7 +125,7 @@ class DiveDayServiceTest {
         when(fishMapper.responseFromEntity(any(FishingEntity.class))).thenReturn(new FishingResponse());
 
         // Ejecutar el método a probar
-        DiveDayResponse response = diveDayService.findDiveDayById(1);
+        DiveDayDetailsResponse response = diveDayService.findDiveDayById(1);
 
         // Verificar las interacciones y el resultado
         verify(diveDayPort, times(1)).findById(anyInt());

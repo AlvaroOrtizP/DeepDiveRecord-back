@@ -2,6 +2,7 @@ package com.record.DeepDiveRecord.application.service;
 
 import com.record.DeepDiveRecord.application.usecase.FishingUseCase;
 import com.record.DeepDiveRecord.domain.model.dto.request.fishing.InCreateFishing;
+import com.record.DeepDiveRecord.domain.model.dto.response.fishing.FishingDetails;
 import com.record.DeepDiveRecord.domain.port.FishingPort;
 import com.record.DeepDiveRecord.domain.port.GeographicalLocationPort;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishingEntity;
@@ -55,6 +56,18 @@ public class FishingService implements FishingUseCase {
 
         // Retornar el ID de la entidad de pesca guardada
         return savedFishingId;
+    }
+
+    @Override
+    public FishingDetails getFishingById(Integer id) {
+        LOGGER.info("--------------------------------------------------------------------------------------------");
+        LOGGER.info("Inicio del método getFishingById con el identificador: {}", id);
+        FishingEntity entity = fishingPort.getById(id);
+        FishingDetails res = fishingMapper.fromEntityToResponse(entity);
+        LOGGER.info("Se obtiene con valior {} ", res);
+
+        LOGGER.info("--------------------------------------------------------------------------------------------");
+        return  res;
     }
 }
 

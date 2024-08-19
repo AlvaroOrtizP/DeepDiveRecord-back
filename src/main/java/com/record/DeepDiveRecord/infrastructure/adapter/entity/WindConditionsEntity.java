@@ -27,6 +27,9 @@ public class WindConditionsEntity {
     //Periodo de olas
     @Column(name = "wave_period")
     private Integer wavePeriod;
+    //Direccion de las olas
+    @Column(name = "wave_direction")
+    private Integer waveDirection;
     //Temperatura en tierra
     @Column(name = "earth_temperature")
     private Integer earthTemperature;
