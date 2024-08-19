@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class DiveDayService implements DiveDayUseCase {
     private static final Logger LOGGER = LoggerFactory.getLogger(DiveDayService.class);
@@ -41,8 +42,10 @@ public class DiveDayService implements DiveDayUseCase {
     FishMapper fishMapper;
     @Autowired
     GeographicalLocationPort geographicalLocationPort;
+
     /**
      * Crea un nuevo DiveDay a partir de los datos proporcionados en inCreateDailyDiving.
+     *
      * @param inCreateDailyDiving Objeto con los datos de entrada para crear un nuevo día de buceo.
      * @return El ID del DiveDay creado.
      */
@@ -68,8 +71,10 @@ public class DiveDayService implements DiveDayUseCase {
         // Retornar el ID del nuevo DiveDay
         return savedDiveDay.getDiveDayId();
     }
+
     /**
      * Busca un DiveDay por su ID y devuelve los datos asociados.
+     *
      * @param id El ID del día de buceo a buscar.
      * @return Un objeto DiveDayResponse con los detalles del DiveDay encontrado.
      * @throws EntityNotFoundException si no se encuentra el DiveDay con el ID proporcionado.
@@ -100,11 +105,12 @@ public class DiveDayService implements DiveDayUseCase {
     }
 
     private DiveDayResponse mapToResponse(DiveDayEntity diveDay) {
-        return  diveDayMapper.mapToResponse(diveDay);
+        return diveDayMapper.mapToResponse(diveDay);
     }
 
     /**
      * Metodo que devuelve todas
+     *
      * @return
      */
 
@@ -138,7 +144,7 @@ public class DiveDayService implements DiveDayUseCase {
     // Método privado para agregar los datos meteorológicos a la respuesta
     private void addWindConditionsToResponse(DiveDayEntity diveDayEntity, DiveDayDetailsResponse res) {
         LOGGER.info("Se procede a buscar los datos meteorológicos para el DiveDayEntity.");
-        Page<WindConditionsEntity> windConditionsEntityPage = windConditionsPort.getDeepDiveDataByDays(windConditionsMapper.fromDiveDayEntityToDtoFindDeepData(diveDayEntity));
+        Page<WindConditionsEntity> windConditionsEntityPage = windConditionsPort.getDeepDiveDataByDays(windConditionsMapper.fromDiveDayEntityToDtoFindDeepData(diveDayEntity), false);
         List<WindConditionResponse> windConditionList = new ArrayList<>();
         for (WindConditionsEntity item : windConditionsEntityPage.getContent()) {
             windConditionList.add(windConditionsMapper.responseFromEntity(item));

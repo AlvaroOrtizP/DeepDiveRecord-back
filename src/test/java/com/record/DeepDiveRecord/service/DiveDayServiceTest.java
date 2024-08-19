@@ -119,7 +119,7 @@ class DiveDayServiceTest {
         when(tideTableMapper.responseFromEntity(any(TideTableEntity.class))).thenReturn(new TideTableResponse());
 
         Page<WindConditionsEntity> windConditionsPage = new PageImpl<>(Collections.singletonList(windConditionsEntity));
-        when(windConditionsPort.getDeepDiveDataByDays(any())).thenReturn(windConditionsPage);
+        when(windConditionsPort.getDeepDiveDataByDays(any(),eq(false))).thenReturn(windConditionsPage);
         when(windConditionsMapper.responseFromEntity(any(WindConditionsEntity.class))).thenReturn(new WindConditionResponse());
 
         when(fishMapper.responseFromEntity(any(FishingEntity.class))).thenReturn(new FishingResponse());
@@ -133,7 +133,7 @@ class DiveDayServiceTest {
         verify(geograficLocationMapper, times(1)).responseFromDiveDayEntity(any(DiveDayEntity.class));
         verify(tideTablePort, times(1)).findById(any());
         verify(tideTableMapper, times(1)).responseFromEntity(any(TideTableEntity.class));
-        verify(windConditionsPort, times(1)).getDeepDiveDataByDays(any());
+        verify(windConditionsPort, times(1)).getDeepDiveDataByDays(any(), eq(false));
         verify(windConditionsMapper, times(1)).responseFromEntity(any(WindConditionsEntity.class));
         verify(fishMapper, times(1)).responseFromEntity(any(FishingEntity.class));
 

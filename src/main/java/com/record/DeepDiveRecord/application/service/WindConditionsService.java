@@ -33,7 +33,7 @@ public class WindConditionsService implements WindConditionsUseCase {
         LOGGER.info("Inicia el método getDeepDiveDataByDays con el input: {}", input);
 
         // Obtener datos de condiciones de viento
-        Page<WindConditionsEntity> windConditionsEntityPage = fetchWindConditionsData(input);
+        Page<WindConditionsEntity> windConditionsEntityPage = fetchWindConditionsData(input, true);
 
         // Procesar datos obtenidos y preparar la respuesta
         OutGetDataList response = prepareOutGetDataList(windConditionsEntityPage);
@@ -48,10 +48,10 @@ public class WindConditionsService implements WindConditionsUseCase {
     /**
      * Método privado para obtener los datos de condiciones de viento de la base de datos.
      */
-    private Page<WindConditionsEntity> fetchWindConditionsData(InGetDataWeek input) {
+    private Page<WindConditionsEntity> fetchWindConditionsData(InGetDataWeek input, boolean onlyImpares) {
         LOGGER.info("Obteniendo los datos de condiciones de viento para la semana especificada.");
         Page<WindConditionsEntity> windConditionsEntityPage = windConditionsPort.getDeepDiveDataByDays(
-                windConditionsMapper.fromInGetDataWeekToDtoFindDeepData(input)
+                windConditionsMapper.fromInGetDataWeekToDtoFindDeepData(input), onlyImpares
         );
         LOGGER.info("Se han obtenido {} entidades de WindConditions del repositorio.", windConditionsEntityPage.getTotalElements());
         return windConditionsEntityPage;

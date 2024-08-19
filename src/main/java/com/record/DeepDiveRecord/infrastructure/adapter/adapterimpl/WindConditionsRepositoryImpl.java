@@ -19,9 +19,9 @@ public class WindConditionsRepositoryImpl implements WindConditionsPort {
     private static final Logger LOGGER = LoggerFactory.getLogger(WindConditionsRepositoryImpl.class);
 
     @Override
-    public Page<WindConditionsEntity> getDeepDiveDataByDays(FindDeepDiveDataByDays in) {
+    public Page<WindConditionsEntity> getDeepDiveDataByDays(FindDeepDiveDataByDays in, boolean onlyImpares) {
         Page<WindConditionsEntity> windConditionsEntityPage = windConditionsCustomRepository.customWindConditionsSearch(in.getFromYear(), in.getFromMonth(), in.getFromDay(), in.getToYear(),
-                in.getToMonth(), in.getToDay(), in.getSite(), PageRequest.of(in.getPage(), in.getSize()));
+                in.getToMonth(), in.getToDay(), in.getSite(), onlyImpares, PageRequest.of(in.getPage(), in.getSize()));
         LOGGER.info("El total de resultados es: "+windConditionsEntityPage.getContent().size());
         return windConditionsEntityPage;
     }
