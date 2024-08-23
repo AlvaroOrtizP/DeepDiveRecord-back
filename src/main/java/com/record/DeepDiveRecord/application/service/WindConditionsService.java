@@ -33,7 +33,7 @@ public class WindConditionsService implements WindConditionsUseCase {
         LOGGER.info("Inicia el método getDeepDiveDataByDays con el input: {}", input);
 
         // Obtener datos de condiciones de viento
-        Page<WindConditionsEntity> windConditionsEntityPage = fetchWindConditionsData(input, true);
+        Page<WindConditionsEntity> windConditionsEntityPage = fetchWindConditionsData(input, false);
 
         // Procesar datos obtenidos y preparar la respuesta
         OutGetDataList response = prepareOutGetDataList(windConditionsEntityPage);

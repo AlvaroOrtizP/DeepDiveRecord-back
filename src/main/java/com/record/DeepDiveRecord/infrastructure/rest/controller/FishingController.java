@@ -32,7 +32,6 @@ public class FishingController {
     @GetMapping("/{id}")
     public ResponseEntity<FishingDetails> getFishingById(@PathVariable Integer id) {
         try {
-
             FishingDetails res = fishingUseCase.getFishingById(id);
             LOGGER.info("Finaliza el metodo de obtener el fishing con id {}", id);
 

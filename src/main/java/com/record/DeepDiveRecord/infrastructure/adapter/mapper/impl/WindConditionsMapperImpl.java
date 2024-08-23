@@ -83,7 +83,13 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
         outGetData.setWavePeriod(item.getWavePeriod());
         outGetData.setWaveDirection(item.getWaveDirection());
         outGetData.setEarthTemperature(item.getEarthTemperature());
-        outGetData.setWaterTtermperature(String.valueOf(item.getWaterTemperature()));
+        if(null == item.getWaterTemperature()){
+            outGetData.setWaterTtermperature("NA");
+        }
+        else{
+            outGetData.setWaterTtermperature(String.valueOf(item.getWaterTemperature()));
+        }
+
         outGetData.setF1(item.getCodeCondition());
         outGetData.setDescripcion1(item.getConditionDescription());
         return outGetData;
