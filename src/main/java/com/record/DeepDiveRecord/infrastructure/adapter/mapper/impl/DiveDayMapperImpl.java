@@ -1,6 +1,7 @@
 package com.record.DeepDiveRecord.infrastructure.adapter.mapper.impl;
 
 import com.record.DeepDiveRecord.domain.model.dto.request.dive_day.InCreateDailyDiving;
+import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayDetailsResponse;
 import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayResponse;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.DiveDayMapper;
@@ -31,8 +32,8 @@ public class DiveDayMapperImpl implements DiveDayMapper {
     }
 
     @Override
-    public DiveDayResponse responseFromEntity(DiveDayEntity input) {
-        DiveDayResponse res = new DiveDayResponse();
+    public DiveDayDetailsResponse responseFromEntity(DiveDayEntity input) {
+        DiveDayDetailsResponse res = new DiveDayDetailsResponse();
         res.setDiveDayId(input.getDiveDayId());
         res.setDay(Integer.valueOf(input.getDay()));
         res.setMonth(Integer.valueOf(input.getMonth()));
@@ -42,6 +43,16 @@ public class DiveDayMapperImpl implements DiveDayMapper {
         res.setSite(input.getSite());
         res.setValoracion(input.getAssessment());
         res.setNotes(input.getNotes());
+        return res;
+    }
+
+    @Override
+    public DiveDayResponse mapToResponse(DiveDayEntity diveDay) {
+        DiveDayResponse res = new DiveDayResponse();
+        res.setId(diveDay.getDiveDayId());
+        res.setDate(diveDay.getDay()+ "/" + diveDay.getMonth()+ "/" + diveDay.getYear());
+        res.setSite(diveDay.getGeographicalLocation().getName());
+        res.setAssessment(diveDay.getAssessment());
         return res;
     }
 }

@@ -20,6 +20,7 @@ public class OutGetData {
     Double gustsOfWind;
     String waveHeight;
     Integer wavePeriod;
+    Integer waveDirection;
     Integer earthTemperature;
     String waterTtermperature;
     Integer f1;

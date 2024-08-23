@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -70,11 +71,12 @@ class WindConditionsPortTest {
                 any(Integer.class),
                 any(Integer.class),
                 any(String.class),
+                eq(true),
                 any(PageRequest.class)
         )).thenReturn(expectedPage);
 
         // Ejecutar el método getDeepDiveDataByDays
-        Page<WindConditionsEntity> result = windConditionsRepositoryImpl.getDeepDiveDataByDays(findDeepDiveDataByDays);
+        Page<WindConditionsEntity> result = windConditionsRepositoryImpl.getDeepDiveDataByDays(findDeepDiveDataByDays, true);
 
         // Verificar que el resultado sea el esperado
         assertEquals(expectedPage.getContent().size(), result.getContent().size(), "El número de resultados debería coincidir");
@@ -95,11 +97,12 @@ class WindConditionsPortTest {
                 any(Integer.class),
                 any(Integer.class),
                 any(String.class),
+                eq(true),
                 any(PageRequest.class)
         )).thenReturn(expectedPage);
 
         // Ejecutar el método getDeepDiveDataByDays
-        Page<WindConditionsEntity> result = windConditionsRepositoryImpl.getDeepDiveDataByDays(findDeepDiveDataByDays);
+        Page<WindConditionsEntity> result = windConditionsRepositoryImpl.getDeepDiveDataByDays(findDeepDiveDataByDays, true);
 
         // Verificar que el resultado sea el esperado (vacío)
         assertEquals(0, result.getContent().size(), "El resultado debería estar vacío");

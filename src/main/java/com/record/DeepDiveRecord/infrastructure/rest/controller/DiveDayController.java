@@ -2,10 +2,15 @@ package com.record.DeepDiveRecord.infrastructure.rest.controller;
 
 import com.record.DeepDiveRecord.application.usecase.DiveDayUseCase;
 import com.record.DeepDiveRecord.domain.model.dto.request.dive_day.InCreateDailyDiving;
+import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayDetailsResponse;
 import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,17 +38,27 @@ public class DiveDayController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<DiveDayResponse> getDiveDayById(@PathVariable Integer id) {
+    public ResponseEntity<DiveDayDetailsResponse> getDiveDayById(@PathVariable Integer id) {
 
         LOGGER.info("Comienza el metodo getDiveDayById con los datos {}", id);
-        DiveDayResponse res = diveDayUseCase.findDiveDayById(id);
+        DiveDayDetailsResponse res = diveDayUseCase.findDiveDayById(id);
         LOGGER.info("Se devuelve {}", res);
         if(res!=null){
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-
-
+    }
+    @GetMapping("/list")
+    public Page<DiveDayResponse> getFishingDays(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String zona,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam(defaultValue = "fecha") String sortBy) {
+        LOGGER.info("Comienza el metodo getFishingDays con los datos {}", zona);
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortBy);
+        return diveDayUseCase.findByFilters(zona, pageable);
     }
 
+    //TODO modificar los Exception para filtrar por Excepciones mas concretas
 }

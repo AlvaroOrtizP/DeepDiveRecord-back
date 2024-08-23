@@ -1,5 +1,6 @@
 package com.record.DeepDiveRecord.port;
 
+import com.record.DeepDiveRecord.domain.model.exception.EntityNotFoundException;
 import com.record.DeepDiveRecord.infrastructure.adapter.adapterimpl.FishingRepositoryImpl;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishingEntity;
@@ -10,7 +11,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -46,5 +51,25 @@ class FishingPortTest {
 
         // Verifica que se haya llamado al método save una vez
         verify(fishingRepository, times(1)).save(fishingEntity);
+    }
+    @Test
+    void testFind_Success() {
+        when(fishingRepository.findById(1)).thenReturn(Optional.of(fishingEntity));
+        FishingEntity result = fishingRepositoryImpl.getById(1);
+        assertEquals(fishingEntity.getId(), result.getId());
+
+    }
+    @Test
+    void testFind_Failed() {
+        // Configurar el mock para devolver un Optional vacío
+        when(fishingRepository.findById(1)).thenReturn(Optional.ofNullable(null));
+
+        // Verificar que se lanza la excepción EntityNotFoundException al llamar a getById
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+            fishingRepositoryImpl.getById(1);
+        });
+
+        // Verificar que el mensaje de la excepción es el esperado
+        assertEquals("Fishing not found", exception.getMessage());
     }
 }

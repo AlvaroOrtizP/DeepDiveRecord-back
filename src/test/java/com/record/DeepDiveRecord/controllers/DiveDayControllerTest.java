@@ -2,7 +2,7 @@ package com.record.DeepDiveRecord.controllers;
 
 import com.record.DeepDiveRecord.application.usecase.DiveDayUseCase;
 import com.record.DeepDiveRecord.domain.model.dto.request.dive_day.InCreateDailyDiving;
-import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayResponse;
+import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayDetailsResponse;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.infrastructure.rest.controller.DiveDayController;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,14 +55,14 @@ class DiveDayControllerTest {
     @Test
     void testGetDiveDayById_Success() {
         // Simula la petición de un DiveDay exitoso
-        DiveDayResponse diveDayResponse = new DiveDayResponse();
+        DiveDayDetailsResponse diveDayResponse = new DiveDayDetailsResponse();
         diveDayResponse.setDiveDayId(1);
 
         // Configura el comportamiento simulado del caso de uso
         when(diveDayUseCase.findDiveDayById(any())).thenReturn(diveDayResponse);
 
         // Llama al método del controlador
-        ResponseEntity<DiveDayResponse> res = diveDayController.getDiveDayById(1);
+        ResponseEntity<DiveDayDetailsResponse> res = diveDayController.getDiveDayById(1);
 
         // Verifica la respuesta
         assertAll("Verificaciones de respuesta",
@@ -77,7 +77,7 @@ class DiveDayControllerTest {
         when(diveDayUseCase.findDiveDayById(any())).thenReturn(null);
 
         // Llama al método del controlador
-        ResponseEntity<DiveDayResponse> res = diveDayController.getDiveDayById(1);
+        ResponseEntity<DiveDayDetailsResponse> res = diveDayController.getDiveDayById(1);
 
         // Verifica que la respuesta sea 404 NOT FOUND
         assertAll("Verificaciones de respuesta",

@@ -2,10 +2,7 @@ package com.record.DeepDiveRecord.application.service;
 
 import com.record.DeepDiveRecord.application.usecase.DiveDayUseCase;
 import com.record.DeepDiveRecord.domain.model.dto.request.dive_day.InCreateDailyDiving;
-import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayResponse;
-import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.FishingResponse;
-import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.TideTableResponse;
-import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.WindConditionResponse;
+import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.*;
 import com.record.DeepDiveRecord.domain.model.exception.EntityNotFoundException;
 import com.record.DeepDiveRecord.domain.port.DiveDayPort;
 import com.record.DeepDiveRecord.domain.port.GeographicalLocationPort;
@@ -17,11 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class DiveDayService implements DiveDayUseCase {
     private static final Logger LOGGER = LoggerFactory.getLogger(DiveDayService.class);
@@ -43,8 +42,10 @@ public class DiveDayService implements DiveDayUseCase {
     FishMapper fishMapper;
     @Autowired
     GeographicalLocationPort geographicalLocationPort;
+
     /**
      * Crea un nuevo DiveDay a partir de los datos proporcionados en inCreateDailyDiving.
+     *
      * @param inCreateDailyDiving Objeto con los datos de entrada para crear un nuevo día de buceo.
      * @return El ID del DiveDay creado.
      */
@@ -70,14 +71,16 @@ public class DiveDayService implements DiveDayUseCase {
         // Retornar el ID del nuevo DiveDay
         return savedDiveDay.getDiveDayId();
     }
+
     /**
      * Busca un DiveDay por su ID y devuelve los datos asociados.
+     *
      * @param id El ID del día de buceo a buscar.
      * @return Un objeto DiveDayResponse con los detalles del DiveDay encontrado.
      * @throws EntityNotFoundException si no se encuentra el DiveDay con el ID proporcionado.
      */
     @Override
-    public DiveDayResponse findDiveDayById(Integer id) {
+    public DiveDayDetailsResponse findDiveDayById(Integer id) {
         LOGGER.info("--------------------------------------------------------------------------------------------");
         LOGGER.info("Comienza el metodo findDiveDayById con el ID: {}", id);
 
@@ -85,7 +88,7 @@ public class DiveDayService implements DiveDayUseCase {
         DiveDayEntity diveDayEntity = findDiveDayEntityById(id);
 
         // Construir la respuesta DiveDayResponse
-        DiveDayResponse res = buildDiveDayResponse(diveDayEntity);
+        DiveDayDetailsResponse res = buildDiveDayResponse(diveDayEntity);
 
         // Agregar datos adicionales (TideTable, WindConditions, FishingList)
         addTideTableToResponse(diveDayEntity, res);
@@ -96,21 +99,36 @@ public class DiveDayService implements DiveDayUseCase {
         return res;
     }
 
+    public Page<DiveDayResponse> findByFilters(String zona, Pageable pageable) {
+        Page<DiveDayEntity> diveDays = diveDayPort.findByFilters(zona, pageable);
+        return diveDays.map(this::mapToResponse);
+    }
+
+    private DiveDayResponse mapToResponse(DiveDayEntity diveDay) {
+        return diveDayMapper.mapToResponse(diveDay);
+    }
+
+    /**
+     * Metodo que devuelve todas
+     *
+     * @return
+     */
+
     // Método privado para buscar el DiveDayEntity por su ID
     private DiveDayEntity findDiveDayEntityById(Integer id) {
         return diveDayPort.findById(id);
     }
 
     // Método privado para construir el DiveDayResponse inicial
-    private DiveDayResponse buildDiveDayResponse(DiveDayEntity diveDayEntity) {
-        DiveDayResponse res = diveDayMapper.responseFromEntity(diveDayEntity);
+    private DiveDayDetailsResponse buildDiveDayResponse(DiveDayEntity diveDayEntity) {
+        DiveDayDetailsResponse res = diveDayMapper.responseFromEntity(diveDayEntity);
         res.setGeographicalLocationResponse(geograficLocationMapper.responseFromDiveDayEntity(diveDayEntity));
         LOGGER.info("Se ha mapeado la respuesta DiveDayResponse con los datos obtenidos.");
         return res;
     }
 
     // Método privado para agregar los datos de la tabla de mareas a la respuesta
-    private void addTideTableToResponse(DiveDayEntity diveDayEntity, DiveDayResponse res) {
+    private void addTideTableToResponse(DiveDayEntity diveDayEntity, DiveDayDetailsResponse res) {
         LOGGER.info("Se procede a buscar los datos de la tabla de mareas para el DiveDayEntity.");
         Optional<TideTableEntity> optionalTideTable = tideTablePort.findById(tideTableMapper.dtoPortFromDiveDayEntity(diveDayEntity));
 
@@ -124,9 +142,9 @@ public class DiveDayService implements DiveDayUseCase {
     }
 
     // Método privado para agregar los datos meteorológicos a la respuesta
-    private void addWindConditionsToResponse(DiveDayEntity diveDayEntity, DiveDayResponse res) {
+    private void addWindConditionsToResponse(DiveDayEntity diveDayEntity, DiveDayDetailsResponse res) {
         LOGGER.info("Se procede a buscar los datos meteorológicos para el DiveDayEntity.");
-        Page<WindConditionsEntity> windConditionsEntityPage = windConditionsPort.getDeepDiveDataByDays(windConditionsMapper.fromDiveDayEntityToDtoFindDeepData(diveDayEntity));
+        Page<WindConditionsEntity> windConditionsEntityPage = windConditionsPort.getDeepDiveDataByDays(windConditionsMapper.fromDiveDayEntityToDtoFindDeepData(diveDayEntity), false);
         List<WindConditionResponse> windConditionList = new ArrayList<>();
         for (WindConditionsEntity item : windConditionsEntityPage.getContent()) {
             windConditionList.add(windConditionsMapper.responseFromEntity(item));
@@ -136,7 +154,7 @@ public class DiveDayService implements DiveDayUseCase {
     }
 
     // Método privado para agregar la lista de pesca a la respuesta
-    private void addFishingListToResponse(DiveDayEntity diveDayEntity, DiveDayResponse res) {
+    private void addFishingListToResponse(DiveDayEntity diveDayEntity, DiveDayDetailsResponse res) {
         LOGGER.info("Se procede a buscar la lista de pescados para el DiveDayEntity.");
         List<FishingResponse> fishingList = new ArrayList<>();
         for (FishingEntity item : diveDayEntity.getFishingEntities()) {

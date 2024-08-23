@@ -5,6 +5,6 @@ import com.record.DeepDiveRecord.infrastructure.adapter.entity.WindConditionsEnt
 import org.springframework.data.domain.Page;
 
 public interface WindConditionsPort {
-    Page<WindConditionsEntity> getDeepDiveDataByDays(FindDeepDiveDataByDays in);
+    Page<WindConditionsEntity> getDeepDiveDataByDays(FindDeepDiveDataByDays in, boolean onlyImpares);
 
 }

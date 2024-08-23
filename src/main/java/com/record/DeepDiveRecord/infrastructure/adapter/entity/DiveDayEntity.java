@@ -29,7 +29,8 @@ public class DiveDayEntity {
 
     //Hora de la estimacion
     @Column(name = "site")
-    private String site;
+    private String site;//Cambiarlo por algo identificatiovo para el id de windwuru
+    //añadir site y name para luego poder hacer el filtro
 
     @Column(name = "notes")
     private String notes;
