@@ -29,7 +29,7 @@ public class ImageController {
     @Value("${upload.path}")
     private String uploadDir;
 
-    @PostMapping("/upload")
+    /*@PostMapping("/upload")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Archivo vacío");
@@ -43,7 +43,7 @@ public class ImageController {
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al subir la imagen");
         }
-    }
+    }*/
 
     @GetMapping("/{filename:.+}")
     public ResponseEntity<byte[]> serveImage(@PathVariable String filename) {

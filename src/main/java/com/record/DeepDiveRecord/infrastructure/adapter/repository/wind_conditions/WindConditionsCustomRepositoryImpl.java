@@ -62,28 +62,87 @@ public class WindConditionsCustomRepositoryImpl implements WindConditionsCustomR
 
         predicates.add(cb.equal(windConditionsRoot.get("id").get("site"), site));
 
-        Predicate fromCondition = cb.and(
-                cb.greaterThanOrEqualTo(windConditionsRoot.get("id").get("year"), fromYear),
-                cb.greaterThanOrEqualTo(windConditionsRoot.get("id").get("month"), fromMonth),
-                cb.greaterThanOrEqualTo(windConditionsRoot.get("id").get("day"), fromDay)
-        );
+        // Condiciones para fechas
+        Predicate fromCondition;
+        Predicate toCondition;
 
-        Predicate toCondition = cb.and(
-                cb.lessThanOrEqualTo(windConditionsRoot.get("id").get("year"), toYear),
-                cb.lessThanOrEqualTo(windConditionsRoot.get("id").get("month"), toMonth),
-                cb.lessThanOrEqualTo(windConditionsRoot.get("id").get("day"), toDay)
-        );
-        if(onlyImpares){
-            // Agregar el predicado para obtener solo valores impares
+        // Mismo año
+        if (fromYear.equals(toYear)) {
+            // Mismo mes
+            if (fromMonth.equals(toMonth)) {
+                fromCondition = cb.and(
+                        cb.equal(windConditionsRoot.get("id").get("year"), fromYear),
+                        cb.equal(windConditionsRoot.get("id").get("month"), fromMonth),
+                        cb.between(windConditionsRoot.get("id").get("day"), fromDay, toDay)
+                );
+                predicates.add(fromCondition);
+            } else {
+                // Diferente mes
+                fromCondition = cb.and(
+                        cb.equal(windConditionsRoot.get("id").get("year"), fromYear),
+                        cb.or(
+                                // Primer mes, días mayores o iguales al inicio
+                                cb.and(
+                                        cb.equal(windConditionsRoot.get("id").get("month"), fromMonth),
+                                        cb.greaterThanOrEqualTo(windConditionsRoot.get("id").get("day"), fromDay)
+                                ),
+                                // Mes final, días menores o iguales al fin
+                                cb.and(
+                                        cb.equal(windConditionsRoot.get("id").get("month"), toMonth),
+                                        cb.lessThanOrEqualTo(windConditionsRoot.get("id").get("day"), toDay)
+                                ),
+                                // Meses intermedios
+                                cb.and(
+                                        cb.greaterThan(windConditionsRoot.get("id").get("month"), fromMonth),
+                                        cb.lessThan(windConditionsRoot.get("id").get("month"), toMonth)
+                                )
+                        )
+                );
+                predicates.add(fromCondition);
+            }
+        } else {
+            // Diferente año (si fuera necesario adaptar, aunque no lo mencionaste)
+            fromCondition = cb.or(
+                    // Año inicial, desde fromMonth/fromDay
+                    cb.and(
+                            cb.equal(windConditionsRoot.get("id").get("year"), fromYear),
+                            cb.or(
+                                    cb.and(
+                                            cb.equal(windConditionsRoot.get("id").get("month"), fromMonth),
+                                            cb.greaterThanOrEqualTo(windConditionsRoot.get("id").get("day"), fromDay)
+                                    ),
+                                    cb.greaterThan(windConditionsRoot.get("id").get("month"), fromMonth)
+                            )
+                    ),
+                    // Años intermedios completos
+                    cb.and(
+                            cb.greaterThan(windConditionsRoot.get("id").get("year"), fromYear),
+                            cb.lessThan(windConditionsRoot.get("id").get("year"), toYear)
+                    ),
+                    // Año final, hasta toMonth/toDay
+                    cb.and(
+                            cb.equal(windConditionsRoot.get("id").get("year"), toYear),
+                            cb.or(
+                                    cb.and(
+                                            cb.equal(windConditionsRoot.get("id").get("month"), toMonth),
+                                            cb.lessThanOrEqualTo(windConditionsRoot.get("id").get("day"), toDay)
+                                    ),
+                                    cb.lessThan(windConditionsRoot.get("id").get("month"), toMonth)
+                            )
+                    )
+            );
+            predicates.add(fromCondition);
+        }
+
+        // Condición de impares, si es necesario
+        if (onlyImpares) {
             Predicate timeCondition = cb.equal(
                     cb.mod(windConditionsRoot.get("id").get("time"), 2),
                     1
             );
-
-            predicates.add(cb.and(fromCondition, toCondition, timeCondition));
-        }else{
-            predicates.add(cb.and(fromCondition, toCondition));
+            predicates.add(timeCondition);
         }
+
         return predicates;
     }
 

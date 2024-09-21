@@ -10,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
+import org.springframework.http.ResponseEntity;
+
 import java.util.Collections;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,11 +44,11 @@ class GeograficLocationControllerTest {
         when(geographicalLocationUseCase.getAllGeGeographicalLocation()).thenReturn(mockResponse);
 
         // Ejecuta el método del controlador
-        List<GeographicalLocationResponse> res = geograficLocationController.getAllGeGeographicalLocation();
+        ResponseEntity<List<GeographicalLocationResponse>> res = geograficLocationController.getAllGeGeographicalLocation();
 
         // Verifica los resultados
-        assertEquals(2, res.size(), "Debe devolver la cantidad correcta de ubicaciones geográficas");
-        assertEquals(mockResponse, res, "Debe devolver la misma lista que el caso de uso");
+        assertEquals(2, res.getBody().size(), "Debe devolver la cantidad correcta de ubicaciones geográficas");
+        assertEquals(mockResponse, res.getBody(), "Debe devolver la misma lista que el caso de uso");
     }
 
     @Test
@@ -55,10 +57,10 @@ class GeograficLocationControllerTest {
         when(geographicalLocationUseCase.getAllGeGeographicalLocation()).thenReturn(Collections.emptyList());
 
         // Ejecuta el método del controlador
-        List<GeographicalLocationResponse> res = geograficLocationController.getAllGeGeographicalLocation();
+        ResponseEntity<List<GeographicalLocationResponse>> res = geograficLocationController.getAllGeGeographicalLocation();
 
         // Verifica los resultados
-        assertEquals(0, res.size(), "Debe devolver una lista vacía cuando no hay ubicaciones geográficas");
+        assertEquals(0, res.getBody().size(), "Debe devolver una lista vacía cuando no hay ubicaciones geográficas");
     }
 
     @Test

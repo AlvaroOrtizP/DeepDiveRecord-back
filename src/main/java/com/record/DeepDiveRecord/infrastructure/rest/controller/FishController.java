@@ -21,12 +21,19 @@ public class FishController {
 
     @Autowired
     private FishUseCase fishUseCase;
-
+    /**
+     * Maneja la solicitud para obtener la lista completa de peces.
+     * @return ResponseEntity<List<FishResponse>> - Retorna una lista con todos los peces disponibles en la base de datos.
+     */
     @GetMapping("")
     public ResponseEntity<List<FishResponse>> getAllFishList() {
         LOGGER.info("Comienza el medoto de obtener la lista de peces");
+
+        // Llama al caso de uso para obtener la lista de peces.
         List<FishResponse> res = fishUseCase.getAllFishList();
-        LOGGER.info("Se obtienen " + res.size());
+        LOGGER.info("Se obtienen {}", res.size());
+
+        // Retorna una respuesta HTTP 200 (OK) con la lista de peces.
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 

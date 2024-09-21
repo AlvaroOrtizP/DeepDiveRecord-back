@@ -3,6 +3,7 @@ package com.record.DeepDiveRecord.controllers;
 import com.record.DeepDiveRecord.application.usecase.DiveDayUseCase;
 import com.record.DeepDiveRecord.domain.model.dto.request.dive_day.InCreateDailyDiving;
 import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayDetailsResponse;
+import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayResponse;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.infrastructure.rest.controller.DiveDayController;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,11 +12,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Collections;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -99,6 +103,60 @@ class DiveDayControllerTest {
                 () -> assertEquals(null, res.getBody(), "El cuerpo de la respuesta debe ser nulo en caso de error"),
                 () -> assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode(), "Devuelve el estado 404 indicando un error en la creación")
         );
+    }
+
+    @Test
+    void testGetFishingDays_Success() {
+        // Arrange
+        String zona = "Pacific";
+        int page = 0;
+        int size = 10;
+        String sortDirection = "asc";
+        String sortBy = "fecha";
+
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortBy);
+        DiveDayResponse diveDayResponse = new DiveDayResponse(); // Crear una instancia de DiveDayEntity
+        Page<DiveDayResponse> diveDayPage = new PageImpl<>(Collections.singletonList(diveDayResponse));
+
+        when(diveDayUseCase.findByFilters(zona, pageable)).thenReturn(diveDayPage);
+
+        // Act
+        ResponseEntity<Page<DiveDayResponse>> res = diveDayController.getFishingDays(page, size, zona, sortDirection, sortBy);
+
+        // Assert
+        assertAll("Verificaciones de respuesta",
+                () -> assertNotNull(res.getBody(), "La respuesta no debería ser nula"),
+                () -> assertEquals(1, res.getBody().getTotalElements(), "Debería devolver un elemento"),
+                () -> assertEquals(HttpStatus.OK, res.getStatusCode(), "Devuelve el estado 200 indicando que la solicitud fue exitosa")
+        );
+
+        verify(diveDayUseCase).findByFilters(zona, pageable);
+    }
+    @Test
+    void testGetFishingDays_NoResults() {
+        // Arrange
+        String zona = "Atlantic";
+        int page = 0;
+        int size = 10;
+        String sortDirection = "asc";
+        String sortBy = "fecha";
+
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortBy);
+        Page<DiveDayResponse> emptyPage = new PageImpl<>(Collections.emptyList());
+
+        when(diveDayUseCase.findByFilters(zona, pageable)).thenReturn(emptyPage);
+
+        // Act
+        ResponseEntity<Page<DiveDayResponse>> res = diveDayController.getFishingDays(page, size, zona, sortDirection, sortBy);
+
+        // Assert
+        assertAll("Verificaciones de respuesta",
+                () -> assertNotNull(res.getBody(), "La respuesta no debería ser nula"),
+                () -> assertEquals(0, res.getBody().getTotalElements(), "Debería devolver cero elementos"),
+                () -> assertEquals(HttpStatus.OK, res.getStatusCode(), "Devuelve el estado 200 indicando que la solicitud fue exitosa")
+        );
+
+        verify(diveDayUseCase).findByFilters(zona, pageable);
     }
 
     private InCreateDailyDiving getInCreateDailyDiving() {

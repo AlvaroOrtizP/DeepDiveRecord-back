@@ -19,17 +19,21 @@ public class WindConditionsController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WindConditionsController.class);
     @Autowired
     WindConditionsUseCase windConditionsUseCase;
-
+    /**
+     * Maneja la solicitud para obtener datos semanales sobre las condiciones del viento.
+     * @param inGetDataWeek - Objeto que contiene los parámetros necesarios para obtener los datos semanales.
+     * @return ResponseEntity<OutGetDataList> - Retorna una lista de datos sobre las condiciones del viento con el estado HTTP correspondiente.
+     */
     @PostMapping("/getDataWeek")
     public ResponseEntity<OutGetDataList> getDataWeek(@RequestBody InGetDataWeek inGetDataWeek) {
         LOGGER.info("Comienza el getDataWeek");
+        // Llama al caso de uso para obtener los da
+        // tos de buceo profundo para la semana según los días especificados.
         OutGetDataList res = windConditionsUseCase.getDeepDiveDataByDays(inGetDataWeek);
-
 
         LOGGER.info("Finaliza el getDataWeek {}", res);
 
+        // Retorna una respuesta HTTP 200 (OK) con los datos obtenidos.
         return new ResponseEntity<>(res, HttpStatus.OK);
-
-
     }
 }
