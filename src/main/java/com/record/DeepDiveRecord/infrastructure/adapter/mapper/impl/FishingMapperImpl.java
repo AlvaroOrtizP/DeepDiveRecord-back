@@ -21,6 +21,7 @@ public class FishingMapperImpl implements FishingMapper {
         res.setFish(fish);
         res.setLatG(input.getLatG());
         res.setLongG(input.getLongG());
+        res.setSightingTime(input.getSightingTime());
         DiveDayEntity diveDay = new DiveDayEntity();
         diveDay.setDiveDayId(input.getIdDiveDay());
         res.setDiveDay(diveDay);

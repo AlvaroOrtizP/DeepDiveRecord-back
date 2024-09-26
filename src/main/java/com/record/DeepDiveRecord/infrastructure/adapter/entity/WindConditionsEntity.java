@@ -14,6 +14,9 @@ import java.math.BigDecimal;
 public class WindConditionsEntity {
     @EmbeddedId
     private WindConditionsId id;
+    private Integer month;
+    @Column(name ="day")
+    private Integer day;
     //Velocidad del viento
     private Integer wind;
     @Column(name = "wind_direction")

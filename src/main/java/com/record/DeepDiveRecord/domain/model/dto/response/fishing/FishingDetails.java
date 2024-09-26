@@ -27,5 +27,6 @@ public class FishingDetails {
     private Integer geographieId;
     private String geographieName;
     private String geographieSite;
+    private String sightingTime;
 
 }

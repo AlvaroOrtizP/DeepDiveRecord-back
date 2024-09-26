@@ -17,14 +17,18 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
         WindConditionResponse windConditionResponse = new WindConditionResponse();
 
         windConditionResponse.setYear(input.getId().getYear());
-        windConditionResponse.setMonth(input.getId().getMonth());
-        windConditionResponse.setDay(input.getId().getDay());
+        windConditionResponse.setMonth(input.getMonth());
+        windConditionResponse.setDayOfYear(input.getId().getDayOfYear());
+        windConditionResponse.setDay(input.getDay());
         windConditionResponse.setTimeOfDay(input.getId().getTime());
         windConditionResponse.setSite(input.getId().getSite());
         windConditionResponse.setWind(input.getWind());
-        windConditionResponse.setWindDirection(input.getWindDirection().intValue());
+        if(input.getWindDirection() != null)
+            windConditionResponse.setWindDirection(input.getWindDirection().intValue());
+
         windConditionResponse.setWindDirectionNM("NA");
         windConditionResponse.setGustsOfWind(12);
+
         windConditionResponse.setWaveHeight(String.valueOf(input.getWaveHeight()));
         windConditionResponse.setWavePeriod(input.getWavePeriod());
         windConditionResponse.setWaveDirection("12");
@@ -40,13 +44,13 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
     public FindDeepDiveDataByDays fromDiveDayEntityToDtoFindDeepData(DiveDayEntity input) {
         FindDeepDiveDataByDays res = new FindDeepDiveDataByDays();
         res.setPage(0);
-        res.setSize(8);
+        res.setSize(13);
         res.setSite(input.getSite());
         res.setFromYear(Integer.valueOf(input.getYear()));
         res.setFromMonth(Integer.valueOf(input.getMonth()));
         res.setFromDay(Integer.valueOf(input.getDay()));
 
-        res.setToDay(Integer.valueOf(input.getYear()));
+        res.setToDay(Integer.valueOf(input.getDay()));
         res.setToMonth(Integer.valueOf(input.getMonth()));
         res.setToYear(Integer.valueOf(input.getYear()));
         return res;
@@ -71,8 +75,9 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
     @Override
     public OutGetData getOutGetData(WindConditionsEntity item) {
         OutGetData outGetData = new OutGetData();
-        outGetData.setMonth(item.getId().getMonth());
-        outGetData.setDay(item.getId().getDay());
+        outGetData.setMonth(item.getMonth());
+        outGetData.setDayOfYear(item.getId().getDayOfYear());
+        outGetData.setDay(item.getDay());
         outGetData.setYear(item.getId().getYear());
         outGetData.setSite(item.getId().getSite());
         outGetData.setTimeOfDay(String.valueOf(item.getId().getTime()));

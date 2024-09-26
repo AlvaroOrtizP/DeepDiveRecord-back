@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 public class OutGetData {
     Integer month;
     Integer day;
+    Integer dayOfYear;
     Integer year;
     String site;
     String timeOfDay;

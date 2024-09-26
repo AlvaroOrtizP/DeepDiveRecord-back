@@ -41,6 +41,8 @@ public class FishingService implements FishingUseCase {
             LOGGER.warn("No se encontró ninguna geolocalización que coincida con el nombre y sitio proporcionados.");
         }
 
+        //Se ajusta para la equivalencia con el otro mapa
+        input.setLatG(input.getLatG() + 1);
         // Mapeo de la solicitud de pesca a la entidad FishingEntity
         FishingEntity fishingEntity = fishingMapper.fromRequestToEntity(input);
         LOGGER.info("Se ha mapeado la solicitud de pesca a la entidad FishingEntity.");

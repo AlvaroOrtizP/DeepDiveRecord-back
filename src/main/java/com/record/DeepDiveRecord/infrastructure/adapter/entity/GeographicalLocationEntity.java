@@ -9,7 +9,6 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "geographical_location")
 public class GeographicalLocationEntity {

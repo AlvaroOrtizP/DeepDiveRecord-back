@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.record</groupId>
 	<artifactId>DeepDiveRecord</artifactId>
-	<version>1.0.0</version>
+	<version>0.9.0</version>
 	<name>DeepDiveRecord</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>

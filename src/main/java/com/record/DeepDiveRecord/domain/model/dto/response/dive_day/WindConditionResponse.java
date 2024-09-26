@@ -11,6 +11,7 @@ public class WindConditionResponse {
     private Integer year;
     private Integer month;
     private Integer day;
+    private Integer dayOfYear;
     private String site;
     private Integer timeOfDay;
     private Integer wind;

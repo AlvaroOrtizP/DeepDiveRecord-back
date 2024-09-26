@@ -19,4 +19,5 @@ public class InCreateFishing {
     private double latG;
     private double longG;
     private Integer idDiveDay;
+    private String sightingTime;
 }

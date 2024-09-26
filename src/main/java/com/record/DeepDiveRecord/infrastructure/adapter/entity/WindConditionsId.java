@@ -14,9 +14,9 @@ import java.io.Serializable;
 public class WindConditionsId implements Serializable {
     @Column(name ="year")
     private Integer year;
-    private Integer month;
-    @Column(name ="day")
-    private Integer day;
+
+    @Column(name ="day_of_year")
+    private Integer dayOfYear;
     //Hora de la estimacion
     @Column(name = "time_of_day")
     private Integer time;

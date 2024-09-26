@@ -29,6 +29,9 @@ public class FishingEntity {
     private double latG;
     @Column(name = "long_g")
     private double longG;
+    //Hora del avistamiento
+    @Column(name = "sighting_time")
+    private String sightingTime;
     @ManyToOne
     @JoinColumn(name = "dive_day_id", referencedColumnName = "dive_day_id", nullable = false)
     private DiveDayEntity diveDay;
