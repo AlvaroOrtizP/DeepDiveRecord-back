@@ -23,12 +23,12 @@ public class OutGetData {
     Integer wavePeriod;
     Integer waveDirection;
     Integer earthTemperature;
-    String waterTtermperature;
+    String waterTemperature;
     Integer f1;
-    String descripcion1;
+    String description1;
     Integer f2;
-    String descripcion2;
+    String description2;
     String beginning;
     String end;
-    String notas;
+    String notes;
 }

@@ -9,7 +9,6 @@ import lombok.*;
 @ToString
 public class FishResponse {
     private Integer id;
-
     private String name;
     private String site;
     private String firstSighting;

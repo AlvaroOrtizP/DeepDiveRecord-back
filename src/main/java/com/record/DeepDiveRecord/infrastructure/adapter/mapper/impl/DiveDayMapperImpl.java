@@ -41,7 +41,7 @@ public class DiveDayMapperImpl implements DiveDayMapper {
         res.setBeginning(input.getBeginning());
         res.setEnd(input.getEnd());
         res.setSite(input.getSite());
-        res.setValoracion(input.getAssessment());
+        res.setAssessment(input.getAssessment());
         res.setNotes(input.getNotes());
         return res;
     }

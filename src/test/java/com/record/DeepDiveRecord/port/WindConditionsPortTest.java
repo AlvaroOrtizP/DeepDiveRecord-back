@@ -46,9 +46,8 @@ class WindConditionsPortTest {
 
         windConditionsEntity = new WindConditionsEntity();
         WindConditionsId windConditionsId = new WindConditionsId();
-        windConditionsId.setDay(1);
+        windConditionsId.setDayOfYear(120);
         windConditionsId.setYear(2024);
-        windConditionsId.setMonth(2);
         windConditionsId.setTime(2);
         windConditionsId.setSite("24823");
         windConditionsEntity.setId(windConditionsId);

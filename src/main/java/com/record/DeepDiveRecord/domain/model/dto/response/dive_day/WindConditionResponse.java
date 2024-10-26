@@ -23,7 +23,7 @@ public class WindConditionResponse {
     private String waveDirection;
     private String waveDirectionNM;
     private Integer earthTemperature;
-    private String waterTermperature;
+    private String waterTemperature;
     private Integer conditionCode;
     private String conditionDescription;
 }

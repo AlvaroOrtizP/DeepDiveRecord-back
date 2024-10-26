@@ -39,6 +39,7 @@ class FishingControllerTest {
 
         // Crea el objeto de entrada para el test
         InCreateFishing input = new InCreateFishing();
+        input.setIdDiveDay(1);
 
         // Ejecuta el método del controlador
         ResponseEntity<Integer> res = fishingController.createFishing(input);

@@ -23,7 +23,7 @@ public class FishingController {
             Integer id = fishingUseCase.createFishing(inCreateFishing);
             LOGGER.info("Finaliza el metodo de crear nuevo fishing con id {}", id);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(id);
+            return ResponseEntity.status(HttpStatus.CREATED).body(inCreateFishing.getIdDiveDay());
         } catch (Exception e) {
             LOGGER.error("Finaliza el metodo de crear nuevo fishing con error {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

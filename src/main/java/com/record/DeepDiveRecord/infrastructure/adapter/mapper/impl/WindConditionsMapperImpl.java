@@ -34,7 +34,7 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
         windConditionResponse.setWaveDirection("12");
         windConditionResponse.setWaveDirectionNM("NM");
         windConditionResponse.setEarthTemperature(input.getEarthTemperature());
-        windConditionResponse.setWaterTermperature(String.valueOf(input.getWaterTemperature()));
+        windConditionResponse.setWaterTemperature(String.valueOf(input.getWaterTemperature()));
         windConditionResponse.setConditionCode(input.getCodeCondition());
         windConditionResponse.setConditionDescription(input.getConditionDescription());
         return windConditionResponse;
@@ -89,14 +89,14 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
         outGetData.setWaveDirection(item.getWaveDirection());
         outGetData.setEarthTemperature(item.getEarthTemperature());
         if(null == item.getWaterTemperature()){
-            outGetData.setWaterTtermperature("NA");
+            outGetData.setWaterTemperature("NA");
         }
         else{
-            outGetData.setWaterTtermperature(String.valueOf(item.getWaterTemperature()));
+            outGetData.setWaterTemperature(String.valueOf(item.getWaterTemperature()));
         }
 
         outGetData.setF1(item.getCodeCondition());
-        outGetData.setDescripcion1(item.getConditionDescription());
+        outGetData.setDescription1(item.getConditionDescription());
         return outGetData;
     }
 

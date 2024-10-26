@@ -72,7 +72,7 @@ class WindConditionsServiceTest {
     @Test
     void testGetDeepDiveDataByDays_Success() {
         // Configurar mocks para devolver datos de prueba
-        when(windConditionsPort.getDeepDiveDataByDays(any(), eq(true))).thenReturn(windConditionsEntityPage);
+        when(windConditionsPort.getDeepDiveDataByDays(any(), eq(false))).thenReturn(windConditionsEntityPage);
         OutGetData outGetData1 = new OutGetData();
         OutGetData outGetData2 = new OutGetData();
 
@@ -87,7 +87,7 @@ class WindConditionsServiceTest {
         // Verificar el resultado y las interacciones
         assertEquals(2, result.getOutGetDataList().size(), "El tamaño de la lista de resultados debería ser 2");
         assertEquals(pagination, result.getPagination(), "La paginación en la respuesta debería coincidir con la de prueba");
-        verify(windConditionsPort, times(1)).getDeepDiveDataByDays(any(), eq(true));
+        verify(windConditionsPort, times(1)).getDeepDiveDataByDays(any(), eq(false));
         verify(windConditionsMapper, times(2)).getOutGetData(any(WindConditionsEntity.class));
         verify(commonMapper, times(1)).getPagination(any());
     }
@@ -96,7 +96,7 @@ class WindConditionsServiceTest {
     void testGetDeepDiveDataByDays_EmptyPage() {
         // Configurar mocks para devolver una lista vacía
         Page<WindConditionsEntity> emptyPage = new PageImpl<>(new ArrayList<>());
-        when(windConditionsPort.getDeepDiveDataByDays(any(), eq(true))).thenReturn(emptyPage);
+        when(windConditionsPort.getDeepDiveDataByDays(any(), eq(false))).thenReturn(emptyPage);
         when(commonMapper.getPagination(any())).thenReturn(pagination);
 
         // Ejecutar el método a probar
@@ -105,7 +105,7 @@ class WindConditionsServiceTest {
         // Verificar que el resultado contenga una lista vacía
         assertEquals(0, result.getOutGetDataList().size(), "El tamaño de la lista de resultados debería ser 0");
         assertEquals(pagination, result.getPagination(), "La paginación en la respuesta debería coincidir con la de prueba");
-        verify(windConditionsPort, times(1)).getDeepDiveDataByDays(any(), eq(true));
+        verify(windConditionsPort, times(1)).getDeepDiveDataByDays(any(), eq(false));
         verify(windConditionsMapper, never()).getOutGetData(any(WindConditionsEntity.class));
         verify(commonMapper, times(1)).getPagination(any());
     }
@@ -118,7 +118,7 @@ class WindConditionsServiceTest {
         OutGetData singleOutGetData = new OutGetData();
 
         // Usa el matcher any() en lugar del valor real
-        when(windConditionsPort.getDeepDiveDataByDays(any(), eq(true))).thenReturn(singleEntityPage);
+        when(windConditionsPort.getDeepDiveDataByDays(any(), eq(false))).thenReturn(singleEntityPage);
         when(windConditionsMapper.getOutGetData(any(WindConditionsEntity.class))).thenReturn(singleOutGetData);
         when(commonMapper.getPagination(any())).thenReturn(pagination);
 
@@ -129,7 +129,7 @@ class WindConditionsServiceTest {
         assertEquals(1, result.getOutGetDataList().size(), "El tamaño de la lista de resultados debería ser 1");
         assertEquals(singleOutGetData, result.getOutGetDataList().get(0), "El único elemento en la lista de resultados debería coincidir con el de prueba");
         assertEquals(pagination, result.getPagination(), "La paginación en la respuesta debería coincidir con la de prueba");
-        verify(windConditionsPort, times(1)).getDeepDiveDataByDays(any(), eq(true));
+        verify(windConditionsPort, times(1)).getDeepDiveDataByDays(any(), eq(false));
         verify(windConditionsMapper, times(1)).getOutGetData(any(WindConditionsEntity.class));
         verify(commonMapper, times(1)).getPagination(any());
     }

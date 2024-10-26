@@ -72,7 +72,7 @@ class DiveDayServiceTest {
     void setUp() {
         // Inicialización de objetos simulados para las pruebas
         inCreateDailyDiving = new InCreateDailyDiving();
-        inCreateDailyDiving.setIdGeograficLocation(1);
+        inCreateDailyDiving.setIdGeographicLocation(1);
 
         geographicalLocationEntity = new GeographicalLocationEntity();
         geographicalLocationEntity.setId(1);

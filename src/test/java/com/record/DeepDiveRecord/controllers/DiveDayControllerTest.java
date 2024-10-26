@@ -103,14 +103,14 @@ class DiveDayControllerTest {
 
     private InCreateDailyDiving getInCreateDailyDiving() {
         InCreateDailyDiving inCreateDailyDiving = new InCreateDailyDiving();
-        inCreateDailyDiving.setIdGeograficLocation(487006);
+        inCreateDailyDiving.setSite("487006");
         inCreateDailyDiving.setDay("1");
         inCreateDailyDiving.setName("Isla");
         inCreateDailyDiving.setEnd("16:15");
         inCreateDailyDiving.setBeginning("15:00");
         inCreateDailyDiving.setSite("487006");
         inCreateDailyDiving.setAssessment(2);
-        inCreateDailyDiving.setIdGeograficLocation(1);
+        inCreateDailyDiving.setIdGeographicLocation(1);
         inCreateDailyDiving.setMonth("2");
         inCreateDailyDiving.setYear("2024");
         inCreateDailyDiving.setName("Prueba");

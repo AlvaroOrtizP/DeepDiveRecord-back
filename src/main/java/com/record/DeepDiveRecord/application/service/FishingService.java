@@ -42,7 +42,7 @@ public class FishingService implements FishingUseCase {
         }
 
         //Se ajusta para la equivalencia con el otro mapa
-        input.setLatG(input.getLatG() + 1);
+       // input.setLatG(input.getLatG() + 1);
         // Mapeo de la solicitud de pesca a la entidad FishingEntity
         FishingEntity fishingEntity = fishingMapper.fromRequestToEntity(input);
         LOGGER.info("Se ha mapeado la solicitud de pesca a la entidad FishingEntity.");

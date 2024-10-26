@@ -17,7 +17,7 @@ public class DiveDayDetailsResponse {
     private String beginning;
     private String end;
     private String site;
-    private Integer valoracion;
+    private Integer assessment;
     private String notes;
     private GeographicalLocationResponse geographicalLocationResponse;
     private TideTableResponse tideTableResponse;

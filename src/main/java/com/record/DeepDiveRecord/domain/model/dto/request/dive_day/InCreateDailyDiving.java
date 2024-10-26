@@ -16,7 +16,7 @@ public class InCreateDailyDiving {
     private String name; //El nombre de la zona
     private String notes;
     private Integer assessment;
-    private Integer idGeograficLocation;
+    private Integer idGeographicLocation;
     private Integer jellyfish;
     private Integer visibility;
     private Integer seaBackground;

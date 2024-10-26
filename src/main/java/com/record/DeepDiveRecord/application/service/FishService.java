@@ -1,15 +1,10 @@
 package com.record.DeepDiveRecord.application.service;
 
 import com.record.DeepDiveRecord.application.usecase.FishUseCase;
-import com.record.DeepDiveRecord.domain.model.dto.Fish;
-import com.record.DeepDiveRecord.domain.model.dto.request.fish.create.FishCreateRequest;
 import com.record.DeepDiveRecord.domain.model.dto.response.fish.FishResponse;
-import com.record.DeepDiveRecord.domain.port.GeographicalLocationPort;
-import com.record.DeepDiveRecord.infrastructure.adapter.adapterimpl.GeographicalLocationRepositoryImpl;
-import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishEntity;
-import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;
-import com.record.DeepDiveRecord.infrastructure.adapter.mapper.FishMapper;
 import com.record.DeepDiveRecord.domain.port.FishPort;
+import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishEntity;
+import com.record.DeepDiveRecord.infrastructure.adapter.mapper.FishMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -55,7 +55,7 @@ public class DiveDayService implements DiveDayUseCase {
         LOGGER.info("Comienza el metodo createDiveDay con valor {}", inCreateDailyDiving);
 
         // Buscar la ubicación geográfica por ID y verificar su existencia.
-        GeographicalLocationEntity location = geographicalLocationPort.findById(inCreateDailyDiving.getIdGeograficLocation());
+        GeographicalLocationEntity location = geographicalLocationPort.findById(inCreateDailyDiving.getIdGeographicLocation());
 
         LOGGER.info("La marca geografica es correcta {}", location);
         // Mapear los datos de entrada a la entidad DiveDayEntity y asociar la ubicación y sitio.
