@@ -14,6 +14,9 @@ FROM openjdk:17-jdk-alpine
 
 WORKDIR /app
 
+# Definir un argumento para recibir el nombre del archivo JAR
+ARG JAR_FILE
+
 # Copia el archivo JAR generado en el primer stage
 COPY --from=build /app/target/${JAR_FILE} app.jar  # Usar la variable JAR_FILE
 
