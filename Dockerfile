@@ -10,14 +10,14 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Stage 2: Ejecución
-FROM openjdk:17-jdk-alpine  # Imagen ligera de OpenJDK 17
+FROM openjdk:17-jdk-alpine
 
 WORKDIR /app
 
 # Copia el archivo JAR generado en el primer stage
-COPY --from=build /app/target/tu-proyecto.jar app.jar  # Reemplaza 'tu-proyecto.jar' con el nombre correcto de tu archivo JAR
+COPY --from=build /app/target/tu-proyecto.jar app.jar  # Asegúrate de usar el nombre correcto del archivo JAR
 
-EXPOSE 8080  # Exponemos el puerto 8080 donde la aplicación escuchará
+EXPOSE 8080
 
 # Comando para ejecutar el archivo JAR
 ENTRYPOINT ["java", "-jar", "app.jar"]
