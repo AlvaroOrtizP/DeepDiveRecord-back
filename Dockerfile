@@ -22,7 +22,7 @@ WORKDIR /app
 ARG JAR_FILE
 
 # Copiar el archivo JAR desde el primer stage
-COPY --from=build /app/target/${JAR_FILE} app.jar
+COPY --from=build /app/target/DeepDiveRecord-0.9.0.jar app.jar
 
 EXPOSE 8080
 
