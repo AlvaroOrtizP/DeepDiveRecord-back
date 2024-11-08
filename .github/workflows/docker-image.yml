@@ -59,4 +59,4 @@ jobs:
           -t alorpes/deepdive-record-api:$NEW_VERSION \
           -t alorpes/deepdive-record-api:latest \
           --build-arg JAR_FILE=${JAR_FILE} \
-          --push .  # Especifica el contexto como el directorio actual
+          --push .
