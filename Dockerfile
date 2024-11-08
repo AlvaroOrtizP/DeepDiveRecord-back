@@ -17,6 +17,10 @@ WORKDIR /app
 # Definir un argumento para recibir el nombre del archivo JAR
 ARG JAR_FILE
 
+# Verifica si el archivo JAR existe antes de copiarlo
+RUN echo "Buscando archivo JAR: /app/target/${JAR_FILE}" && \
+    ls -l /app/target/${JAR_FILE}
+
 # Copia el archivo JAR generado en el primer stage
 COPY --from=build /app/target/${JAR_FILE} app.jar  # Usar la variable JAR_FILE
 
