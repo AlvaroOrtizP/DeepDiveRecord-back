@@ -9,11 +9,12 @@ COPY . .
 # Ejecuta el build y empaqueta el proyecto, sin ejecutar las pruebas
 RUN mvn clean package -DskipTests
 
-# Imprime el valor de la variable JAR_FILE para depuración
-RUN echo "Valor de JAR_FILE: ${JAR_FILE}"
+# Verifica si los archivos JAR fueron creados correctamente
+RUN echo "Archivos en la carpeta target:" && \
+    ls -l /app/target/
 
-# Verifica si el archivo JAR existe en la carpeta target
-RUN echo "Buscando archivo JAR: /app/target/${JAR_FILE}" && \
+# Imprime el nombre del archivo JAR que esperamos y busca si está presente
+RUN echo "Buscando archivo JAR en la carpeta target: ${JAR_FILE}" && \
     ls -l /app/target/${JAR_FILE}
 
 # Stage 2: Ejecución
@@ -29,7 +30,7 @@ RUN echo "Buscando archivo JAR en la carpeta final: ${JAR_FILE}" && \
     ls -l /app/target/${JAR_FILE}
 
 # Copia el archivo JAR generado en el primer stage
-COPY --from=build /app/target/${JAR_FILE} app.jar  # Usar la variable JAR_FILE
+COPY --from=build /app/target/${JAR_FILE} app.jar
 
 EXPOSE 8080
 
