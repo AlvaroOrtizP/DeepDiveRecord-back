@@ -1,0 +1,51 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]  # Ejecutar workflow cuando haya un push en la rama "main"
+  pull_request:
+    branches: [ "main" ]  # Ejecutar workflow cuando se cree una pull request hacia la rama "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Utiliza la última versión de Ubuntu como entorno de ejecución
+
+    steps:
+    # Paso 1: Descargar el código fuente del repositorio
+    - name: Checkout code
+      uses: actions/checkout@v3  # Usa la acción 'checkout' versión 3 para clonar el repositorio
+      with:
+        fetch-depth: 0  # Clona todo el historial de git (necesario para el versionado semántico)
+
+    # Paso 2: Obtener la versión semántica basada en los mensajes de commit
+    - name: Git Semantic Version
+      uses: PaulHatch/semantic-version@v4.0.3  # Usa la acción 'semantic-version' para calcular la versión
+      with:
+        major_pattern: "major:"  # Commits con este prefijo actualizarán la versión mayor
+        minor_pattern: "feat:"   # Commits con este prefijo actualizarán la versión menor
+        format: "${major}.${minor}.${patch}${increment}"  # Formato de la versión (ej. 1.0.0-1)
+      id: version  # Asigna el ID 'version' a este paso para poder referenciar su salida en los siguientes pasos
+    
+    # Paso 3: Iniciar sesión en Docker Hub
+    - name: Docker Login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}  # Usuario de Docker Hub almacenado como un secreto en GitHub
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  # Contraseña de Docker Hub almacenada como un secreto en GitHub
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  # Comando para iniciar sesión en Docker Hub con las credenciales proporcionadas
+
+    # Paso 4: Construir la imagen de Docker
+    - name: Build Docker Image
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.version }}  # Recupera la versión generada en el paso anterior
+      run: |
+        docker build -t alorpes/deepdive-record-api:$NEW_VERSION .  # Construye la imagen con la etiqueta de la nueva versión
+        docker build -t alorpes/deepdive-record-api:latest .  # También crea una imagen con la etiqueta 'latest'
+
+    # Paso 5: Subir la imagen a Docker Hub
+    - name: Push Docker Image
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.version }}  # Utiliza la versión generada
+      run: |
+        docker push alorpes/deepdive-record-api:$NEW_VERSION  # Sube la imagen con la etiqueta específica de versión
+        docker push alorpes/deepdive-record-api:latest  # Sube la imagen con la etiqueta 'latest'
