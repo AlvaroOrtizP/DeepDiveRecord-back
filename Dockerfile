@@ -15,7 +15,7 @@ FROM openjdk:17-jdk-alpine
 WORKDIR /app
 
 # Copia el archivo JAR generado en el primer stage
-COPY --from=build /app/target/tu-proyecto.jar app.jar  # Asegúrate de usar el nombre correcto del archivo JAR
+COPY --from=build /app/target/${JAR_FILE} app.jar  # Usar la variable JAR_FILE
 
 EXPOSE 8080
 
