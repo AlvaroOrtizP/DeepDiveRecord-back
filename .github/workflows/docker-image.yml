@@ -51,12 +51,12 @@ jobs:
     - name: Build Docker Image
       env:
         NEW_VERSION: ${{ steps.version.outputs.version }}
-        JAR_FILE: "DeepDiveRecord-${{ steps.version.outputs.version }}.jar"  # Pasamos la variable JAR_FILE
+        JAR_FILE: "DeepDiveRecord-${{ steps.version.outputs.version }}.jar"  # Define el nombre del archivo JAR
       run: |
         docker buildx build \
           --cache-from type=local,src=/tmp/.buildx-cache \
           --cache-to type=local,dest=/tmp/.buildx-cache,mode=max \
           -t alorpes/deepdive-record-api:$NEW_VERSION \
           -t alorpes/deepdive-record-api:latest \
-          --build-arg JAR_FILE=${JAR_FILE} \
+          --build-arg JAR_FILE=${JAR_FILE} \  # Pasa el JAR_FILE como argumento
           --push .
