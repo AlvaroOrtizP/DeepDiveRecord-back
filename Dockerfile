@@ -13,23 +13,15 @@ RUN mvn clean package -DskipTests
 RUN echo "Archivos en la carpeta target:" && \
     ls -l /app/target/
 
-# Verifica si el archivo JAR realmente existe antes de copiarlo
-RUN echo "Buscando archivo JAR en la carpeta target: ${JAR_FILE}" && \
-    ls -l /app/target/  # Lista los archivos en /app/target para ver si el JAR está allí
-
 # Stage 2: Ejecución
 FROM openjdk:17-jdk-alpine
 
 WORKDIR /app
 
-# Copiar el archivo JAR desde el stage de construcción
+# Definir un argumento para recibir el nombre del archivo JAR
 ARG JAR_FILE
 
-# Verifica si el archivo JAR realmente existe antes de copiarlo
-RUN echo "Buscando archivo JAR en la carpeta final: ${JAR_FILE}" && \
-    ls -l /app/target/${JAR_FILE}
-
-# Copia el archivo JAR generado en el primer stage
+# Copiar el archivo JAR desde el primer stage
 COPY --from=build /app/target/${JAR_FILE} app.jar
 
 EXPOSE 8080
