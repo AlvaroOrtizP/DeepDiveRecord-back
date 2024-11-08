@@ -18,13 +18,13 @@ jobs:
         fetch-depth: 0
 
     # Paso 2: Obtener la versión semántica basada en los mensajes de commit
-    - name: Git Semantic Version
-      uses: PaulHatch/semantic-version@v4.0.3
-      with:
-        major_pattern: "major:"
-        minor_pattern: "feat:"
-        format: "${major}.${minor}.${patch}${increment}"
-      id: version
+    #- name: Git Semantic Version
+      # uses: PaulHatch/semantic-version@v4.0.3
+      # with:
+         #major_pattern: "major:"
+        # minor_pattern: "feat:"
+        # format: "${major}.${minor}.${patch}${increment}"
+      # id: version
 
     # Paso 3: Configurar Docker Buildx
     - name: Set up Docker Buildx
@@ -51,7 +51,7 @@ jobs:
     - name: Build Docker Image
       env:
         NEW_VERSION: ${{ steps.version.outputs.version }}
-        JAR_FILE: "DeepDiveRecord-${{ steps.version.outputs.version }}.jar"  # Define el nombre del archivo JAR
+        JAR_FILE: "DeepDiveRecord-0.9.0.jar"  # Define el nombre del archivo JAR
       run: |
         docker buildx build \
           --cache-from type=local,src=/tmp/.buildx-cache \
