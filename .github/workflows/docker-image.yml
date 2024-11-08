@@ -13,39 +13,50 @@ jobs:
     steps:
     # Paso 1: Descargar el código fuente del repositorio
     - name: Checkout code
-      uses: actions/checkout@v3  # Usa la acción 'checkout' versión 3 para clonar el repositorio
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0  # Clona todo el historial de git (necesario para el versionado semántico)
 
     # Paso 2: Obtener la versión semántica basada en los mensajes de commit
     - name: Git Semantic Version
-      uses: PaulHatch/semantic-version@v4.0.3  # Usa la acción 'semantic-version' para calcular la versión
+      uses: PaulHatch/semantic-version@v4.0.3
       with:
-        major_pattern: "major:"  # Commits con este prefijo actualizarán la versión mayor
-        minor_pattern: "feat:"   # Commits con este prefijo actualizarán la versión menor
-        format: "${major}.${minor}.${patch}${increment}"  # Formato de la versión (ej. 1.0.0-1)
-      id: version  # Asigna el ID 'version' a este paso para poder referenciar su salida en los siguientes pasos
-    
-    # Paso 3: Iniciar sesión en Docker Hub
+        major_pattern: "major:"
+        minor_pattern: "feat:"
+        format: "${major}.${minor}.${patch}${increment}"
+      id: version
+
+    # Paso 3: Configurar Docker Buildx
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    # Paso 4: Configurar caché de Docker para acelerar la construcción
+    - name: Cache Docker layers
+      uses: actions/cache@v3
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-docker-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
+
+    # Paso 5: Iniciar sesión en Docker Hub
     - name: Docker Login
       env:
-        DOCKER_USER: ${{ secrets.DOCKER_USER }}  # Usuario de Docker Hub almacenado como un secreto en GitHub
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  # Contraseña de Docker Hub almacenada como un secreto en GitHub
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
-        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  # Comando para iniciar sesión en Docker Hub con las credenciales proporcionadas
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
 
-    # Paso 4: Construir la imagen de Docker
+    # Paso 6: Construir la imagen de Docker
     - name: Build Docker Image
       env:
-        NEW_VERSION: ${{ steps.version.outputs.version }}  # Recupera la versión generada en el paso anterior
+        NEW_VERSION: ${{ steps.version.outputs.version }}
       run: |
-        docker build -t alorpes/deepdive-record-api:$NEW_VERSION .  # Construye la imagen con la etiqueta de la nueva versión
-        docker build -t alorpes/deepdive-record-api:latest .  # También crea una imagen con la etiqueta 'latest'
+        docker buildx build \
+          --cache-from type=local,src=/tmp/.buildx-cache \
+          --cache-to type=local,dest=/tmp/.buildx-cache,mode=max \
+          -t alorpes/deepdive-record-api:$NEW_VERSION \
+          -t alorpes/deepdive-record-api:latest \
+          --push .
 
-    # Paso 5: Subir la imagen a Docker Hub
-    - name: Push Docker Image
-      env:
-        NEW_VERSION: ${{ steps.version.outputs.version }}  # Utiliza la versión generada
-      run: |
-        docker push alorpes/deepdive-record-api:$NEW_VERSION  # Sube la imagen con la etiqueta específica de versión
-        docker push alorpes/deepdive-record-api:latest  # Sube la imagen con la etiqueta 'latest'
+    # Paso 7: Subir la imagen a Docker Hub (esto ya se hace en el paso anterior con --push)
