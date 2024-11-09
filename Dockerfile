@@ -18,7 +18,8 @@ WORKDIR /app
 ARG JAR_FILE
 
 # Copiar el archivo JAR generado en el primer stage
-COPY --from=build /${JAR_FILE} app.jar
+COPY --from=build /app/target/${JAR_FILE} app.jar
+
 
 EXPOSE 8080
 
