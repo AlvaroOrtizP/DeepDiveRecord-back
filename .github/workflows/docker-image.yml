@@ -17,21 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Paso 2: Configurar JDK 17
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      # Paso 3: Verificar la versión de Java
-      - name: Check Java version
-        run: java -version
-
-      - name: Check Maven Java version
-        run: mvn -v
-
-      # Paso 4: Obtener la versión semántica basada en los mensajes de commit
+      # Paso 2: Obtener la versión semántica basada en los mensajes de commit
       - name: Git Semantic Version
         uses: PaulHatch/semantic-version@v4.0.3
         with:
@@ -40,15 +26,19 @@ jobs:
           format: "${major}.${minor}.${patch}${increment}"
         id: version
 
-      # Paso 5: Obtener la versión de Maven
+      # Paso 3: Obtener la versión de Maven
       - name: Get Maven Version
         run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
-      # Paso 6: Configurar Docker Buildx
+      # Paso 4: Ejecutar los tests de Maven
+      - name: Run Maven Tests
+        run: mvn test
+
+      # Paso 5: Configurar Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Paso 7: Configurar caché de Docker
+      # Paso 6: Configurar caché de Docker
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
@@ -57,23 +47,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-docker-
 
-      # Paso 8: Iniciar sesión en Docker Hub
+      # Paso 7: Iniciar sesión en Docker Hub
       - name: Docker Login
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
 
-      # Paso 9: Construir el archivo JAR
+      # Paso 8: Construir el archivo JAR
       - name: Build JAR File
-        run: mvn clean package -DskipTests
+        run: mvn clean package
 
-      # Paso 10: Encontrar el archivo JAR dinámicamente
+      # Paso 9: Encontrar el archivo JAR dinámicamente
       - name: Find JAR File
         id: find_jar
         run: echo "JAR_FILE=$(find target -name '*.jar' | grep -v 'original')" >> $GITHUB_ENV
 
-      # Paso 11: Construir la imagen de Docker y subirla a Docker Hub
+      # Paso 10: Construir la imagen de Docker y subirla a Docker Hub
       - name: Build and Push Docker Image
         env:
           NEW_VERSION: ${{ steps.version.outputs.version }}

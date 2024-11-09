@@ -6,8 +6,8 @@ WORKDIR /app
 # Copia todos los archivos del proyecto en el contenedor
 COPY . .
 
-# Ejecuta el build y empaqueta el proyecto, sin ejecutar las pruebas
-RUN mvn clean package -DskipTests
+# Ejecuta el build y empaqueta el proyecto, ejecutando las pruebas
+RUN mvn clean package
 
 # Stage 2: Ejecución
 FROM openjdk:17-jdk-alpine
