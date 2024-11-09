@@ -26,11 +26,15 @@ jobs:
         format: "${major}.${minor}.${patch}${increment}"
       id: version
 
-    # Paso 3: Configurar Docker Buildx
+    # Paso 3: Obtener la versión de Maven
+    - name: Get Maven Version
+      run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+    # Paso 4: Configurar Docker Buildx
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
-    # Paso 4: Configurar caché de Docker para acelerar la construcción
+    # Paso 5: Configurar caché de Docker
     - name: Cache Docker layers
       uses: actions/cache@v3
       with:
@@ -39,24 +43,32 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-docker-
 
-    # Paso 5: Iniciar sesión en Docker Hub
+    # Paso 6: Iniciar sesión en Docker Hub
     - name: Docker Login
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run: |
-        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
+      run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
 
-    # Paso 6: Construir la imagen de Docker
-    - name: Build Docker Image
+    # Paso 7: Construir el archivo JAR
+    - name: Build JAR File
+      run: mvn clean package -DskipTests
+
+    # Paso 8: Encontrar el archivo JAR dinámicamente
+    - name: Find JAR File
+      id: find_jar
+      run: echo "JAR_FILE=$(find target -name '*.jar' | grep -v 'original')" >> $GITHUB_ENV
+
+    # Paso 9: Construir la imagen de Docker y subirla a Docker Hub
+    - name: Build and Push Docker Image
       env:
         NEW_VERSION: ${{ steps.version.outputs.version }}
-        JAR_FILE: "DeepDiveRecord-0.9.0.jar"  # Valor estático para el archivo JAR
+        JAR_FILE: ${{ env.JAR_FILE }}
       run: |
         docker buildx build \
           --cache-from type=local,src=/tmp/.buildx-cache \
           --cache-to type=local,dest=/tmp/.buildx-cache,mode=max \
-          -t alorpes/deepdive-record-api:$NEW_VERSION \
+          -t alorpes/deepdive-record-api:${NEW_VERSION} \
           -t alorpes/deepdive-record-api:latest \
           --build-arg JAR_FILE=${JAR_FILE} \
           --push .
