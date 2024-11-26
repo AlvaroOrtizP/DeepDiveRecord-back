@@ -14,13 +14,25 @@ FROM openjdk:17-jdk-alpine
 
 WORKDIR /app
 
-# Definir un argumento para recibir el nombre del archivo JAR
+# Definir argumentos para las variables de entorno
 ARG JAR_FILE
+ARG DB_NAME
+ARG DB_USERNAME
+ARG DB_PASSWORD
+ARG MAIL_USERNAME
+ARG MAIL_PASSWORD
 
 # Copiar el archivo JAR generado en el primer stage
 COPY --from=build /app/${JAR_FILE} app.jar
 
+# Definir variables de entorno en el contenedor
+ENV DB_NAME=${DB_NAME}
+ENV DB_USERNAME=${DB_USERNAME}
+ENV DB_PASSWORD=${DB_PASSWORD}
+ENV MAIL_USERNAME=${MAIL_USERNAME}
+ENV MAIL_PASSWORD=${MAIL_PASSWORD}
 
+# Exponer el puerto de la aplicación
 EXPOSE 8080
 
 # Comando para ejecutar el archivo JAR
