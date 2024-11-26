@@ -40,15 +40,19 @@ jobs:
           format: "${major}.${minor}.${patch}${increment}"
         id: version
 
-      # Paso 5: Ejecutar los tests de Maven
+      # Paso 5: Obtener la versión de Maven
+      - name: Get Maven Version
+        run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      # Paso 6: Ejecutar los tests de Maven
       - name: Run Maven Tests
         run: mvn test
 
-      # Paso 6: Configurar Docker Buildx
+      # Paso 7: Configurar Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Paso 7: Configurar caché de Docker
+      # Paso 8: Configurar caché de Docker
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
@@ -57,44 +61,38 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-docker-
 
-      # Paso 8: Iniciar sesión en Docker Hub
+      # Paso 9: Iniciar sesión en Docker Hub
       - name: Docker Login
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
 
-      # Paso 9: Construir el archivo JAR
+      # Paso 10: Construir el archivo JAR
       - name: Build JAR File
         run: mvn clean package
 
-      # Paso 10: Encontrar el archivo JAR dinámicamente
+      # Paso 11: Encontrar el archivo JAR dinámicamente
       - name: Find JAR File
         id: find_jar
         run: |
           echo "JAR_FILE=$(find target -name '*.jar' | grep -v 'original')" >> $GITHUB_ENV
           echo "Found JAR file: $JAR_FILE"
-      # Paso 11: Construir la imagen de Docker y subirla a Docker Hub
+
+      # Paso 12: Debug JAR File Path
+      - name: Debug JAR File
+        run: echo "JAR file path:" ${{ env.JAR_FILE }}"
+
+      # Paso 13: Construir la imagen de Docker y subirla a Docker Hub
       - name: Build and Push Docker Image
         env:
           NEW_VERSION: ${{ steps.version.outputs.version }}
           JAR_FILE: ${{ env.JAR_FILE }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
-          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
         run: |
-          echo "Building Docker image..."
           docker buildx build \
             --cache-from type=local,src=/tmp/.buildx-cache \
             --cache-to type=local,dest=/tmp/.buildx-cache,mode=max \
             -t alorpes/deepdive-record-api:${NEW_VERSION} \
             -t alorpes/deepdive-record-api:latest \
             --build-arg JAR_FILE=${JAR_FILE} \
-            --build-arg DB_NAME=${DB_NAME} \
-            --build-arg DB_USERNAME=${DB_USERNAME} \
-            --build-arg DB_PASSWORD=${DB_PASSWORD} \
-            --build-arg MAIL_USERNAME=${MAIL_USERNAME} \
-            --build-arg MAIL_PASSWORD=${MAIL_PASSWORD} \
-            --push ./  # Asegúrate de que el punto (./) sea el contexto de construcción
+            --push $GITHUB_WORKSPACE  # Usa $GITHUB_WORKSPACE como contexto
