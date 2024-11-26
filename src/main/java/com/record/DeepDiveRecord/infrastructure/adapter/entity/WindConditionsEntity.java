@@ -19,8 +19,12 @@ public class WindConditionsEntity {
     private Integer day;
     //Velocidad del viento
     private Integer wind;
+    //Direccion del viento
     @Column(name = "wind_direction")
     private BigDecimal windDirection;
+    //Indicador de direccion
+    @Column(name = "wind_direction_nm")
+    private String windDirectionNm;
     //Rafagas de viento
     @Column(name = "gusts_of_wind")
     private double gustsOfWind;
@@ -33,6 +37,9 @@ public class WindConditionsEntity {
     //Direccion de las olas
     @Column(name = "wave_direction")
     private Integer waveDirection;
+    //Indicador de direccion
+    @Column(name = "wave_direction_nm")
+    private String waveDirectionNm;
     //Temperatura en tierra
     @Column(name = "earth_temperature")
     private Integer earthTemperature;

@@ -5,11 +5,15 @@ import com.record.DeepDiveRecord.domain.model.dto.response.fish.FishResponse;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishingEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.FishMapper;
+import com.record.DeepDiveRecord.infrastructure.adapter.mapper.UtilityMapper;
+import org.apache.poi.ss.usermodel.Row;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FishMapperImpl implements FishMapper {
-
+    @Autowired
+    private UtilityMapper utilityMapper;
 
     @Override
     public FishingResponse responseFromEntity(FishingEntity input) {
@@ -38,5 +42,18 @@ public class FishMapperImpl implements FishMapper {
         res.setStartSeason(input.getStartSeason());
         res.setFirstLifeWarning(input.getFirstLifeWarning());
         return res;
+    }
+
+    @Override
+    public FishEntity mapRowToFishEntity(Row row) {
+        FishEntity entity = new FishEntity();
+        entity.setId(utilityMapper.getCellValueAsInteger(row.getCell(0)));
+        entity.setName(utilityMapper.getCellValueAsString(row.getCell(1)));
+        entity.setFirstSighting(utilityMapper.getCellValueAsString(row.getCell(2)));
+        entity.setFirstLast(utilityMapper.getCellValueAsString(row.getCell(3)));
+        entity.setStartSeason(utilityMapper.getCellValueAsString(row.getCell(4)));
+        entity.setEndSeason(utilityMapper.getCellValueAsString(row.getCell(5)));
+        entity.setFirstLifeWarning(utilityMapper.getCellValueAsString(row.getCell(6)));
+        return entity;
     }
 }

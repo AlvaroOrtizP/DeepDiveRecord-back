@@ -6,6 +6,7 @@ import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.WindConditio
 import com.record.DeepDiveRecord.domain.model.dto.response.wind_conditions.OutGetData;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.WindConditionsEntity;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,4 +15,6 @@ public interface WindConditionsMapper {
     FindDeepDiveDataByDays fromDiveDayEntityToDtoFindDeepData(DiveDayEntity input);
     FindDeepDiveDataByDays fromInGetDataWeekToDtoFindDeepData(InGetDataWeek input);
     OutGetData getOutGetData(WindConditionsEntity item);
+
+    WindConditionsEntity  mapRowToWindConditionsEntity(Row row);
 }

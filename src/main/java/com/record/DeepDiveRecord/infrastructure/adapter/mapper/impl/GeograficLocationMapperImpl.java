@@ -6,10 +6,15 @@ import com.record.DeepDiveRecord.domain.model.dto.response.geographical_location
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.GeograficLocationMapper;
+import com.record.DeepDiveRecord.infrastructure.adapter.mapper.UtilityMapper;
+import org.apache.poi.ss.usermodel.Row;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GeograficLocationMapperImpl implements GeograficLocationMapper {
+    @Autowired
+    private UtilityMapper utilityMapper;
     @Override
     public GeographicalLocationResponse mapFromEntity(GeographicalLocationEntity input) {
         GeographicalLocationResponse geograficLocationResponse = new GeographicalLocationResponse();
@@ -36,6 +41,17 @@ public class GeograficLocationMapperImpl implements GeograficLocationMapper {
         res.setName(input.getName());
         res.setSite(input.getSite());
         return res;
+    }
+
+    @Override
+    public GeographicalLocationEntity mapRowToGeographicalLocationEntity(Row row) {
+        GeographicalLocationEntity entity = new GeographicalLocationEntity();
+        entity.setId(utilityMapper.getCellValueAsInteger(row.getCell(0)));
+        entity.setName(utilityMapper.getCellValueAsString(row.getCell(1)));
+        entity.setSite(utilityMapper.getCellValueAsString(row.getCell(2)));
+        entity.setIdWindwuru(utilityMapper.getCellValueAsString(row.getCell(3)));
+
+        return entity;
     }
 
 }

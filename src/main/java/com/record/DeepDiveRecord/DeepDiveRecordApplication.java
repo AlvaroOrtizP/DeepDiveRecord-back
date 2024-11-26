@@ -14,7 +14,7 @@ public class DeepDiveRecordApplication {
 		// Configurar variables de entorno manualmente
 		System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
 		System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
-		System.setProperty("DB_IPX", dotenv.get("DB_IPX"));
+		System.setProperty("DB_IP", dotenv.get("DB_IP"));
 		System.setProperty("DB_NAME", dotenv.get("DB_NAME"));
 
 		System.setProperty("MAIL_USERNAME", dotenv.get("MAIL_USERNAME"));

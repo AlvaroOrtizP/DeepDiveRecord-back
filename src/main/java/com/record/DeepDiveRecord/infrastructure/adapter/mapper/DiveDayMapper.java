@@ -4,6 +4,7 @@ import com.record.DeepDiveRecord.domain.model.dto.request.dive_day.InCreateDaily
 import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayDetailsResponse;
 import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayResponse;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,4 +13,5 @@ public interface DiveDayMapper {
     DiveDayDetailsResponse responseFromEntity(DiveDayEntity input);
     DiveDayResponse mapToResponse(DiveDayEntity diveDay);
 
+    DiveDayEntity mapRowToDiveDayEntity(Row row);
 }

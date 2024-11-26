@@ -5,6 +5,7 @@ import com.record.DeepDiveRecord.domain.model.dto.request.fishing.InCreateFishin
 import com.record.DeepDiveRecord.domain.model.dto.response.geographical_location.GeographicalLocationResponse;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,4 +14,5 @@ public interface GeograficLocationMapper {
     com.record.DeepDiveRecord.domain.model.dto.response.dive_day.GeographicalLocationResponse responseFromDiveDayEntity(DiveDayEntity input);
     FindGeographicalLocation fromRequestToDtoFind(InCreateFishing input);
 
+    GeographicalLocationEntity mapRowToGeographicalLocationEntity(Row row);
 }

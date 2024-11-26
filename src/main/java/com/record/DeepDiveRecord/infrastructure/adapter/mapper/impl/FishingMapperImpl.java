@@ -5,11 +5,19 @@ import com.record.DeepDiveRecord.domain.model.dto.response.fishing.FishingDetail
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishingEntity;
+import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.FishingMapper;
+import com.record.DeepDiveRecord.infrastructure.adapter.mapper.UtilityMapper;
+import org.apache.poi.ss.usermodel.Row;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 
 @Component
 public class FishingMapperImpl implements FishingMapper {
+    @Autowired
+    private UtilityMapper utilityMapper;
     @Override
     public FishingEntity fromRequestToEntity(InCreateFishing input) {
         FishingEntity res = new FishingEntity();
@@ -49,5 +57,28 @@ public class FishingMapperImpl implements FishingMapper {
         res.setGeographieName(input.getGeographicalLocation().getName());
         res.setGeographieSite(input.getGeographicalLocation().getSite());
         return res;
+    }
+
+    @Override
+    public FishingEntity mapRowToFishingEntity(Row row) {
+        FishingEntity entity = new FishingEntity();
+        entity.setId(utilityMapper.getCellValueAsInteger(row.getCell(0)));
+        FishEntity fish = new FishEntity();
+        fish.setId(utilityMapper.getCellValueAsInteger(row.getCell(1)));
+        entity.setFish(fish);
+
+        entity.setNotes(utilityMapper.getCellValueAsString(row.getCell(2)));
+        entity.setCaught(utilityMapper.getCellValueAsBoolean(row.getCell(3)));
+        entity.setWeight(BigDecimal.valueOf(utilityMapper.getCellValueAsInteger(row.getCell(4))));
+
+        entity.setLatG(utilityMapper.getCellValueAsInteger(row.getCell(5)));
+        entity.setLongG(utilityMapper.getCellValueAsInteger(row.getCell(6)));
+
+        GeographicalLocationEntity geo = new GeographicalLocationEntity();
+        geo.setId(utilityMapper.getCellValueAsInteger(row.getCell(5)));
+        entity.setGeographicalLocation(geo);
+
+        entity.setSightingTime(utilityMapper.getCellValueAsString(row.getCell(8)));
+        return entity;
     }
 }

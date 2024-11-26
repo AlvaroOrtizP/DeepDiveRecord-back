@@ -4,11 +4,17 @@ import com.record.DeepDiveRecord.domain.model.dto.request.dive_day.InCreateDaily
 import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayDetailsResponse;
 import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayResponse;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
+import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.DiveDayMapper;
+import com.record.DeepDiveRecord.infrastructure.adapter.mapper.UtilityMapper;
+import org.apache.poi.ss.usermodel.Row;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DiveDayMapperImpl implements DiveDayMapper {
+    @Autowired
+    private UtilityMapper utilityMapper;
     @Override
     public DiveDayEntity entityFromResponse(InCreateDailyDiving input) {
         DiveDayEntity diveDayEntity = new DiveDayEntity();
@@ -54,5 +60,29 @@ public class DiveDayMapperImpl implements DiveDayMapper {
         res.setSite(diveDay.getGeographicalLocation().getName());
         res.setAssessment(diveDay.getAssessment());
         return res;
+    }
+
+    @Override
+    public DiveDayEntity mapRowToDiveDayEntity(Row row) {
+        DiveDayEntity entity = new DiveDayEntity();
+        entity.setDiveDayId(utilityMapper.getCellValueAsInteger(row.getCell(0)));
+        entity.setDay(utilityMapper.getCellValueAsString(row.getCell(1)));
+        entity.setBeginning(utilityMapper.getCellValueAsString(row.getCell(2)));
+        entity.setEnd(utilityMapper.getCellValueAsString(row.getCell(3)));
+        entity.setSite(utilityMapper.getCellValueAsString(row.getCell(4)));
+        entity.setNotes(utilityMapper.getCellValueAsString(row.getCell(5)));
+        entity.setYear(utilityMapper.getCellValueAsString(row.getCell(6)));
+        entity.setMonth(utilityMapper.getCellValueAsString(row.getCell(7)));
+        entity.setAssessment(utilityMapper.getCellValueAsInteger(row.getCell(8)));
+        GeographicalLocationEntity geogra = new GeographicalLocationEntity();
+        geogra.setId(utilityMapper.getCellValueAsInteger(row.getCell(9)));
+        entity.setGeographicalLocation(geogra);
+        entity.setJellyfish(utilityMapper.getCellValueAsInteger(row.getCell(10)));
+
+        entity.setVisibility(utilityMapper.getCellValueAsInteger(row.getCell(11)));
+        entity.setSeaBackground(utilityMapper.getCellValueAsInteger(row.getCell(12)));
+        entity.setFishGrass(utilityMapper.getCellValueAsInteger(row.getCell(13)));
+        entity.setPresencePlastic(utilityMapper.getCellValueAsInteger(row.getCell(14)));
+        return entity;
     }
 }
