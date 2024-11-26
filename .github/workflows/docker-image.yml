@@ -71,8 +71,9 @@ jobs:
       # Paso 10: Encontrar el archivo JAR dinámicamente
       - name: Find JAR File
         id: find_jar
-        run: echo "JAR_FILE=$(find target -name '*.jar' | grep -v 'original')" >> $GITHUB_ENV
-
+        run: |
+          echo "JAR_FILE=$(find target -name '*.jar' | grep -v 'original')" >> $GITHUB_ENV
+          echo "Found JAR file: $JAR_FILE"
       # Paso 11: Construir la imagen de Docker y subirla a Docker Hub
       - name: Build and Push Docker Image
         env:
@@ -84,6 +85,7 @@ jobs:
           MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
           MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
         run: |
+          echo "Building Docker image..."
           docker buildx build \
             --cache-from type=local,src=/tmp/.buildx-cache \
             --cache-to type=local,dest=/tmp/.buildx-cache,mode=max \
@@ -95,4 +97,4 @@ jobs:
             --build-arg DB_PASSWORD=${DB_PASSWORD} \
             --build-arg MAIL_USERNAME=${MAIL_USERNAME} \
             --build-arg MAIL_PASSWORD=${MAIL_PASSWORD} \
-            --push .  # Asegúrate de que el punto (.) al final esté presente, indicando la ruta actual como contexto de construcción.
+            --push ./  # Asegúrate de que el punto (./) sea el contexto de construcción
