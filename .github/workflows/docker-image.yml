@@ -95,4 +95,4 @@ jobs:
             --build-arg DB_PASSWORD=${DB_PASSWORD} \
             --build-arg MAIL_USERNAME=${MAIL_USERNAME} \
             --build-arg MAIL_PASSWORD=${MAIL_PASSWORD} \
-            --push .
+            --push .  # Asegúrate de que el punto (.) al final esté presente, indicando la ruta actual como contexto de construcción.
