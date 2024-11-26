@@ -40,19 +40,23 @@ jobs:
           format: "${major}.${minor}.${patch}${increment}"
         id: version
 
-      # Paso 5: Obtener la versión de Maven
+      # Paso 5: Depurar la versión generada
+      - name: Debug Version
+        run: echo "New Version:" "${{ steps.version.outputs.version }}"
+
+      # Paso 6: Obtener la versión de Maven
       - name: Get Maven Version
         run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
-      # Paso 6: Ejecutar los tests de Maven
+      # Paso 7: Ejecutar los tests de Maven
       - name: Run Maven Tests
         run: mvn test
 
-      # Paso 7: Configurar Docker Buildx
+      # Paso 8: Configurar Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Paso 8: Configurar caché de Docker
+      # Paso 9: Configurar caché de Docker
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
@@ -61,34 +65,35 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-docker-
 
-      # Paso 9: Iniciar sesión en Docker Hub
+      # Paso 10: Iniciar sesión en Docker Hub
       - name: Docker Login
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
 
-      # Paso 10: Construir el archivo JAR
+      # Paso 11: Construir el archivo JAR
       - name: Build JAR File
         run: mvn clean package
 
-      # Paso 11: Encontrar el archivo JAR dinámicamente
+      # Paso 12: Encontrar el archivo JAR dinámicamente
       - name: Find JAR File
         id: find_jar
         run: |
           echo "JAR_FILE=$(find target -name '*.jar' | grep -v 'original')" >> $GITHUB_ENV
           echo "Found JAR file: $JAR_FILE"
 
-      # Paso 12: Debug JAR File Path
-      - name: Debug JAR File
-        run: echo "JAR file path:" ${{ env.JAR_FILE }}"
+      # Paso 13: Depuración antes de construir la imagen Docker
+      - name: Debug Docker Login
+        run: docker info
 
-      # Paso 13: Construir la imagen de Docker y subirla a Docker Hub
+      # Paso 14: Construir la imagen de Docker y subirla a Docker Hub
       - name: Build and Push Docker Image
         env:
           NEW_VERSION: ${{ steps.version.outputs.version }}
           JAR_FILE: ${{ env.JAR_FILE }}
         run: |
+          echo "Building Docker image with version: $NEW_VERSION"
           docker buildx build \
             --cache-from type=local,src=/tmp/.buildx-cache \
             --cache-to type=local,dest=/tmp/.buildx-cache,mode=max \
