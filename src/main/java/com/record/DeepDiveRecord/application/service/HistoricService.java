@@ -35,4 +35,11 @@ public class HistoricService implements HistoricUseCase {
         int res = historicPort.saveHistoric(file);
         return res;
     }
+
+    @Override
+    public int saveHistoric(File file) throws IOException {
+        log.info("Procesando archivo: " + file.getAbsolutePath());
+        int res = historicPort.saveHistoric(file);
+        return res;
+    }
 }
