@@ -84,7 +84,7 @@ public class HistoricRepositoryImpl implements HistoricPort {
     }
 
     @Override
-    public int  process(CombinedItemDto input) throws IOException {
+    public int process(CombinedItemDto input) throws IOException {
         log.info("Processing CombinedItem: " + input);
         return exportCombinedItemToExcel(input);
     }
@@ -154,6 +154,16 @@ public class HistoricRepositoryImpl implements HistoricPort {
             log.error("Error al leer el archivo Excel: " + file.getAbsolutePath(), e);
         } catch (Exception e) {
             log.error("Error durante la inserción de datos.", e);
+        } finally {
+            // Eliminar el archivo después de procesarlo
+            if (file.exists()) {
+                boolean deleted = file.delete();
+                if (deleted) {
+                    log.info("El archivo " + file.getAbsolutePath() + " se eliminó correctamente.");
+                } else {
+                    log.error("No se pudo eliminar el archivo " + file.getAbsolutePath());
+                }
+            }
         }
 
         return totalRegistrosInsertados;
@@ -178,16 +188,16 @@ public class HistoricRepositoryImpl implements HistoricPort {
 
             switch (entityName) {
                 case "WindConditionsEntity":
-                   datos.add(windConditionsMapper.mapRowToWindConditionsEntity(row));
+                    datos.add(windConditionsMapper.mapRowToWindConditionsEntity(row));
                     break;
                 case "TideTableEntity":
                     datos.add(tideTableMapper.mapRowToTideTableEntity(row));
                     break;
                 case "GeographicalLocationEntity":
-                   datos.add(geograficLocationMapper.mapRowToGeographicalLocationEntity(row));
+                    datos.add(geograficLocationMapper.mapRowToGeographicalLocationEntity(row));
                     break;
                 case "FishEntity":
-                   datos.add(fishMapper.mapRowToFishEntity(row));
+                    datos.add(fishMapper.mapRowToFishEntity(row));
                     break;
                 case "FishingEntity":
                     datos.add(fishingMapper.mapRowToFishingEntity(row));
@@ -215,25 +225,25 @@ public class HistoricRepositoryImpl implements HistoricPort {
     public int saveEntities(Object data) {
         // Usar JPA o JDBC para insertar el objeto en la base de datos
         if (data instanceof WindConditionsEntity) {
-           windWuruRepository.save((WindConditionsEntity) data);
+            windWuruRepository.save((WindConditionsEntity) data);
         } else if (data instanceof TideTableEntity) {
-           tideTableRepository.save((TideTableEntity) data);
+            tideTableRepository.save((TideTableEntity) data);
         } else if (data instanceof GeographicalLocationEntity) {
-           geographicalLocationRepository.save((GeographicalLocationEntity) data);
+            geographicalLocationRepository.save((GeographicalLocationEntity) data);
         } else if (data instanceof FishEntity) {
-           fishRepository.save((FishEntity) data);
+            fishRepository.save((FishEntity) data);
         } else if (data instanceof FishingEntity) {
-           fishingRepository.save((FishingEntity) data);
+            fishingRepository.save((FishingEntity) data);
         } else if (data instanceof DiveDayEntity) {
-           diveDayRepository.save((DiveDayEntity) data);
+            diveDayRepository.save((DiveDayEntity) data);
         } else if (data instanceof ConfigurationDataEntity) {
-           configurationDataRepository.save((ConfigurationDataEntity) data);
+            configurationDataRepository.save((ConfigurationDataEntity) data);
         }
 
         return 1; // Retorna 1 si la inserción fue exitosa
     }
 
-    private int  exportCombinedItemToExcel(CombinedItemDto combinedItem) throws IOException {
+    private int exportCombinedItemToExcel(CombinedItemDto combinedItem) throws IOException {
         int res = 0;
         // Crear un libro de trabajo de Excel
         try (Workbook workbook = new XSSFWorkbook()) {
