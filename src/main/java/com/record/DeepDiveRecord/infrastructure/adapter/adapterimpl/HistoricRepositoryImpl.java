@@ -215,19 +215,19 @@ public class HistoricRepositoryImpl implements HistoricPort {
     public int saveEntities(Object data) {
         // Usar JPA o JDBC para insertar el objeto en la base de datos
         if (data instanceof WindConditionsEntity) {
-           // windWuruRepository.save((WindConditionsEntity) data);
+           windWuruRepository.save((WindConditionsEntity) data);
         } else if (data instanceof TideTableEntity) {
-           // tideTableRepository.save((TideTableEntity) data);
+           tideTableRepository.save((TideTableEntity) data);
         } else if (data instanceof GeographicalLocationEntity) {
-           // geographicalLocationRepository.save((GeographicalLocationEntity) data);
+           geographicalLocationRepository.save((GeographicalLocationEntity) data);
         } else if (data instanceof FishEntity) {
-           // fishRepository.save((FishEntity) data);
+           fishRepository.save((FishEntity) data);
         } else if (data instanceof FishingEntity) {
-           // fishingRepository.save((FishingEntity) data);
+           fishingRepository.save((FishingEntity) data);
         } else if (data instanceof DiveDayEntity) {
-           // diveDayRepository.save((DiveDayEntity) data);
+           diveDayRepository.save((DiveDayEntity) data);
         } else if (data instanceof ConfigurationDataEntity) {
-           // configurationDataRepository.save((ConfigurationDataEntity) data);
+           configurationDataRepository.save((ConfigurationDataEntity) data);
         }
 
         return 1; // Retorna 1 si la inserción fue exitosa
