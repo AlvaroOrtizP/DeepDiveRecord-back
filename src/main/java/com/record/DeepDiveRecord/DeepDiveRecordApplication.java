@@ -8,8 +8,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DeepDiveRecordApplication {
 
 	public static void main(String[] args) {
-		// Cargar las variables desde .env
-		Dotenv dotenv = Dotenv.load();
+		// Detectar si estamos dentro de Docker o no
+		String dotenvDirectory = System.getenv("DOTENV_DIR") != null ? System.getenv("DOTENV_DIR") : ".";
+
+		// Cargar las variables desde el archivo .env en la ruta correcta
+		Dotenv dotenv = Dotenv.configure()
+				.directory(dotenvDirectory) // Usa la ruta correspondiente
+				.load();
 
 		// Configurar variables de entorno manualmente
 		System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
