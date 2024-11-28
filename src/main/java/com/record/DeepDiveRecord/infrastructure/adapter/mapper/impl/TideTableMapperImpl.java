@@ -69,13 +69,13 @@ public class TideTableMapperImpl implements TideTableMapper {
         entity.setCoefficient0H(utilityMapper.getCellValueAsInteger(row.getCell(5)));
         entity.setCoefficient12H(utilityMapper.getCellValueAsInteger(row.getCell(6)));
         entity.setMorningHighTideTime(utilityMapper.getCellValueAsString(row.getCell(7)));
-        entity.setMorningHighTideHeight(utilityMapper.getCellValueAsInteger(row.getCell(8)));
+        entity.setMorningHighTideHeight(utilityMapper.getCellValueAsDouble(row.getCell(8)));
         entity.setAfternoonHighTideTime(utilityMapper.getCellValueAsString(row.getCell(9)));
-        entity.setAfternoonHighTideHeight(utilityMapper.getCellValueAsInteger(row.getCell(10)));
+        entity.setAfternoonHighTideHeight(utilityMapper.getCellValueAsDouble(row.getCell(10)));
         entity.setMorningLowTideTime(utilityMapper.getCellValueAsString(row.getCell(11)));
-        entity.setMorningLowTideHeight(utilityMapper.getCellValueAsInteger(row.getCell(12)));
+        entity.setMorningLowTideHeight(utilityMapper.getCellValueAsDouble(row.getCell(12)));
         entity.setAfternoonLowTideTime(utilityMapper.getCellValueAsString(row.getCell(13)));
-        entity.setAfternoonLowTideHeight(utilityMapper.getCellValueAsInteger(row.getCell(14)));
+        entity.setAfternoonLowTideHeight(utilityMapper.getCellValueAsDouble(row.getCell(14)));
 
         return entity;
     }

@@ -133,16 +133,16 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
 
             entity.setWindDirectionNm(utilityMapper.getCellValueAsString(row.getCell(8)));
             if(row.getCell(9)!=null)
-                entity.setGustsOfWind(utilityMapper.getCellValueAsInteger(row.getCell(10)));
-            entity.setWaveHeight(utilityMapper.getCellValueAsInteger(row.getCell(11)));
-            entity.setWavePeriod(utilityMapper.getCellValueAsInteger(row.getCell(12)));
+                entity.setGustsOfWind(utilityMapper.getCellValueAsInteger(row.getCell(9)));
+            entity.setWaveHeight(utilityMapper.getCellValueAsDouble(row.getCell(10)));
+            entity.setWavePeriod(utilityMapper.getCellValueAsInteger(row.getCell(11)));
 
-            entity.setWaveDirection(utilityMapper.getCellValueAsInteger(row.getCell(13)));
-            entity.setWaveDirectionNm(utilityMapper.getCellValueAsString(row.getCell(14)));
-            entity.setEarthTemperature(utilityMapper.getCellValueAsInteger(row.getCell(15)));
-            entity.setWaterTemperature(utilityMapper.getCellValueAsInteger(row.getCell(16)));
-            entity.setCodeCondition(utilityMapper.getCellValueAsInteger(row.getCell(17)));
-            entity.setConditionDescription(utilityMapper.getCellValueAsString(row.getCell(18)));
+            entity.setWaveDirection(utilityMapper.getCellValueAsInteger(row.getCell(12)));
+            entity.setWaveDirectionNm(utilityMapper.getCellValueAsString(row.getCell(13)));
+            entity.setEarthTemperature(utilityMapper.getCellValueAsInteger(row.getCell(14)));
+            entity.setWaterTemperature(utilityMapper.getCellValueAsInteger(row.getCell(15)));
+            entity.setCodeCondition(utilityMapper.getCellValueAsInteger(row.getCell(16)));
+            entity.setConditionDescription(utilityMapper.getCellValueAsString(row.getCell(17)));
 
         } catch (Exception e) {
             log.error("Error al mapear fila " + row.getRowNum() + " a WindConditionsEntity", e);

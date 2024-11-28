@@ -80,8 +80,8 @@ public class HistoricController {
             return new ResponseEntity<>("Error al procesar el archivo: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PostMapping("/upload1")
-    public ResponseEntity<?> processExcel1(@RequestParam("file") MultipartFile file) {
+   // @PostMapping("/upload1")
+    /*public ResponseEntity<?> processExcel1(@RequestParam("file") MultipartFile file) {
         LOGGER.info("Comienza el método processExcel");
 
         if (file.isEmpty()) {
@@ -116,5 +116,5 @@ public class HistoricController {
             LOGGER.error("Error al procesar el archivo: " + e.getMessage(), e);
             return new ResponseEntity<>("Error al procesar el archivo: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 }

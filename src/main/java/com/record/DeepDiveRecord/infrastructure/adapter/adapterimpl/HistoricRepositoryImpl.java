@@ -144,8 +144,8 @@ public class HistoricRepositoryImpl implements HistoricPort {
             totalRegistrosInsertados += procesarHoja(workbook.getSheet("Tide Table"), "TideTableEntity");
             totalRegistrosInsertados += procesarHoja(workbook.getSheet("Geographical Locations"), "GeographicalLocationEntity");
             totalRegistrosInsertados += procesarHoja(workbook.getSheet("Fish"), "FishEntity");
-            totalRegistrosInsertados += procesarHoja(workbook.getSheet("Fishing"), "FishingEntity");
             totalRegistrosInsertados += procesarHoja(workbook.getSheet("Dive Day"), "DiveDayEntity");
+            totalRegistrosInsertados += procesarHoja(workbook.getSheet("Fishing"), "FishingEntity");
             totalRegistrosInsertados += procesarHoja(workbook.getSheet("Configuration Data"), "ConfigurationData");
 
             log.info("Total de registros insertados: " + totalRegistrosInsertados);
@@ -199,12 +199,13 @@ public class HistoricRepositoryImpl implements HistoricPort {
                 case "FishEntity":
                     datos.add(fishMapper.mapRowToFishEntity(row));
                     break;
-                case "FishingEntity":
-                    datos.add(fishingMapper.mapRowToFishingEntity(row));
-                    break;
                 case "DiveDayEntity":
                     datos.add(diveDayMapper.mapRowToDiveDayEntity(row));
                     break;
+                case "FishingEntity":
+                    datos.add(fishingMapper.mapRowToFishingEntity(row));
+                    break;
+
                 case "ConfigurationData":
                     datos.add(configurationDataMapper.mapRowToConfigurationDataEntity(row));
                     break;
@@ -230,14 +231,19 @@ public class HistoricRepositoryImpl implements HistoricPort {
             tideTableRepository.save((TideTableEntity) data);
         } else if (data instanceof GeographicalLocationEntity) {
             geographicalLocationRepository.save((GeographicalLocationEntity) data);
+            System.out.println("Entidad guardada GeographicalLocationEntity" + ((GeographicalLocationEntity) data).getId());
         } else if (data instanceof FishEntity) {
             fishRepository.save((FishEntity) data);
-        } else if (data instanceof FishingEntity) {
-            fishingRepository.save((FishingEntity) data);
+            System.out.println("Entidad guardada FishEntity" + ((FishEntity) data).getId());
         } else if (data instanceof DiveDayEntity) {
             diveDayRepository.save((DiveDayEntity) data);
-        } else if (data instanceof ConfigurationDataEntity) {
+            System.out.println("Entidad guardada DiveDayEntity" + ((DiveDayEntity) data).getDiveDayId());
+        } else if (data instanceof FishingEntity) {
+            fishingRepository.save((FishingEntity) data);
+            System.out.println("Entidad guardada " + ((FishingEntity) data).getId());
+        }  else if (data instanceof ConfigurationDataEntity) {
             configurationDataRepository.save((ConfigurationDataEntity) data);
+            System.out.println("Entidad guardada " + ((ConfigurationDataEntity) data).getId());
         }
 
         return 1; // Retorna 1 si la inserción fue exitosa

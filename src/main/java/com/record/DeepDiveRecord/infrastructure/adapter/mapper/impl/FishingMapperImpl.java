@@ -69,16 +69,18 @@ public class FishingMapperImpl implements FishingMapper {
 
         entity.setNotes(utilityMapper.getCellValueAsString(row.getCell(2)));
         entity.setCaught(utilityMapper.getCellValueAsBoolean(row.getCell(3)));
-        entity.setWeight(BigDecimal.valueOf(utilityMapper.getCellValueAsInteger(row.getCell(4))));
+        entity.setWeight(BigDecimal.valueOf(utilityMapper.getCellValueAsDouble(row.getCell(4))));
 
-        entity.setLatG(utilityMapper.getCellValueAsInteger(row.getCell(5)));
-        entity.setLongG(utilityMapper.getCellValueAsInteger(row.getCell(6)));
+        entity.setLatG(utilityMapper.getCellValueAsDouble(row.getCell(5)));
+        entity.setLongG(utilityMapper.getCellValueAsDouble(row.getCell(6)));
 
         GeographicalLocationEntity geo = new GeographicalLocationEntity();
-        geo.setId(utilityMapper.getCellValueAsInteger(row.getCell(5)));
+        geo.setId(utilityMapper.getCellValueAsInteger(row.getCell(7)));
         entity.setGeographicalLocation(geo);
-
-        entity.setSightingTime(utilityMapper.getCellValueAsString(row.getCell(8)));
+        DiveDayEntity diveDay = new DiveDayEntity();
+        diveDay.setDiveDayId(utilityMapper.getCellValueAsInteger(row.getCell(8)));
+        entity.setDiveDay(diveDay);
+        entity.setSightingTime(utilityMapper.getCellValueAsString(row.getCell(9)));
         return entity;
     }
 }
