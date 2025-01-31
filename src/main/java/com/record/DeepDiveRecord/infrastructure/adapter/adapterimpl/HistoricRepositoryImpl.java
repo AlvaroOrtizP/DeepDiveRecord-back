@@ -336,7 +336,7 @@ public class HistoricRepositoryImpl implements HistoricPort {
 
             // Personalizar el correo
             helper.setTo(dotenv.get("TO_MAIL_USERNAME"));  // Destinatario
-            helper.setSubject("Reporte Diario - Archivo Adjunto");
+            helper.setSubject("Procesamiento Exitoso- Archivo Adjunto");
 
             // Contenido HTML
             String htmlContent = """

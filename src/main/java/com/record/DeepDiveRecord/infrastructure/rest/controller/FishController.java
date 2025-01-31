@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@RequestMapping("/fish")//http://localhost:8080/fish
+@RequestMapping("/fish")
 @RestController
 public class FishController {
     private static final Logger LOGGER = LoggerFactory.getLogger(FishController.class);
@@ -22,9 +22,9 @@ public class FishController {
     @Autowired
     private FishUseCase fishUseCase;
 
-    @GetMapping("")
+    @GetMapping("")//http://localhost:8080/fish
     public ResponseEntity<List<FishResponse>> getAllFishList() {
-        LOGGER.info("Comienza el medoto de obtener la lista de peces");
+        LOGGER.info("Comienza el metodo de obtener la lista de peces");
         List<FishResponse> res = fishUseCase.getAllFishList();
         LOGGER.info("Se obtienen " + res.size());
         return ResponseEntity.status(HttpStatus.OK).body(res);

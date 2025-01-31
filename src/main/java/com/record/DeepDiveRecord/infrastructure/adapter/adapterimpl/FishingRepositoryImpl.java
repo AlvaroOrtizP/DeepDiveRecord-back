@@ -1,7 +1,5 @@
 package com.record.DeepDiveRecord.infrastructure.adapter.adapterimpl;
 
-import com.record.DeepDiveRecord.domain.model.dto.request.fishing.InCreateFishing;
-import com.record.DeepDiveRecord.domain.model.dto.response.fishing.FishingDetails;
 import com.record.DeepDiveRecord.domain.model.exception.EntityNotFoundException;
 import com.record.DeepDiveRecord.domain.port.FishingPort;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishingEntity;
@@ -40,5 +38,17 @@ public class FishingRepositoryImpl implements FishingPort {
 
         LOGGER.info("No se encontro");
         throw new EntityNotFoundException("Fishing not found");
+    }
+
+    @Override
+    public Integer update(FishingEntity input) {
+        LOGGER.info("Se procede a guardar {} ", input);
+        FishingEntity res =  fishingRepository.save(input);
+        return res.getId();
+    }
+    @Override
+    public void deleteByid(FishingEntity input) {
+        LOGGER.info("Se procede a guardar {} ", input);
+        fishingRepository.delete(input);
     }
 }

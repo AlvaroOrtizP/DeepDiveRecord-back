@@ -1,7 +1,7 @@
 package com.record.DeepDiveRecord.infrastructure.adapter.mapper.impl;
 
 import com.record.DeepDiveRecord.domain.model.dto.port.geographical_location.FindGeographicalLocation;
-import com.record.DeepDiveRecord.domain.model.dto.request.fishing.InCreateFishing;
+import com.record.DeepDiveRecord.domain.model.dto.request.fishing.create.InCreateFishing;
 import com.record.DeepDiveRecord.domain.model.dto.response.geographical_location.GeographicalLocationResponse;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;
@@ -36,10 +36,10 @@ public class GeograficLocationMapperImpl implements GeograficLocationMapper {
     }
 
     @Override
-    public FindGeographicalLocation fromRequestToDtoFind(InCreateFishing input) {
+    public FindGeographicalLocation fromRequestToDtoFind(String name, String site) {
         FindGeographicalLocation res = new FindGeographicalLocation();
-        res.setName(input.getName());
-        res.setSite(input.getSite());
+        res.setName(name);
+        res.setSite(site);
         return res;
     }
 

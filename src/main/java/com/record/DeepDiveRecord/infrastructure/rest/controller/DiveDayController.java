@@ -4,6 +4,7 @@ import com.record.DeepDiveRecord.application.usecase.DiveDayUseCase;
 import com.record.DeepDiveRecord.domain.model.dto.request.dive_day.InCreateDailyDiving;
 import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayDetailsResponse;
 import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayResponse;
+import com.record.DeepDiveRecord.domain.model.exception.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,25 +40,33 @@ public class DiveDayController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DiveDayDetailsResponse> getDiveDayById(@PathVariable Integer id) {
-
         LOGGER.info("Comienza el metodo getDiveDayById con los datos {}", id);
-        DiveDayDetailsResponse res = diveDayUseCase.findDiveDayById(id);
-        LOGGER.info("Se devuelve {}", res);
-        if(res!=null){
-            return new ResponseEntity<>(res, HttpStatus.OK);
+        try {
+            DiveDayDetailsResponse res = diveDayUseCase.findDiveDayById(id);
+            LOGGER.info("Se devuelve {}", res);
+            return ResponseEntity.ok(res);
+        } catch (EntityNotFoundException e) {
+            LOGGER.error("Error: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
+
     @GetMapping("/list")
-    public Page<DiveDayResponse> getFishingDays(
+    public ResponseEntity<Page<DiveDayResponse>> getDiveDays(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String zona,
             @RequestParam(defaultValue = "asc") String sortDirection,
             @RequestParam(defaultValue = "fecha") String sortBy) {
-        LOGGER.info("Comienza el metodo getFishingDays con los datos {}", zona);
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortBy);
-        return diveDayUseCase.findByFilters(zona, pageable);
+
+        try {
+            LOGGER.info("Comienza el metodo getDiveDays con los datos {}", zona);
+            Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortBy);
+            return ResponseEntity.ok(diveDayUseCase.findByFilters(zona, pageable));
+        } catch (EntityNotFoundException e) {
+            LOGGER.error("Error: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     //TODO modificar los Exception para filtrar por Excepciones mas concretas

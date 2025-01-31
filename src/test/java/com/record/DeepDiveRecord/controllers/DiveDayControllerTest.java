@@ -3,6 +3,7 @@ package com.record.DeepDiveRecord.controllers;
 import com.record.DeepDiveRecord.application.usecase.DiveDayUseCase;
 import com.record.DeepDiveRecord.domain.model.dto.request.dive_day.InCreateDailyDiving;
 import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayDetailsResponse;
+import com.record.DeepDiveRecord.domain.model.exception.EntityNotFoundException;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.infrastructure.rest.controller.DiveDayController;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +35,7 @@ class DiveDayControllerTest {
     @BeforeEach
     void setUp() {
     }
+
 
     @Transactional
     @Test
@@ -77,7 +79,7 @@ class DiveDayControllerTest {
     @Test
     void testGetDiveDayById_NotFound() {
         // Simula un caso en el que no se encuentra el DiveDay
-        when(diveDayUseCase.findDiveDayById(any())).thenReturn(null);
+        when(diveDayUseCase.findDiveDayById(1)).thenThrow(new EntityNotFoundException("Geographical location not found"));
 
         // Llama al método del controlador
         ResponseEntity<DiveDayDetailsResponse> res = diveDayController.getDiveDayById(1);
@@ -106,17 +108,17 @@ class DiveDayControllerTest {
 
     private InCreateDailyDiving getInCreateDailyDiving() {
         InCreateDailyDiving inCreateDailyDiving = new InCreateDailyDiving();
-        inCreateDailyDiving.setSite("487006");
+
         inCreateDailyDiving.setDay("1");
-        inCreateDailyDiving.setName("Isla");
+
         inCreateDailyDiving.setEnd("16:15");
         inCreateDailyDiving.setBeginning("15:00");
-        inCreateDailyDiving.setSite("487006");
+
         inCreateDailyDiving.setAssessment(2);
         inCreateDailyDiving.setIdGeographicLocation(1);
         inCreateDailyDiving.setMonth("2");
         inCreateDailyDiving.setYear("2024");
-        inCreateDailyDiving.setName("Prueba");
+
         inCreateDailyDiving.setJellyfish(0);
         inCreateDailyDiving.setVisibility(1);
         inCreateDailyDiving.setSeaBackground(1);

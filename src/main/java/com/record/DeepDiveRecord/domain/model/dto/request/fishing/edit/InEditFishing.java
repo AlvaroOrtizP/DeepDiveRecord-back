@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.domain.model.dto.request.fishing;
+package com.record.DeepDiveRecord.domain.model.dto.request.fishing.edit;
 
 import lombok.*;
 
@@ -9,7 +9,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class InCreateFishing {
+public class InEditFishing {
+    private Integer fishingId;
     private Integer fishId;
     private boolean caught;
     private String name;

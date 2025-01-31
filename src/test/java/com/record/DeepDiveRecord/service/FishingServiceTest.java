@@ -1,8 +1,11 @@
 package com.record.DeepDiveRecord.service;
 
 import com.record.DeepDiveRecord.application.service.FishingService;
-import com.record.DeepDiveRecord.domain.model.dto.request.fishing.InCreateFishing;
-import com.record.DeepDiveRecord.domain.model.dto.response.fishing.FishingDetails;
+import com.record.DeepDiveRecord.domain.model.dto.request.fishing.create.InCreateFishing;
+import com.record.DeepDiveRecord.domain.model.dto.request.fishing.edit.InEditFishing;
+import com.record.DeepDiveRecord.domain.model.dto.response.fishing.create.FishingDetails;
+import com.record.DeepDiveRecord.domain.port.DiveDayPort;
+import com.record.DeepDiveRecord.domain.port.FishPort;
 import com.record.DeepDiveRecord.domain.port.FishingPort;
 import com.record.DeepDiveRecord.domain.port.GeographicalLocationPort;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishEntity;
@@ -10,14 +13,12 @@ import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishingEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.FishingMapper;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.GeograficLocationMapper;
+import com.record.DeepDiveRecord.util.DataUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,14 +28,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @DataJpaTest
 @ActiveProfiles("test")
 class FishingServiceTest {
 
     @Mock
-    private GeographicalLocationPort geographicalLocationPort;
-
+    private GeographicalLocationPort geographicalLocationRepositoryPort;
+    @Mock
+    private FishPort fishPort;
+    @Mock
+    private DiveDayPort diveDayPort;
     @Mock
     private FishingPort fishingPort;
 
@@ -68,7 +73,7 @@ class FishingServiceTest {
     @Transactional
     void testCreateFishing_Success() {
         // Configurar mocks para devolver datos simulados
-        when(geographicalLocationPort.findByNameAndSite(any())).thenReturn(geographicalLocationEntity);
+        when(geographicalLocationRepositoryPort.findByNameAndSite(any())).thenReturn(geographicalLocationEntity);
         when(fishingMapper.fromRequestToEntity(any(InCreateFishing.class))).thenReturn(fishingEntity);
         when(fishingPort.save(any(FishingEntity.class))).thenReturn(1);
 
@@ -77,7 +82,7 @@ class FishingServiceTest {
 
         // Verificar el resultado y las interacciones
         assertEquals(1, result, "El ID de la pesca debería coincidir");
-        verify(geographicalLocationPort, times(1)).findByNameAndSite(any());
+        verify(geographicalLocationRepositoryPort, times(1)).findByNameAndSite(any());
         verify(fishingMapper, times(1)).fromRequestToEntity(any(InCreateFishing.class));
         verify(fishingPort, times(1)).save(any(FishingEntity.class));
     }
@@ -86,7 +91,7 @@ class FishingServiceTest {
     @Transactional
     void testCreateFishing_GeographicalLocationNotFound() {
         // Configurar mocks para devolver null para la geolocalización
-        when(geographicalLocationPort.findByNameAndSite(any())).thenReturn(null);
+        when(geographicalLocationRepositoryPort.findByNameAndSite(any())).thenReturn(null);
         when(fishingMapper.fromRequestToEntity(any(InCreateFishing.class))).thenReturn(fishingEntity);
         when(fishingPort.save(any(FishingEntity.class))).thenReturn(1);
 
@@ -95,7 +100,7 @@ class FishingServiceTest {
 
         // Verificar el resultado y las interacciones
         assertEquals(1, result, "El ID de la pesca debería coincidir");
-        verify(geographicalLocationPort, times(1)).findByNameAndSite(any());
+        verify(geographicalLocationRepositoryPort, times(1)).findByNameAndSite(any());
         verify(fishingMapper, times(1)).fromRequestToEntity(any(InCreateFishing.class));
         verify(fishingPort, times(1)).save(any(FishingEntity.class));
     }
@@ -104,7 +109,7 @@ class FishingServiceTest {
     @Transactional
     void testCreateFishing_FishingSaveFailure() {
         // Configurar mocks para devolver un valor nulo al guardar la pesca
-        when(geographicalLocationPort.findByNameAndSite(any())).thenReturn(geographicalLocationEntity);
+        when(geographicalLocationRepositoryPort.findByNameAndSite(any())).thenReturn(geographicalLocationEntity);
         when(fishingMapper.fromRequestToEntity(any(InCreateFishing.class))).thenReturn(fishingEntity);
         when(fishingPort.save(any(FishingEntity.class))).thenReturn(null);
 
@@ -113,7 +118,7 @@ class FishingServiceTest {
 
         // Verificar que el resultado sea nulo o se maneje según lo esperado
         assertNull(result);
-        verify(geographicalLocationPort, times(1)).findByNameAndSite(any());
+        verify(geographicalLocationRepositoryPort, times(1)).findByNameAndSite(any());
         verify(fishingMapper, times(1)).fromRequestToEntity(any(InCreateFishing.class));
         verify(fishingPort, times(1)).save(any(FishingEntity.class));
     }
@@ -129,6 +134,30 @@ class FishingServiceTest {
         assertEquals(res.getFishId(), 1);
 
     }
+
+    @Test
+    @Transactional
+    void testEditFishing_FishingEditSuccess() {
+
+        when(fishingPort.getById(1)).thenReturn(DataUtils.getFishingEntitySuccess());
+        when(fishingMapper.fromEntityToResponse(any())).thenReturn(DataUtils.getAFishingDetails(DataUtils.getFishingEntitySuccess()));
+        when(fishingMapper.fromResponseToEntity(any())).thenReturn(DataUtils.getFishingEntitySuccess());
+        when(geograficLocationMapper.fromRequestToDtoFind("Acantilado-Isla-Este", "Isla")).thenReturn(DataUtils.fromRequestToDtoFind("Acantilado-Isla-Este", "Isla"));
+        when(geographicalLocationRepositoryPort.findByNameAndSite(DataUtils.fromRequestToDtoFind("Acantilado-Isla-Este", "Isla"))).thenReturn(DataUtils.getGeographicalLocationSuccess());
+        when(fishPort.getFishById(2)).thenReturn(DataUtils.getFishEntitySuccess());
+        when(diveDayPort.findById(1)).thenReturn(DataUtils.getDiveDayEntitySuccess());
+        when(fishingPort.update(any())).thenReturn(1);
+
+
+        InEditFishing input = new InEditFishing();
+        input.setFishingId(1);
+        input.setWeight(new BigDecimal("12.00"));
+        fishingService.editFishing(input);
+        verify(fishingPort, times(1)).update(any(FishingEntity.class));
+
+    }
+
+
     private FishingEntity getAFishingEntity(){
         FishingEntity entity = new FishingEntity();
         entity.setId(1);
