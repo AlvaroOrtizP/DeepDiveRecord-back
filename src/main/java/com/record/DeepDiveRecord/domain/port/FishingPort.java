@@ -7,5 +7,5 @@ public interface FishingPort {
     FishingEntity getById(Integer id);
 
     Integer update(FishingEntity fishingEntity);
-    void deleteByid(FishingEntity input);
+    void deleteByid(Integer input);
 }

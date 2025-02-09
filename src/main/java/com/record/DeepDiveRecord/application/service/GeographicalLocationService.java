@@ -5,6 +5,7 @@ import com.record.DeepDiveRecord.domain.model.dto.response.geographical_location
 import com.record.DeepDiveRecord.domain.port.GeographicalLocationPort;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.GeographicalLocationEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.GeograficLocationMapper;
+import com.record.DeepDiveRecord.infrastructure.adapter.mapper.impl.GeograficLocationMapperImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,7 @@ public class GeographicalLocationService implements GeographicalLocationUseCase 
 
     @Autowired
     private GeographicalLocationPort geographicalLocationRepositoryPort;
-    @Autowired
-    private GeograficLocationMapper geograficLocationMapper;
+    private GeograficLocationMapper geograficLocationMapper = new GeograficLocationMapperImpl();
     @Override
     public List<GeographicalLocationResponse> getAllGeGeographicalLocation() {
         LOGGER.info("--------------------------------------------------------------------------------------------");

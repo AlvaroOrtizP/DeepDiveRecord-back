@@ -1,6 +1,8 @@
 package com.record.DeepDiveRecord.util;
 
 import com.record.DeepDiveRecord.domain.model.dto.port.geographical_location.FindGeographicalLocation;
+import com.record.DeepDiveRecord.domain.model.dto.request.fishing.create.InCreateFishing;
+import com.record.DeepDiveRecord.domain.model.dto.request.fishing.edit.InEditFishing;
 import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.DiveDayResponse;
 import com.record.DeepDiveRecord.domain.model.dto.response.fishing.create.FishingDetails;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
@@ -77,10 +79,12 @@ public class DataUtils {
         entity.setCaught(true);
         entity.setWeight(new BigDecimal("12.2"));
         entity.setSightingTime("18:10");
+        entity.setLatG(41.2);
+        entity.setLongG(42.3);
         FishEntity fish = new FishEntity();
         fish.setId(1);
         fish.setName("Pez Ballesta");
-        fish.setSite("España");
+        fish.setSite("Isla");
         fish.setFirstSighting("0105");
         fish.setFirstLast("1212");
         fish.setStartSeason("1109");
@@ -92,7 +96,7 @@ public class DataUtils {
         GeographicalLocationEntity geographicalLo = new GeographicalLocationEntity();
         geographicalLo.setId(1);
         geographicalLo.setName("Isla");
-        geographicalLo.setSite("Oeste");
+        geographicalLo.setSite("Acantilado-Oeste");
         entity.setGeographicalLocation(geographicalLo);
         return entity;
     }
@@ -130,4 +134,38 @@ public class DataUtils {
         Page<DiveDayEntity> res = new PageImpl<>(list, pageable, 1);
         return res;
     }
+
+    public static final InCreateFishing getInCreateFishing(){
+        InCreateFishing res = new InCreateFishing();
+        res.setFishId(1);
+        res.setCaught(false);
+        res.setName("Acantilado-Oeste");
+        res.setSite("Isla");
+        res.setNotes("Sargo en la rompiente");
+        res.setWeight(new BigDecimal("0.450"));
+        res.setLatG(42.2);
+        res.setLongG(46.3);
+        res.setIdDiveDay(2);
+        res.setSightingTime("18:10");
+
+        return res;
+    }
+
+    public static final InEditFishing getInEditFishing(){
+        InEditFishing res = new InEditFishing();
+        res.setFishingId(2);
+        res.setFishId(2);
+        res.setCaught(false);
+        res.setName("Acantilado-Este");
+        res.setSite("Noja");
+        res.setNotes("Sargo en la rompiente");
+        res.setWeight(new BigDecimal("0.450"));
+        res.setLatG(42.2);
+        res.setLongG(46.3);
+        res.setIdDiveDay(2);
+        res.setSightingTime("18:10");
+
+        return res;
+    }
+
 }

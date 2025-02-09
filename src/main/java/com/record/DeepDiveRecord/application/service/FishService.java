@@ -5,6 +5,7 @@ import com.record.DeepDiveRecord.domain.model.dto.response.fish.FishResponse;
 import com.record.DeepDiveRecord.domain.port.FishPort;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.FishMapper;
+import com.record.DeepDiveRecord.infrastructure.adapter.mapper.impl.FishMapperImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,7 @@ import java.util.List;
 public class FishService implements FishUseCase {
     private static final Logger LOGGER = LoggerFactory.getLogger(FishService.class);
 
-    @Autowired
-    private FishMapper fishMapper;
+    private FishMapper fishMapper = new FishMapperImpl();
 
     @Autowired
     private FishPort fishRepositoryPort;

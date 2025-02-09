@@ -32,13 +32,8 @@ import static org.mockito.Mockito.*;
 class CreateDiveDayTest {
     @Mock
     private DiveDayPort diveDayPort;
-
     @Mock
     private GeographicalLocationPort geographicalLocationPort;
-
-    @Mock
-    private DiveDayMapper diveDayMapper;
-
     @InjectMocks
     private DiveDayService diveDayService;
 
@@ -61,12 +56,11 @@ class CreateDiveDayTest {
         GeographicalLocationEntity geographicalLocationEntity = new GeographicalLocationEntity();
         geographicalLocationEntity.setIdWindwuru("487006");
         geographicalLocationEntity.setSite("Isla");
-        geographicalLocationEntity.setName("Acantilado-Oeste");
+        geographicalLocationEntity.setName("  ");
         when(geographicalLocationPort.findById(487006)).thenReturn(geographicalLocationEntity);
 
         DiveDayEntity diveDayEntity = new DiveDayEntity();
         diveDayEntity.setDiveDayId(1);
-        when(diveDayMapper.entityFromResponse(any(InCreateDailyDiving.class))).thenReturn(diveDayEntity);
         when(diveDayPort.save(any(DiveDayEntity.class))).thenReturn(diveDayEntity);
 
         // Ejecutar el método a probar
@@ -76,7 +70,6 @@ class CreateDiveDayTest {
         // Verificar el resultado y las interacciones
         assertEquals(1, result, "El ID del DiveDay debería coincidir");
         verify(geographicalLocationPort, times(1)).findById(anyInt());
-        verify(diveDayMapper, times(1)).entityFromResponse(any(InCreateDailyDiving.class));
         verify(diveDayPort, times(1)).save(any(DiveDayEntity.class));
     }
 
@@ -382,7 +375,6 @@ class CreateDiveDayTest {
 
         DiveDayEntity diveDayEntity = new DiveDayEntity();
         diveDayEntity.setDiveDayId(1);
-        when(diveDayMapper.entityFromResponse(any(InCreateDailyDiving.class))).thenReturn(diveDayEntity);
         when(diveDayPort.save(any(DiveDayEntity.class))).thenReturn(diveDayEntity);
         when(diveDayPort.save(any(DiveDayEntity.class))).thenThrow(new RuntimeException());
 
@@ -394,7 +386,6 @@ class CreateDiveDayTest {
         // Verificar el resultado y las interacciones
         assertThrows(RuntimeException.class, () -> diveDayService.createDiveDay(inCreateDailyDiving));
         verify(geographicalLocationPort, times(1)).findById(anyInt());
-        verify(diveDayMapper, times(1)).entityFromResponse(any(InCreateDailyDiving.class));
         verify(diveDayPort, times(1)).save(any(DiveDayEntity.class));
     }
 }

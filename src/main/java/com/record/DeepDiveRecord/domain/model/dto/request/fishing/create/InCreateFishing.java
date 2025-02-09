@@ -16,8 +16,8 @@ public class InCreateFishing {
     private String site;
     private String notes;
     private BigDecimal weight;
-    private double latG;
-    private double longG;
+    private Double latG;
+    private Double longG;
     private Integer idDiveDay;
     private String sightingTime;
 }

@@ -1,4 +1,6 @@
 package com.record.DeepDiveRecord.application.service;
+import com.record.DeepDiveRecord.infrastructure.adapter.mapper.impl.CommonMapperImpl;
+import com.record.DeepDiveRecord.infrastructure.adapter.mapper.impl.WindConditionsMapperImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.record.DeepDiveRecord.application.usecase.WindConditionsUseCase;
@@ -22,10 +24,8 @@ public class WindConditionsService implements WindConditionsUseCase {
 
     @Autowired
     WindConditionsPort windConditionsPort;
-    @Autowired
-    WindConditionsMapper windConditionsMapper;
-    @Autowired
-    CommonMapper commonMapper;
+    WindConditionsMapper windConditionsMapper = new WindConditionsMapperImpl();
+    CommonMapper commonMapper = new CommonMapperImpl();
 
     @Override
     public OutGetDataList getDeepDiveDataByDays(InGetDataWeek input) {

@@ -47,8 +47,8 @@ public class FishingRepositoryImpl implements FishingPort {
         return res.getId();
     }
     @Override
-    public void deleteByid(FishingEntity input) {
+    public void deleteByid(Integer input) {
         LOGGER.info("Se procede a guardar {} ", input);
-        fishingRepository.delete(input);
+        fishingRepository.deleteById(input);
     }
 }
