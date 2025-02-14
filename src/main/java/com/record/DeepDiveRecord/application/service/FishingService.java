@@ -42,7 +42,7 @@ public class FishingService implements FishingUseCase {
         LOGGER.info("--------------------------------------------------------------------------------------------");
         LOGGER.info("Inicio del método createFishing con los datos de entrada: {}", input);
 
-        if (!comprobarDatosInCreateFishing(input)) {
+        if (!InCreateFishing.comprobarDatosInCreateFishing(input)) {
             throw new InvalidFishingDataException("Los datos para crear el Fishing no son válidos.");
         }
         // Comprobación de la geolocalización asociada con la solicitud de pesca
@@ -71,37 +71,7 @@ public class FishingService implements FishingUseCase {
         return savedFishingId;
     }
 
-    private boolean comprobarDatosInCreateFishing(InCreateFishing input) {
-        // Expresión regular para verificar el formato NN:NN donde N es un número
-        if (Validator.validateInteger(input.getFishId())) {
-            return false;
-        }
-        if (Validator.validateString(input.getName())) {
-            return false;
-        }
-        if (Validator.validateString(input.getSite())) {
-            return false;
-        }
-        if (Validator.validateString(input.getNotes())) {
-            return false;
-        }
-        if (Validator.validateBigDecimal(input.getWeight())) {
-            return false;
-        }
-        if (Validator.validateDouble(input.getLatG())) {
-            return false;
-        }
-        if (Validator.validateDouble(input.getLongG())) {
-            return false;
-        }
-        if (Validator.validateInteger(input.getIdDiveDay())) {
-            return false;
-        }
-        if (Validator.validateHora(input.getSightingTime())) {
-            return false;
-        }
-        return true;
-    }
+
 
     @Override
     public FishingDetails getFishingById(Integer id) {
@@ -121,13 +91,9 @@ public class FishingService implements FishingUseCase {
         LOGGER.info("--------------------------------------------------------------------------------------------");
         LOGGER.info("Inicio del método editFishing con los datos de entrada: {}", input);
 
-        if (Validator.validateInteger(input.getFishingId())) {
+        if (!InEditFishing.comprobarDatosInCreateFishing(input)) {
             throw new InvalidFishingDataException("Los datos para crear el Fishing no son válidos.");
         }
-        if (Validator.validateInteger(input.getIdDiveDay())) {
-            throw new InvalidFishingDataException("Los datos para crear el Fishing no son válidos.");
-        }
-
 
         // Obtener los detalles actuales de la entidad de pesca utilizando el ID proporcionado
         FishingDetails existingDetails = getFishingById(input.getFishingId());

@@ -28,7 +28,4 @@ public class OutGetData {
     String description1;
     Integer f2;
     String description2;
-    String beginning;
-    String end;
-    String notes;
 }

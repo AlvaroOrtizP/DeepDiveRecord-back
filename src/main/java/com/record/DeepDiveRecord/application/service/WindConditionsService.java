@@ -1,4 +1,6 @@
 package com.record.DeepDiveRecord.application.service;
+import com.record.DeepDiveRecord.domain.model.exception.InvalidDiveDayDataException;
+import com.record.DeepDiveRecord.domain.port.DiveDayPort;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.impl.CommonMapperImpl;
 import com.record.DeepDiveRecord.infrastructure.adapter.mapper.impl.WindConditionsMapperImpl;
 import org.slf4j.Logger;
@@ -24,6 +26,9 @@ public class WindConditionsService implements WindConditionsUseCase {
 
     @Autowired
     WindConditionsPort windConditionsPort;
+    @Autowired
+    DiveDayPort diveDayPort;
+
     WindConditionsMapper windConditionsMapper = new WindConditionsMapperImpl();
     CommonMapper commonMapper = new CommonMapperImpl();
 
@@ -31,6 +36,10 @@ public class WindConditionsService implements WindConditionsUseCase {
     public OutGetDataList getDeepDiveDataByDays(InGetDataWeek input) {
         LOGGER.info("--------------------------------------------------------------------------------------------");
         LOGGER.info("Inicia el método getDeepDiveDataByDays con el input: {}", input);
+
+        if(!InGetDataWeek.comprobarDatosCreateDiveDay(input)){
+            throw new InvalidDiveDayDataException("Los datos para obtener las condiciones climaticas no son válidos.");
+        }
 
         // Obtener datos de condiciones de viento
         Page<WindConditionsEntity> windConditionsEntityPage = fetchWindConditionsData(input, false);
@@ -62,12 +71,13 @@ public class WindConditionsService implements WindConditionsUseCase {
      */
     private OutGetDataList prepareOutGetDataList(Page<WindConditionsEntity> windConditionsEntityPage) {
         LOGGER.info("Preparando la lista de resultados y la paginación para la respuesta.");
-
+        boolean buscarEstadisticas = false;
         OutGetDataList response = new OutGetDataList();
         List<OutGetData> outGetDataList = new ArrayList<>();
 
         // Mapear cada entidad WindConditions a un objeto OutGetData
         for (WindConditionsEntity item : windConditionsEntityPage.getContent()) {
+
             OutGetData outGetData = windConditionsMapper.getOutGetData(item);
             outGetDataList.add(outGetData);
         }
@@ -81,7 +91,4 @@ public class WindConditionsService implements WindConditionsUseCase {
         LOGGER.info("Se ha configurado la paginación de la respuesta.");
         return response;
     }
-
-
-
 }

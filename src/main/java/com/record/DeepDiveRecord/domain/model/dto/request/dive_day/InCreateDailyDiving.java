@@ -45,4 +45,76 @@ public class InCreateDailyDiving {
     // "1" Nada
     // "2" Poco
     // "3" Mucho
+
+
+    public static boolean comprobarDatosCreateDiveDay(InCreateDailyDiving input) {
+        // Expresión regular para verificar el formato NN:NN donde N es un número
+        String regex = "\\d{2}:\\d{2}";
+
+        if (input.getDay() == null || input.getDay().isBlank())
+            return false;
+
+        int day = Integer.parseInt(input.getDay());
+        if (day > 366 || day < 1)
+            return false;
+
+        if (input.getMonth() == null || input.getMonth().isBlank())
+            return false;
+
+        int month = Integer.parseInt(input.getMonth());
+        if (month > 12 || month < 1)
+            return false;
+
+        if (input.getYear() == null || input.getYear().isBlank() || input.getYear().length() != 4)
+            return false;
+
+        if (input.getBeginning() == null || input.getBeginning().isBlank() || !input.getBeginning().contains(":")) {
+            return false;
+        } else {
+            //Comprobamos que el valor es numerico
+            if (!input.getBeginning().matches(regex)) {
+                return false;
+            }
+            // Eliminar el ':' y verificar si los caracteres restantes son numéricos
+            String numericPart = input.getBeginning().replace(":", "");
+            if (!numericPart.chars().allMatch(Character::isDigit)) {
+                return false;
+            }
+        }
+
+
+        if (input.getEnd() == null || input.getEnd().isBlank() || !input.getEnd().contains(":")) {
+            return false;
+        } else {
+            //Comprobamos que el valor es numerico
+            if (!input.getEnd().matches(regex)) {
+                return false;
+            }
+            // Eliminar el ':' y verificar si los caracteres restantes son numéricos
+            String numericPart = input.getEnd().replace(":", "");
+            if (!numericPart.chars().allMatch(Character::isDigit)) {
+                return false;
+            }
+        }
+
+
+        if (input.getAssessment() == null || input.getAssessment() > 5 || input.getAssessment() < 1)
+            return false;
+
+        if (input.getJellyfish() == null || input.getJellyfish() > 3 || input.getJellyfish() < 1)
+            return false;
+
+        if (input.getVisibility() == null || input.getVisibility() > 4 || input.getVisibility() < 1)
+            return false;
+
+        if (input.getSeaBackground() == null || input.getSeaBackground() > 4 || input.getSeaBackground() < 1)
+            return false;
+
+        if (input.getFishGrass() == null || input.getFishGrass() > 3 || input.getFishGrass() < 1)
+            return false;
+
+        if (input.getPresencePlastic() == null || input.getPresencePlastic() > 3 || input.getPresencePlastic() < 1)
+            return false;
+        return true;
+    }
 }

@@ -1,5 +1,6 @@
 package com.record.DeepDiveRecord.domain.model.dto.request.fishing.edit;
 
+import com.record.DeepDiveRecord.domain.model.util.Validator;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -21,4 +22,14 @@ public class InEditFishing {
     private double longG;
     private Integer idDiveDay;
     private String sightingTime;
+
+    public final static boolean comprobarDatosInCreateFishing(InEditFishing input) {
+        if (Validator.validateInteger(input.getFishingId())) {
+            return false;
+        }
+        if (Validator.validateInteger(input.getIdDiveDay())) {
+            return false;
+        }
+        return true;
+    }
 }

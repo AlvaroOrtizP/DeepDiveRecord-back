@@ -1,6 +1,7 @@
 package com.record.DeepDiveRecord.service.data;
 
 import com.record.DeepDiveRecord.domain.model.dto.request.dive_day.InCreateDailyDiving;
+import com.record.DeepDiveRecord.domain.model.dto.request.wind_conditions.InGetDataWeek;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.*;
 
 import java.math.BigDecimal;
@@ -23,6 +24,21 @@ public class DataUtil {
         res.setSeaBackground(1);// Sin mar de fondo
         res.setFishGrass(1);//Con pocos peces pasto
         res.setPresencePlastic(1);// Nada
+
+        return res;
+    }
+
+    public static final InGetDataWeek getDeepDiveDataByDaysOk() {
+        InGetDataWeek res = new InGetDataWeek();
+        res.setPage(0);
+        res.setSize(20);
+        res.setSite("487006");
+        res.setFromYear(2024);
+        res.setFromMonth(4);
+        res.setFromDay(20);
+        res.setToYear(2024);
+        res.setToMonth(8);
+        res.setToDay(5);
 
         return res;
     }
@@ -100,7 +116,9 @@ public class DataUtil {
         res.setAfternoonLowTideHeight(1.34);
 
         return res;
-    } public static final WindConditionsEntity getWindConditionsEntityOk() {
+    }
+
+    public static final WindConditionsEntity getWindConditionsEntityOk() {
         WindConditionsEntity res = new WindConditionsEntity();
         WindConditionsId id = new WindConditionsId();
         id.setTime(14);
@@ -109,6 +127,7 @@ public class DataUtil {
         id.setSite("487006");
         res.setId(id);
         res.setMonth(7);
+        res.setDay(17);
         res.setWind(14);
         res.setWindDirection(new BigDecimal(78));
         res.setWindDirectionNm("ENE");
