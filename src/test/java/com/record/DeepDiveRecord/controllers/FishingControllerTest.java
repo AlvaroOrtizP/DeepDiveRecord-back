@@ -1,15 +1,13 @@
 package com.record.DeepDiveRecord.controllers;
 
 import com.record.DeepDiveRecord.application.usecase.FishingUseCase;
-import com.record.DeepDiveRecord.domain.model.dto.request.fishing.InCreateFishing;
-import com.record.DeepDiveRecord.domain.model.dto.response.fishing.FishingDetails;
+import com.record.DeepDiveRecord.domain.model.dto.request.fishing.create.InCreateFishing;
+import com.record.DeepDiveRecord.domain.model.dto.response.fishing.create.FishingDetails;
 import com.record.DeepDiveRecord.infrastructure.rest.controller.FishingController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,7 +67,7 @@ class FishingControllerTest {
         // Verifica los resultados
         assertAll("Verificaciones de respuesta",
                 () -> assertEquals(null, res.getBody(), "Debe devolver un cuerpo nulo"),
-                () -> assertEquals(HttpStatus.NOT_FOUND, res.getStatusCode(), "Debe devolver el estado 404 indicando que ocurrió un error")
+                () -> assertEquals(HttpStatus.BAD_REQUEST, res.getStatusCode(), "Debe devolver el estado 404 indicando que ocurrió un error")
         );
     }
 

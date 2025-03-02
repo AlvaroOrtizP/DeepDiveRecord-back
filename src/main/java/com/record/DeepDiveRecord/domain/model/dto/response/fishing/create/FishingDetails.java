@@ -1,4 +1,4 @@
-package com.record.DeepDiveRecord.domain.model.dto.response.fishing;
+package com.record.DeepDiveRecord.domain.model.dto.response.fishing.create;
 
 import lombok.*;
 

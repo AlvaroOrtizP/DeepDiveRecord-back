@@ -23,9 +23,6 @@ public class DiveDayMapperImpl implements DiveDayMapper {
         diveDayEntity.setYear(input.getYear());
         diveDayEntity.setBeginning(input.getBeginning());
         diveDayEntity.setEnd(input.getEnd());
-
-        //idWindwuru
-        //Name es el filtro para comprobar que existe en geografia
         diveDayEntity.setNotes(input.getNotes());
         diveDayEntity.setAssessment(input.getAssessment());
         diveDayEntity.setJellyfish(input.getJellyfish());

@@ -48,6 +48,9 @@ public class ImageController {
     @GetMapping("/{filename:.+}")
     public ResponseEntity<byte[]> serveImage(@PathVariable String filename) {
         LOGGER.info("Obtener imagen " + filename);
+        if(filename.contains("null")){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
         filename = filename.replace("_", "/");
 
         try {

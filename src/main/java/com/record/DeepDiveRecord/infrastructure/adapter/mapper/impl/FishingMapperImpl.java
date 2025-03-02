@@ -1,7 +1,7 @@
 package com.record.DeepDiveRecord.infrastructure.adapter.mapper.impl;
 
-import com.record.DeepDiveRecord.domain.model.dto.request.fishing.InCreateFishing;
-import com.record.DeepDiveRecord.domain.model.dto.response.fishing.FishingDetails;
+import com.record.DeepDiveRecord.domain.model.dto.request.fishing.create.InCreateFishing;
+import com.record.DeepDiveRecord.domain.model.dto.response.fishing.create.FishingDetails;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.FishingEntity;
@@ -56,6 +56,35 @@ public class FishingMapperImpl implements FishingMapper {
         res.setGeographieId(input.getGeographicalLocation().getId());
         res.setGeographieName(input.getGeographicalLocation().getName());
         res.setGeographieSite(input.getGeographicalLocation().getSite());
+        return res;
+    }
+
+    @Override
+    public FishingEntity fromResponseToEntity(FishingDetails input) {
+        FishingEntity res = new FishingEntity();
+        res.setId(input.getId());
+        res.setNotes(input.getNotes());
+        res.setCaught(input.isCaught());
+        res.setWeight(input.getWeight());
+        res.setLatG(input.getLatG());
+        res.setLongG(input.getLogG());
+
+        FishEntity fish = new FishEntity();
+        fish.setId(input.getId());
+        fish.setName(input.getName());
+        fish.setSite(input.getSite());
+        fish.setFirstSighting(input.getFirstSighting());
+        fish.setFirstLast(input.getFirstLast());
+        fish.setStartSeason(input.getStartSeason());
+        fish.setEndSeason(input.getEndSeason());
+        fish.setFirstLifeWarning(input.getFirstLifeWarning());
+        res.setFish(fish);
+
+        GeographicalLocationEntity geographic = new GeographicalLocationEntity();
+        geographic.setId(input.getGeographieId());
+        geographic.setName(input.getGeographieName());
+        geographic.setSite(input.getGeographieSite());
+        res.setGeographicalLocation(geographic);
         return res;
     }
 

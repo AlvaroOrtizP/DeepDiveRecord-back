@@ -336,7 +336,7 @@ public class HistoricRepositoryImpl implements HistoricPort {
 
             // Personalizar el correo
             helper.setTo(dotenv.get("TO_MAIL_USERNAME"));  // Destinatario
-            helper.setSubject("Reporte Diario - Archivo Adjunto");
+            helper.setSubject("Procesamiento Exitoso- Archivo Adjunto");
 
             // Contenido HTML
             String htmlContent = """
@@ -361,6 +361,16 @@ public class HistoricRepositoryImpl implements HistoricPort {
 
             // Enviar el mensaje con HTML y adjunto
             mailSender.send(message);
+
+            // Si el correo se envía correctamente, eliminar el archivo
+            if (excelFile.exists()) {
+                boolean deleted = excelFile.delete();
+                if (deleted) {
+                    log.info("El archivo " + excelFile.getAbsolutePath() + " se eliminó correctamente después de enviarse por correo.");
+                } else {
+                    log.error("No se pudo eliminar el archivo " + excelFile.getAbsolutePath());
+                }
+            }
         } catch (MessagingException e) {
             System.out.println("Error " + e.getMessage());
         }
