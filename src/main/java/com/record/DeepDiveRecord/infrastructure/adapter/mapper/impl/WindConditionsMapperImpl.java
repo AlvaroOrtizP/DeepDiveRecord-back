@@ -4,6 +4,7 @@ import com.record.DeepDiveRecord.domain.model.dto.port.wind_condition.FindDeepDi
 import com.record.DeepDiveRecord.domain.model.dto.request.wind_conditions.InGetDataWeek;
 import com.record.DeepDiveRecord.domain.model.dto.response.dive_day.WindConditionResponse;
 import com.record.DeepDiveRecord.domain.model.dto.response.wind_conditions.OutGetData;
+import com.record.DeepDiveRecord.domain.model.dto.response.wind_conditions.OutGetDataMedia;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.DiveDayEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.WindConditionsEntity;
 import com.record.DeepDiveRecord.infrastructure.adapter.entity.WindConditionsId;
@@ -96,7 +97,7 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
         outGetData.setWind(item.getWind());
         outGetData.setWindDirection(item.getWindDirection());
         outGetData.setGustsOfWind(item.getGustsOfWind());
-        outGetData.setWaveHeight(String.valueOf(item.getWaveHeight()));
+        outGetData.setWaveHeight(item.getWaveHeight());
         outGetData.setWavePeriod(item.getWavePeriod());
         outGetData.setWaveDirection(item.getWaveDirection());
         outGetData.setEarthTemperature(item.getEarthTemperature());
@@ -105,10 +106,47 @@ public class WindConditionsMapperImpl implements WindConditionsMapper {
         } else {
             outGetData.setWaterTemperature(String.valueOf(item.getWaterTemperature()));
         }
-
+        outGetData.setWaveDirection(item.getWaveDirection());
         outGetData.setF1(item.getCodeCondition());
         outGetData.setDescription1(item.getConditionDescription());
         return outGetData;
+    }
+
+    @Override
+    public OutGetDataMedia getOutGetDataMedia(WindConditionsEntity item) {
+        OutGetDataMedia res = new OutGetDataMedia();
+        res.setCategory("malo"); // TODO destacada malo
+        res.setTimeOfDay(item.getId().getTime()<14 ? 1 : 2);
+        res.setMonth(item.getMonth());
+        res.setDay(item.getDay());
+        res.setDayOfYear(item.getId().getDayOfYear());
+        res.setYear(item.getId().getYear());
+        res.setSite(item.getId().getSite());
+        res.setMinWinter(item.getWind());
+        res.setMaxWinter(item.getWind());
+        res.setWindDirection(item.getWindDirection());
+        res.setMinGustsOfWind(item.getGustsOfWind());
+        res.setMaxGustsOfWind(item.getGustsOfWind());
+        res.setMinWaveHeight(item.getWavePeriod());
+        res.setMaxWaveHeight(item.getWaveHeight());
+        res.setMinWavePeriod(item.getWavePeriod());
+        res.setMaxWavePeriod(item.getWavePeriod());
+        res.setMinEarthTemperature(item.getEarthTemperature());
+        res.setMaxEarthTemperature(item.getEarthTemperature());
+
+        if (null == item.getWaterTemperature()) {
+            res.setMinWaterTemperature("NA");
+            res.setMaxWaterTemperature("NA");
+        } else {
+            res.setMinWaterTemperature(String.valueOf(item.getWaterTemperature()));
+            res.setMaxWaterTemperature(String.valueOf(item.getWaterTemperature()));
+        }
+
+        res.setF(item.getCodeCondition());
+        res.setDescription(item.getConditionDescription());
+
+
+        return res;
     }
 
     @Override

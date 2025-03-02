@@ -361,6 +361,16 @@ public class HistoricRepositoryImpl implements HistoricPort {
 
             // Enviar el mensaje con HTML y adjunto
             mailSender.send(message);
+
+            // Si el correo se envía correctamente, eliminar el archivo
+            if (excelFile.exists()) {
+                boolean deleted = excelFile.delete();
+                if (deleted) {
+                    log.info("El archivo " + excelFile.getAbsolutePath() + " se eliminó correctamente después de enviarse por correo.");
+                } else {
+                    log.error("No se pudo eliminar el archivo " + excelFile.getAbsolutePath());
+                }
+            }
         } catch (MessagingException e) {
             System.out.println("Error " + e.getMessage());
         }

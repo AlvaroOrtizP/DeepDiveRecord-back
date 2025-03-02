@@ -118,10 +118,10 @@ public class DataUtil {
         return res;
     }
 
-    public static final WindConditionsEntity getWindConditionsEntityOk() {
+    public static final WindConditionsEntity getWindConditionsEntityMorningOk() {
         WindConditionsEntity res = new WindConditionsEntity();
         WindConditionsId id = new WindConditionsId();
-        id.setTime(14);
+        id.setTime(12);
         id.setDayOfYear(199);
         id.setYear(2024);
         id.setSite("487006");
@@ -138,6 +138,56 @@ public class DataUtil {
         res.setWaveDirectionNm("NW");
         res.setEarthTemperature(23);
         res.setWaterTemperature(20);
+        res.setCodeCondition(120);
+        res.setConditionDescription("muy nuboso");
+
+        return res;
+    }
+    public static final WindConditionsEntity getWindConditionsEntityAfternoon1Ok() {
+        WindConditionsEntity res = new WindConditionsEntity();
+        WindConditionsId id = new WindConditionsId();
+        id.setTime(14);
+        id.setDayOfYear(199);
+        id.setYear(2024);
+        id.setSite("487006");
+        res.setId(id);
+        res.setMonth(7);
+        res.setDay(17);
+        res.setWind(12);
+        res.setWindDirection(new BigDecimal(78));
+        res.setWindDirectionNm("ENE");
+        res.setGustsOfWind(20);
+        res.setWaveHeight(0.9);
+        res.setWavePeriod(8);
+        res.setWaveDirection(320);
+        res.setWaveDirectionNm("NW");
+        res.setEarthTemperature(24);
+        res.setWaterTemperature(21);
+        res.setCodeCondition(120);
+        res.setConditionDescription("muy nuboso");
+
+        return res;
+    }
+    public static final WindConditionsEntity getWindConditionsEntityAfternoon2Ok() {
+        WindConditionsEntity res = new WindConditionsEntity();
+        WindConditionsId id = new WindConditionsId();
+        id.setTime(16);
+        id.setDayOfYear(199);
+        id.setYear(2024);
+        id.setSite("487006");
+        res.setId(id);
+        res.setMonth(7);
+        res.setDay(17);
+        res.setWind(11);
+        res.setWindDirection(new BigDecimal(78));
+        res.setWindDirectionNm("ENE");
+        res.setGustsOfWind(19);
+        res.setWaveHeight(0.7);
+        res.setWavePeriod(9);
+        res.setWaveDirection(320);
+        res.setWaveDirectionNm("NW");
+        res.setEarthTemperature(24);
+        res.setWaterTemperature(22);
         res.setCodeCondition(120);
         res.setConditionDescription("muy nuboso");
 

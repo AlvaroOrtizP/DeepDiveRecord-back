@@ -12,5 +12,6 @@ import java.util.List;
 @ToString
 public class OutGetDataList {
     private List<OutGetData> OutGetDataList;
+    private List<OutGetDataMedia> OutGetDataMediaList;
     private Pagination pagination;
 }

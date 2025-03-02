@@ -33,7 +33,7 @@ public class HistoricController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-//Numero total de registros: 2265
+
         return new ResponseEntity<>("Numero total de registros: " + res, HttpStatus.OK);
     }
 

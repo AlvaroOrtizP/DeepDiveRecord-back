@@ -46,7 +46,7 @@ class GetDiveDayByIdTest {
         when(diveDayPort.findById(anyInt())).thenReturn(DataUtil.getDiveDayEntityOk());
         when(tideTablePort.findById(any())).thenReturn(Optional.of(DataUtil.getTideTableEntityOk()));
 
-        Page<WindConditionsEntity> windConditionsPage = new PageImpl<>(Collections.singletonList(DataUtil.getWindConditionsEntityOk()));
+        Page<WindConditionsEntity> windConditionsPage = new PageImpl<>(Collections.singletonList(DataUtil.getWindConditionsEntityMorningOk()));
         when(windConditionsPort.getDeepDiveDataByDays(any(), eq(false))).thenReturn(windConditionsPage);
 
         // Ejecutar el método a probar

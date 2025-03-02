@@ -10,22 +10,40 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @ToString
 public class OutGetData {
-    Integer month;
-    Integer day;
-    Integer dayOfYear;
-    Integer year;
-    String site;
-    String timeOfDay;
-    Integer wind;
-    BigDecimal windDirection; //5-2
-    Double gustsOfWind;
-    String waveHeight;
-    Integer wavePeriod;
-    Integer waveDirection;
-    Integer earthTemperature;
-    String waterTemperature;
-    Integer f1;
-    String description1;
-    Integer f2;
-    String description2;
+    private Integer month;
+    private Integer day;
+    private Integer dayOfYear;
+    private Integer year;
+    private String site;
+    private String timeOfDay;
+
+    //Viento
+    private Integer wind;
+
+    private BigDecimal windDirection; //5-2
+
+    //Rachas de viento
+    private double gustsOfWind;
+
+    //Altura olas
+    private double waveHeight;
+
+    //Periodo de olas
+    private Integer wavePeriod;
+
+    //Direccion de olas
+    private Integer waveDirection;
+
+    // Temperatura en tierra
+    private Integer earthTemperature;
+
+    //Temperatura en agua
+    private String waterTemperature;
+
+    private Integer f1;
+    private String description1;
+    private Integer f2;
+    private String description2;
+
+
 }

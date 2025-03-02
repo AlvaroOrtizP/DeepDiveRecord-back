@@ -42,28 +42,50 @@ class GetDeepDiveDataByDaysTest {
     void testGetDeepDiveDataByDaysPeers_Success() {
         InGetDataWeek input = DataUtil.getDeepDiveDataByDaysOk();
         List<WindConditionsEntity> list = new ArrayList<>();
-        list.add(DataUtil.getWindConditionsEntityOk());
+        list.add(DataUtil.getWindConditionsEntityMorningOk());
+        list.add(DataUtil.getWindConditionsEntityAfternoon1Ok());
+        list.add(DataUtil.getWindConditionsEntityAfternoon2Ok());
         Page<WindConditionsEntity> pageList = new PageImpl<>(list);
         when(windConditionsPort.getDeepDiveDataByDays(any(), anyBoolean())).thenReturn(pageList);
 
 
         OutGetDataList res = windConditionsService.getDeepDiveDataByDays(input);
-        assertEquals(1, res.getOutGetDataList().size(), "El tamaño de la lista de resultados debería ser 1");
+        //Comprobaciones para la parte de outGetData
+        assertEquals(3, res.getOutGetDataList().size(), "El tamaño de la lista de resultados debería ser 1");
         assertEquals(input.getSite(), res.getOutGetDataList().get(0).getSite(), "El lugar debe ser 487006");
         assertEquals(2024, res.getOutGetDataList().get(0).getYear(), "El año debe ser 2025");
         assertEquals(7, res.getOutGetDataList().get(0).getMonth(), "El mes debe ser 7");
         assertEquals(17, res.getOutGetDataList().get(0).getDay(), "El dia debe ser 17");
-        assertEquals("14", res.getOutGetDataList().get(0).getTimeOfDay(), "El dia debe ser 14");
+        assertEquals("12", res.getOutGetDataList().get(0).getTimeOfDay(), "El dia debe ser 14");
         assertEquals(14, res.getOutGetDataList().get(0).getWind(), "El viento debe ser 14");
         assertEquals(new BigDecimal("78"), res.getOutGetDataList().get(0).getWindDirection(), "La direccion del viento debe ser 78");
         assertEquals(25.0, res.getOutGetDataList().get(0).getGustsOfWind(), "Las rachas del viento debe ser 25.0");
-        assertEquals("0.8", res.getOutGetDataList().get(0).getWaveHeight(), "Las olas deben tener una altura de 0.8");
+        assertEquals(0.8, res.getOutGetDataList().get(0).getWaveHeight(), "Las olas deben tener una altura de 0.8");
         assertEquals(9, res.getOutGetDataList().get(0).getWavePeriod(), "Las olas deben tener un periodo de 9");
         assertEquals(320, res.getOutGetDataList().get(0).getWaveDirection(), "Las olas deben tener una direccion de 320");
         assertEquals(23, res.getOutGetDataList().get(0).getEarthTemperature(), "La temperatura en tierra debe de ser de 23");
         assertEquals("20", res.getOutGetDataList().get(0).getWaterTemperature(), "La temperatura en agua debe de ser de 20");
         assertEquals(120, res.getOutGetDataList().get(0).getF1(), "El tipo de tiempo debe de ser 120");
         assertEquals("muy nuboso", res.getOutGetDataList().get(0).getDescription1(), "El tipo de clipa debe de ser muy nuboso");
+
+
+        //Comprobaciones para la parte de outGetDataMedia
+        assertEquals( res.getOutGetDataMediaList().size()%2==0, true, "El tamaño de la lista de resultados debería ser par (en este caso 2)");
+        assertEquals(1, res.getOutGetDataMediaList().get(0).getTimeOfDay(), "El time of day debe ser 1 cuando la hora es inferior a 14");
+        assertEquals(2, res.getOutGetDataMediaList().get(1).getTimeOfDay(), "El time of day debe ser 2 cuando la hora es superior a 13");
+        assertEquals(11, res.getOutGetDataMediaList().get(1).getMinWinter(), "La velocidad del viento minima es 11");
+        assertEquals(12, res.getOutGetDataMediaList().get(1).getMaxWinter(), "La velocidad del viento maxima es 12");
+        assertEquals(19, res.getOutGetDataMediaList().get(1).getMinGustsOfWind(), "La racha del viento minima es 19");
+        assertEquals(20, res.getOutGetDataMediaList().get(1).getMaxGustsOfWind(), "La racha del viento maxima es 20");
+        assertEquals(0.7, res.getOutGetDataMediaList().get(1).getMinWaveHeight(), "La altura de ola minima es 0.7");
+        assertEquals(0.9, res.getOutGetDataMediaList().get(1).getMaxWaveHeight(), "La altura de ola maxima es 0.9");
+        assertEquals(8, res.getOutGetDataMediaList().get(1).getMinWavePeriod(), "El periodo de ola minimo es 8");
+        assertEquals(9, res.getOutGetDataMediaList().get(1).getMaxWavePeriod(), "El periodo de ola maximo es 9");
+        assertEquals(24, res.getOutGetDataMediaList().get(1).getMinEarthTemperature(), "La temperatura terrestre minima es 24");
+        assertEquals(24, res.getOutGetDataMediaList().get(1).getMaxEarthTemperature(), "La temperatura terrestre maxima es 24");
+        assertEquals("21", res.getOutGetDataMediaList().get(1).getMinWaterTemperature(), "La temperatura del agua minima es 21");
+        assertEquals("22", res.getOutGetDataMediaList().get(1).getMaxWaterTemperature(), "La temperatura del agua maxima es 22");
+
         verify(windConditionsPort, times(1)).getDeepDiveDataByDays(any(), eq(false));
     }
 
@@ -80,6 +102,7 @@ class GetDeepDiveDataByDaysTest {
 
         // Verificar que el resultado contenga una lista vacía
         assertEquals(0, result.getOutGetDataList().size(), "El tamaño de la lista de resultados debería ser 0");
+        assertEquals(0, result.getOutGetDataMediaList().size(), "El tamaño de la lista de resultados debería ser 0");
         verify(windConditionsPort, times(1)).getDeepDiveDataByDays(any(), eq(false));
     }
 
