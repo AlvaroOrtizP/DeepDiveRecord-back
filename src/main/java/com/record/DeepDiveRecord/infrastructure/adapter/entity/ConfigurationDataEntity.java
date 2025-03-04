@@ -14,7 +14,7 @@ import lombok.Setter;
 @Table(name = "configuration_data")
 public class ConfigurationDataEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
     @Column(name = "active")
