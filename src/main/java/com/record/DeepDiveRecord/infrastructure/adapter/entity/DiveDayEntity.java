@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "dive_day")
 public class DiveDayEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "dive_day_id")
     private Integer diveDayId;
 
