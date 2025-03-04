@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Table(name = "fishing")
 public class FishingEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String notes;
     private boolean caught;
